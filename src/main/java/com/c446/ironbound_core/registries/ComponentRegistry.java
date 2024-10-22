@@ -1,6 +1,6 @@
-package com.example.examplemod.registries;
+package com.c446.ironbound_core.registries;
 
-import com.example.examplemod.components.classescomponents.ClassesRecord;
+import com.c446.ironbound_core.data.components.classescomponents.ClassesRecord;
 import io.netty.buffer.ByteBuf;
 import io.redspace.ironsspellbooks.IronsSpellbooks;
 import net.minecraft.core.component.DataComponentType;

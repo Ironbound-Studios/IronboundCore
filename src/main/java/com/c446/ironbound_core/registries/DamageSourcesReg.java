@@ -1,6 +1,6 @@
-package com.example.examplemod.registries;
+package com.c446.ironbound_core.registries;
 
-import com.example.examplemod.Ironbound;
+import com.c446.ironbound_core.Ironbound;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;

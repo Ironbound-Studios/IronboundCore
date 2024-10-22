@@ -1,6 +1,6 @@
-package com.example.examplemod;
+package com.c446.ironbound_core;
 
-import com.example.examplemod.registries.ModSetup;
+import com.c446.ironbound_core.registries.ModSetup;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;

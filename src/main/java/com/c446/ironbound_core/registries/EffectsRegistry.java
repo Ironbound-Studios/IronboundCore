@@ -1,13 +1,13 @@
-package com.example.examplemod.registries;
+package com.c446.ironbound_core.registries;
 
-import com.example.examplemod.util.IronboundCoreEffect;
+import com.c446.ironbound_core.util.IronboundCoreEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static com.example.examplemod.Ironbound.MODID;
+import static com.c446.ironbound_core.Ironbound.MODID;
 
 
 public class EffectsRegistry {

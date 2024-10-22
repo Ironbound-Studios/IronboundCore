@@ -1,4 +1,4 @@
-package com.example.examplemod.components;
+package com.c446.ironbound_core.data.components;
 
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.Items;

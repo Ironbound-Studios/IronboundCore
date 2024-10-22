@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.c446.ironbound_core;
 
 import java.util.List;
 import java.util.Set;

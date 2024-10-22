@@ -1,21 +1,17 @@
-package com.example.examplemod.registries;
+package com.c446.ironbound_core.registries;
 
-import com.example.examplemod.Ironbound;
-import com.example.examplemod.util.IronboundCoreEffect;
+import com.c446.ironbound_core.Ironbound;
+import com.c446.ironbound_core.util.IronboundCoreEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
 
-import static com.example.examplemod.registries.AttributeRegistry.FOCUS;
-import static com.example.examplemod.registries.AttributeRegistry.VITALITY;
-import static com.example.examplemod.registries.EffectsRegistry.rgbToInt;
+import static com.c446.ironbound_core.registries.AttributeRegistry.FOCUS;
+import static com.c446.ironbound_core.registries.AttributeRegistry.VITALITY;
+import static com.c446.ironbound_core.registries.EffectsRegistry.rgbToInt;
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.*;
 

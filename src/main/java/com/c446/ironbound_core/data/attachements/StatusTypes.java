@@ -1,4 +1,4 @@
-package com.example.examplemod.capabilities;
+package com.c446.ironbound_core.data.attachements;
 
 public enum StatusTypes {
     MADNESS,

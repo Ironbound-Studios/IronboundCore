@@ -1,8 +1,6 @@
-package com.example.examplemod.util;
+package com.c446.ironbound_core.util;
 
 
-import io.redspace.ironsspellbooks.entity.spells.fireball.MagicFireball;
-import io.redspace.ironsspellbooks.registries.EntityRegistry;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

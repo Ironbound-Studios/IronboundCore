@@ -1,4 +1,4 @@
-package com.example.examplemod.registries;
+package com.c446.ironbound_core.registries;
 
 import io.redspace.ironsspellbooks.registries.CreativeTabRegistry;
 import net.minecraft.core.registries.Registries;
@@ -6,15 +6,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static com.example.examplemod.Ironbound.MODID;
+import static com.c446.ironbound_core.Ironbound.MODID;
 
 
 public class ModSetup {
