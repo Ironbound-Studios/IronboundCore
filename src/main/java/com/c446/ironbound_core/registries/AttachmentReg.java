@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 import static com.c446.ironbound_core.Ironbound.MODID;
 
-public class AttacmentReg {
+public class AttachmentReg {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPE_DEFERRED_REGISTER = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, MODID);
 
     public static final Supplier<AttachmentType<StatusAttachement>> STATUS_DATA = ATTACHMENT_TYPE_DEFERRED_REGISTER.register(

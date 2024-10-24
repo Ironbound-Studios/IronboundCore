@@ -8,10 +8,18 @@ import org.jetbrains.annotations.UnknownNullability;
 
 public class ClassInstance implements INBTSerializable<CompoundTag> {
     public ResourceLocation classNameID;
-    public SubClasses subClassID;
-    int level;
+    public ResourceLocation subClassID;
+    private int level;
 
-    public ClassInstance(ResourceLocation classNameID, SubClasses subClassID, int level) {
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public ClassInstance(ResourceLocation classNameID, ResourceLocation subClassID, int level) {
         this.classNameID = classNameID;
         this.subClassID = subClassID;
         this.level = level;
@@ -26,7 +34,7 @@ public class ClassInstance implements INBTSerializable<CompoundTag> {
         CompoundTag tag = new CompoundTag();
 
         tag.putString("class", this.classNameID.toString());
-        tag.putString("sub_class", this.subClassID.subClassID.toString());
+        tag.putString("sub_class", this.subClassID.toString());
         tag.putInt("level", this.level);
 
         return tag;
@@ -34,12 +42,12 @@ public class ClassInstance implements INBTSerializable<CompoundTag> {
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-        var aClass = tag.getString("class");
-        var aSub = tag.getString("sub_class");
-        var tagInt = tag.getInt("level");
+        String aClass = tag.getString("class");
+        String aSub = tag.getString("sub_class");
+        int tagInt = tag.getInt("level");
 
         this.classNameID = ResourceLocation.parse(aClass);
-        this.subClassID = null; //SubClassRegistry.get(aSub);
+        this.subClassID =  ResourceLocation.parse(aSub);
         this.level = tagInt;
     }
 

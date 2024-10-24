@@ -6,11 +6,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 import static com.c446.ironbound_core.registries.AttributeRegistry.*;
+import static com.c446.ironbound_core.registries.EffectRegistries.MADNESS;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH;
 
 public class StatusAttachement implements INBTSerializable<CompoundTag> {
@@ -31,20 +33,24 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
         this.overChargedCurrent = 0;
     }
 
+
+
     public static void handleEffect(StatusTypes type, LivingEntity livingEntity) {
+        System.out.println("handleEffect activated");
         switch (type) {
             case MADNESS -> {
-                if (livingEntity.hasEffect(EffectRegistries.MADNESS)) {
-                    int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.MADNESS)).getAmplifier();
-                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.MADNESS, 60 * 20 * mult, mult + 1), livingEntity);
+                if (livingEntity.hasEffect(MADNESS)) {
+                    int mult = Objects.requireNonNull(livingEntity.getEffect(MADNESS)).getAmplifier();
+                    livingEntity.removeEffect(MADNESS);
+                    livingEntity.addEffect(new MobEffectInstance(MADNESS, 60 * 20 * mult, mult + 1), livingEntity);
                 } else {
-                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.MADNESS, 20 * 60, 0));
+                    livingEntity.addEffect(new MobEffectInstance(MADNESS, 20 * 60, 0));
                 }
             }
             case FERVOR -> {
                 if (livingEntity.hasEffect(EffectRegistries.FERVOR)) {
                     int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.FERVOR)).getAmplifier();
-                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.FERVOR, 60 * 20 * mult, mult + 1), livingEntity);
+                    livingEntity.forceAddEffect(new MobEffectInstance(EffectRegistries.FERVOR, 60 * 20 * mult, mult + 1), livingEntity);
                 } else {
                     livingEntity.addEffect(new MobEffectInstance(EffectRegistries.FERVOR, 20 * 60, 0));
                 }
@@ -52,7 +58,7 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
             case HOLLOW -> {
                 if (livingEntity.hasEffect(EffectRegistries.HOLLOW)) {
                     int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.HOLLOW)).getAmplifier();
-                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 60 * 20 * mult, mult + 1), livingEntity);
+                    livingEntity.forceAddEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 60 * 20 * mult, mult + 1), livingEntity);
                 } else {
                     livingEntity.addEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 20 * 60, 0));
                 }
@@ -153,7 +159,7 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
 
 
     public double getMaxFromType(LivingEntity entity, StatusTypes types) {
-        return switch (types) {
+        var x = switch (types) {
             case HOLLOW, FERVOR, WEAK_MIND ->
                     10 * entity.getAttributeValue(FOCUS) + 20 * entity.getAttributeValue(INSIGHT);
             case BLEED, FROST, OVERCHARGED ->
@@ -161,6 +167,8 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
             case MADNESS -> 15 * entity.getAttributeValue(FOCUS) - 5 * entity.getAttributeValue(INSIGHT);
             default -> -1;
         };
+        System.out.println("getMaxFromType : " + types.name().toLowerCase() + " " + "x");
+        return x;
     }
 }
 

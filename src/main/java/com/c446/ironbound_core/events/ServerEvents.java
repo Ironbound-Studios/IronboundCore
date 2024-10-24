@@ -3,24 +3,29 @@ package com.c446.ironbound_core.events;
 import com.c446.ironbound_core.data.attachements.StatusAttachement;
 import com.c446.ironbound_core.data.attachements.StatusIncreasedEvent;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
-import com.c446.ironbound_core.registries.AttacmentReg;
+import com.c446.ironbound_core.registries.AttachmentReg;
+import com.c446.ironbound_core.registries.EffectRegistries;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 
 import java.util.Objects;
 
 import static com.c446.ironbound_core.data.attachements.StatusTypes.*;
-import static com.c446.ironbound_core.registries.AttacmentReg.STATUS_DATA;
+import static com.c446.ironbound_core.registries.AttachmentReg.STATUS_DATA;
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.ENDER;
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.HOLY;
 
@@ -53,22 +58,36 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onStatusIncrease(StatusIncreasedEvent event) {
+    public static void onStatusIncrease(StatusIncreasedEvent.Pre event) {
         if (!event.entity.hasData(STATUS_DATA)) {
             event.entity.setData(STATUS_DATA, new StatusAttachement());
         }
         event.entity.getData(STATUS_DATA).addTo(event.status, event.amount);
-        if (event.entity.getData(STATUS_DATA).getMaxFromType(event.entity, event.status) > event.entity.getData(STATUS_DATA).getCurrentFromType(event.status)) {
+        if (event.entity.getData(STATUS_DATA).getMaxFromType(event.entity, event.status) < event.entity.getData(STATUS_DATA).getCurrentFromType(event.status)) {
             StatusAttachement.handleEffect(event.status, event.entity);
+        }
+    }
+
+    @SubscribeEvent
+    public static void tryDampenEntity(LivingBreatheEvent event) {
+        if (!event.canBreathe()) {
+            event.getEntity().forceAddEffect(new MobEffectInstance(EffectRegistries.DAMP, 10, 0), event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRain(EntityTickEvent.Post event){
+        if (event.getEntity() instanceof LivingEntity living && event.getEntity().level() instanceof ServerLevel serverLevel && serverLevel.isRainingAt(event.getEntity().getOnPos())){
+            living.addEffect(new MobEffectInstance(EffectRegistries.DAMP,5,0));
         }
     }
 
     @SubscribeEvent
     public static void onPlayerDeath(PlayerEvent.Clone event) {
         event.getEntity().setData(
-                AttacmentReg.LEVEL_DATA,
+                AttachmentReg.LEVEL_DATA,
                 event.getOriginal()
-                        .getData(AttacmentReg.LEVEL_DATA)
+                        .getData(AttachmentReg.LEVEL_DATA)
         );
     }
 

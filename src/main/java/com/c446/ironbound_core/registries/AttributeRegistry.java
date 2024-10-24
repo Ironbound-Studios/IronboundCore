@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = Ironbound.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class AttributeRegistry {
     public static final HashMap<DeferredHolder<Attribute, Attribute>, UUID> UUIDS = new HashMap<DeferredHolder<Attribute, Attribute>, UUID>();
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Ironbound.MODID);
@@ -31,6 +31,13 @@ public class AttributeRegistry {
         UUIDS.put(registryObject, uuid);
         return registryObject;
     }
-
+    @SubscribeEvent
+    public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
+        event.getTypes().stream().filter(e -> e == EntityType.PLAYER).forEach(e -> {
+            ATTRIBUTES.getEntries().forEach((v) -> {
+                event.add(e, v);
+            });
+        });
+    }
 
 }

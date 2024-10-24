@@ -1,7 +1,9 @@
 package com.c446.ironbound_core.ironbound_classes;
 
 import com.c446.ironbound_core.ironbound_classes.main_classes.FighterClass;
-import com.c446.ironbound_core.ironbound_classes.sub_classes.EldritchKnight;
+import com.c446.ironbound_core.ironbound_classes.main_classes.NoneClass;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.fighter.EldritchKnight;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneSubClass;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -22,7 +24,7 @@ public class ZClassRegistry {
                 return (classes.get(key));
             }
         }
-        return null;
+        return NoneClass.instance;
     }
 
     public static SubClasses getSubFromLoc(ResourceLocation loc){
@@ -31,6 +33,6 @@ public class ZClassRegistry {
                 return (subClasses.get(key));
             }
         }
-        return null;
+        return NoneSubClass.instance;
     }
 }
