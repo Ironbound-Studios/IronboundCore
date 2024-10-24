@@ -122,6 +122,7 @@ dependencies {
     implementation("curse.maven:placebo-283644:5547234")
     //runtimeOnly("curse.maven:probejs-585406:5536459")
     implementation("io.redspace:irons_spellbooks:${irons_spells_version}")
+
     //implementation("org.styly:arcanus:1.21.1-0.3.6a")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")

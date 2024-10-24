@@ -21,7 +21,7 @@ public class ModSetup {
         AttributeRegistry.ATTRIBUTES.register(eventBus);
         EffectsRegistry.EFFECTS.register(eventBus);
         EffectRegistries.register(eventBus);
-
+        AttacmentReg.ATTACHMENT_TYPE_DEFERRED_REGISTER.register(eventBus);
         //ArmorMaterials.MATERIALS.register(eventBus);
         ModCreativeTabReg.CREATIVE_MOD_TABS.register(eventBus);
         //ModIngredientTypeRegistry.INGREDIENT_TYPES.register(eventBus);

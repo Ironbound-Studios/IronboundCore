@@ -6,25 +6,25 @@ import net.neoforged.bus.api.ICancellableEvent;
 
 import java.util.ArrayList;
 
-public abstract class MobStatusTriggeredEvent<K extends LivingEntity> extends net.neoforged.bus.api.Event {
-    public K entity;
+public abstract class MobStatusTriggeredEvent extends net.neoforged.bus.api.Event {
+    public LivingEntity entity;
     public ArrayList<com.c446.ironbound_core.data.attachements.StatusTypes> statusList;
 
-    public MobStatusTriggeredEvent(K player, ArrayList<StatusTypes> statuses) {
+    public MobStatusTriggeredEvent(LivingEntity thing, ArrayList<StatusTypes> statuses) {
         this.statusList = statuses;
-        this.entity = player;
+        this.entity = thing;
     }
 
-    public static class Pre<K extends LivingEntity> extends MobStatusTriggeredEvent<K> implements ICancellableEvent {
-        public Pre(K p, ArrayList<StatusTypes> statuses) {
-            super(p, statuses);
+    public static class Pre extends MobStatusTriggeredEvent implements ICancellableEvent {
+        public Pre(LivingEntity thing, ArrayList<StatusTypes> statuses) {
+            super(thing, statuses);
         }
 
 
     }
 
-    public static class Post<K extends LivingEntity> extends MobStatusTriggeredEvent<K> {
-        public Post(K p, ArrayList<StatusTypes> statuses) {
+    public static class Post extends MobStatusTriggeredEvent {
+        public Post(LivingEntity p, ArrayList<StatusTypes> statuses) {
             super(p, statuses);
         }
     }

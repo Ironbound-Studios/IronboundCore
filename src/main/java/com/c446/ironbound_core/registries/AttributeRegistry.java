@@ -2,8 +2,12 @@ package com.c446.ironbound_core.registries;
 
 import com.c446.ironbound_core.Ironbound;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -12,7 +16,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 
-//@EventBusSubscriber(modid = Ironbound.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class AttributeRegistry {
     public static final HashMap<DeferredHolder<Attribute, Attribute>, UUID> UUIDS = new HashMap<DeferredHolder<Attribute, Attribute>, UUID>();
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Ironbound.MODID);
@@ -28,12 +32,5 @@ public class AttributeRegistry {
         return registryObject;
     }
 
-//    @SubscribeEvent
-//    public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
-//        event.getTypes().stream().filter(e -> e == EntityType.PLAYER).forEach(e -> {
-//            ATTRIBUTES.getEntries().forEach((v) -> {
-//                event.add(e, v);
-//            });
-//        });
-//    }
+
 }

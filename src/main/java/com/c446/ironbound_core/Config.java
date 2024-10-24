@@ -43,8 +43,7 @@ public class Config
     public static String magicNumberIntroduction;
     public static Set<Item> items;
 
-    private static boolean validateItemName(final Object obj)
-    {
+    private static boolean validateItemName(final Object obj) {
         return obj instanceof String itemName && BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(itemName));
     }
 

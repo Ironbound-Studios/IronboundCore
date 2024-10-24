@@ -1,10 +1,14 @@
 package com.c446.ironbound_core.data.attachements;
 
+import com.c446.ironbound_core.registries.EffectRegistries;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import static com.c446.ironbound_core.registries.AttributeRegistry.*;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH;
@@ -17,6 +21,59 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
     private int madnessCurrent;
     private int overChargedCurrent;
     private int soulShatteredCurrent;
+
+    public StatusAttachement() {
+        this.bleedCurrent = 0;
+        this.fervorCurrent = 0;
+        this.frostCurrent = 0;
+        this.hollowCurrent = 0;
+        this.madnessCurrent = 0;
+        this.overChargedCurrent = 0;
+    }
+
+    public static void handleEffect(StatusTypes type, LivingEntity livingEntity) {
+        switch (type) {
+            case MADNESS -> {
+                if (livingEntity.hasEffect(EffectRegistries.MADNESS)) {
+                    int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.MADNESS)).getAmplifier();
+                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.MADNESS, 60 * 20 * mult, mult + 1), livingEntity);
+                } else {
+                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.MADNESS, 20 * 60, 0));
+                }
+            }
+            case FERVOR -> {
+                if (livingEntity.hasEffect(EffectRegistries.FERVOR)) {
+                    int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.FERVOR)).getAmplifier();
+                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.FERVOR, 60 * 20 * mult, mult + 1), livingEntity);
+                } else {
+                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.FERVOR, 20 * 60, 0));
+                }
+            }
+            case HOLLOW -> {
+                if (livingEntity.hasEffect(EffectRegistries.HOLLOW)) {
+                    int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.HOLLOW)).getAmplifier();
+                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 60 * 20 * mult, mult + 1), livingEntity);
+                } else {
+                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 20 * 60, 0));
+                }
+            }
+            default -> {
+            }
+
+
+        }
+    }
+
+    public void addTo(StatusTypes type, int amount) {
+        switch (type) {
+            case MADNESS -> this.madnessCurrent += amount;
+            case FERVOR -> this.fervorCurrent += amount;
+            case HOLLOW -> this.hollowCurrent += amount;
+            case StatusTypes.BLEED -> this.bleedCurrent += amount;
+            case StatusTypes.FROST -> this.frostCurrent += amount;
+            case StatusTypes.OVERCHARGED -> this.overChargedCurrent += amount;
+        }
+    }
 
     public int getBleedCurrent() {
         return bleedCurrent;
@@ -44,44 +101,6 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
 
     public int getSoulShatteredCurrent() {
         return soulShatteredCurrent;
-    }
-
-    public void setBleedCurrent(int bleedCurrent) {
-        this.bleedCurrent = bleedCurrent;
-    }
-
-    public void setFervorCurrent(int fervorCurrent) {
-        this.fervorCurrent = fervorCurrent;
-    }
-
-    public void setFrostCurrent(int frostCurrent) {
-        this.frostCurrent = frostCurrent;
-    }
-
-    public void setHollowCurrent(int hollowCurrent) {
-        this.hollowCurrent = hollowCurrent;
-    }
-
-    public void setMadnessCurrent(int madnessCurrent) {
-        this.madnessCurrent = madnessCurrent;
-    }
-
-    public void setOverChargedCurrent(int overChargedCurrent) {
-        this.overChargedCurrent = overChargedCurrent;
-    }
-
-    public void setSoulShatteredCurrent(int soulShatteredCurrent) {
-        this.soulShatteredCurrent = soulShatteredCurrent;
-    }
-
-
-    public StatusAttachement() {
-        this.bleedCurrent = 0;
-        this.fervorCurrent = 0;
-        this.frostCurrent = 0;
-        this.hollowCurrent = 0;
-        this.madnessCurrent = 0;
-        this.overChargedCurrent = 0;
     }
 
     @Override
@@ -119,7 +138,21 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
         };
     }
 
-    protected double getMaxFromType(LivingEntity entity, StatusTypes types) {
+    public int setCurrentFromType(StatusTypes types, int amount) {
+        return switch (types) {
+            case HOLLOW -> this.hollowCurrent = amount;
+            case FERVOR -> this.fervorCurrent = amount;
+            case MADNESS -> this.madnessCurrent = amount;
+            case BLEED -> this.bleedCurrent = amount;
+            case FROST -> this.frostCurrent = amount;
+            case WEAK_MIND -> this.soulShatteredCurrent = amount;
+            case OVERCHARGED -> this.overChargedCurrent = amount;
+            default -> -1;
+        };
+    }
+
+
+    public double getMaxFromType(LivingEntity entity, StatusTypes types) {
         return switch (types) {
             case HOLLOW, FERVOR, WEAK_MIND ->
                     10 * entity.getAttributeValue(FOCUS) + 20 * entity.getAttributeValue(INSIGHT);

@@ -3,6 +3,7 @@ package com.c446.ironbound_core.registries;
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.util.IronboundCoreEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.neoforged.bus.api.IEventBus;
@@ -32,6 +33,7 @@ public class EffectRegistries {
     });
     public static final DeferredHolder<MobEffect, MobEffect> MADNESS = EFFECTS.register("madness", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(120, 90, 0))
+                .withDamage(2, 20, DamageRegistry.MADNESS)
                 .addAttributeModifier(ELDRITCH_SPELL_POWER, Ironbound.prefix("madness"), 0.3, ADD_MULTIPLIED_BASE)
                 .addAttributeModifier(HOLY_MAGIC_RESIST, Ironbound.prefix("madness"), -0.1, ADD_MULTIPLIED_BASE)
                 .addAttributeModifier(HOLY_SPELL_POWER, Ironbound.prefix("madness"), -0.1, ADD_MULTIPLIED_TOTAL);
@@ -58,7 +60,7 @@ public class EffectRegistries {
     });
     public static final DeferredHolder<MobEffect, MobEffect> ROT = EFFECTS.register("rot", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(10, 70, 20))
-                .withDamage(1, 20);
+                .withDamage(1, 20, DamageRegistry.MADNESS);
     });
 
     public static final DeferredHolder<MobEffect, MobEffect> FLAMMABLE = EFFECTS.register("flammable", () -> {
