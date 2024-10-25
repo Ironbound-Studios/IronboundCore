@@ -36,11 +36,17 @@ repositories {
     maven("https://maven.kosmx.dev/")
     maven("https://www.cursemaven.com")
 
-    maven{
-        url = uri("https://maven.pkg.github.com/IGN-Styly/arcanus")
-        credentials{
-            username = "c446"
-            password = "Tbsivnebwlcnrjwpcn582"
+//    maven{
+//        url = uri("https://maven.pkg.github.com/IGN-Styly/arcanus")
+//        credentials{
+//            username = ""
+//            password = ""
+//        }
+//    }
+    maven {
+        url=uri("https://jitpack.io")
+        content {
+            includeGroup("com.github.IGN-Styly")
         }
     }
     maven {
