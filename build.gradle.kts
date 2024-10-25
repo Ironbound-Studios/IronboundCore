@@ -129,7 +129,8 @@ dependencies {
     //runtimeOnly("curse.maven:probejs-585406:5536459")
     implementation("io.redspace:irons_spellbooks:${irons_spells_version}")
 
-    //implementation("org.styly:arcanus:1.21.1-0.3.6a")
+    //you need uppercase
+    implementation("com.github.IGN-Styly:Arcanus:1.21.1-0.3.6.1a")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
