@@ -7,7 +7,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
 
 public class ClassInstance implements INBTSerializable<CompoundTag> {
-    public ResourceLocation classNameID;
+    public ResourceLocation classID;
     public ResourceLocation subClassID;
     private int level;
 
@@ -19,8 +19,8 @@ public class ClassInstance implements INBTSerializable<CompoundTag> {
         this.level = level;
     }
 
-    public ClassInstance(ResourceLocation classNameID, ResourceLocation subClassID, int level) {
-        this.classNameID = classNameID;
+    public ClassInstance(ResourceLocation classID, ResourceLocation subClassID, int level) {
+        this.classID = classID;
         this.subClassID = subClassID;
         this.level = level;
     }
@@ -33,7 +33,7 @@ public class ClassInstance implements INBTSerializable<CompoundTag> {
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
 
-        tag.putString("class", this.classNameID.toString());
+        tag.putString("class", this.classID.toString());
         tag.putString("sub_class", this.subClassID.toString());
         tag.putInt("level", this.level);
 
@@ -46,7 +46,7 @@ public class ClassInstance implements INBTSerializable<CompoundTag> {
         String aSub = tag.getString("sub_class");
         int tagInt = tag.getInt("level");
 
-        this.classNameID = ResourceLocation.parse(aClass);
+        this.classID = ResourceLocation.parse(aClass);
         this.subClassID =  ResourceLocation.parse(aSub);
         this.level = tagInt;
     }

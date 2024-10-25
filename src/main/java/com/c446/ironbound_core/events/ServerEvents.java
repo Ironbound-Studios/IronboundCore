@@ -3,9 +3,13 @@ package com.c446.ironbound_core.events;
 import com.c446.ironbound_core.data.attachements.StatusAttachement;
 import com.c446.ironbound_core.data.attachements.StatusIncreasedEvent;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
+import com.c446.ironbound_core.ironbound_classes.ClassHelper;
+import com.c446.ironbound_core.ironbound_classes.ClassInstance;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneIBSubClass;
+import com.c446.ironbound_core.items.GenericPotion;
 import com.c446.ironbound_core.registries.AttachmentReg;
 import com.c446.ironbound_core.registries.EffectRegistries;
-import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
+import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -18,9 +22,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import org.checkerframework.dataflow.qual.SideEffectFree;
 
 import java.util.Objects;
 
@@ -32,7 +36,7 @@ import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.HOLY;
 @EventBusSubscriber
 public class ServerEvents {
     @SubscribeEvent
-    public static void test(SpellPreCastEvent event) {
+    public static void castingBuildupEvent(SpellOnCastEvent event) {
         if (!event.getEntity().hasData(STATUS_DATA)) {
             event.getEntity().setData(STATUS_DATA, new StatusAttachement());
         }
@@ -69,6 +73,30 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public static void onFinishItem(LivingEntityUseItemEvent.Finish event) {
+        // LEVEL UP BEHAVIOR
+        if (event.getItem().getItem() instanceof GenericPotion potion) {
+            var data = event.getEntity().getData(AttachmentReg.LEVEL_DATA);
+            if (data.containsClass(potion.ibClass)) {
+                data.instances.forEach(classes -> {
+                    if (classes.getLevel() == potion.level && classes.classID.equals(potion.ibClass.classId)) {
+                        classes.setLevel(potion.level);
+                    }
+                });
+            }
+            else {
+                data.instances.add(new ClassInstance(potion.ibClass.classId, NoneIBSubClass.instance.subClassID, 1));
+            }
+        }
+    }
+
+
+    @SubscribeEvent
+    public static void onPlayerJoins(PlayerEvent.PlayerLoggedInEvent event) {
+        ClassHelper.setPlayerAttribute(event.getEntity());
+    }
+
+    @SubscribeEvent
     public static void tryDampenEntity(LivingBreatheEvent event) {
         if (!event.canBreathe()) {
             event.getEntity().forceAddEffect(new MobEffectInstance(EffectRegistries.DAMP, 10, 0), event.getEntity());
@@ -76,9 +104,9 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerRain(EntityTickEvent.Post event){
-        if (event.getEntity() instanceof LivingEntity living && event.getEntity().level() instanceof ServerLevel serverLevel && serverLevel.isRainingAt(event.getEntity().getOnPos())){
-            living.addEffect(new MobEffectInstance(EffectRegistries.DAMP,5,0));
+    public static void onPlayerRain(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity living && event.getEntity().level() instanceof ServerLevel serverLevel && serverLevel.isRainingAt(event.getEntity().getOnPos())) {
+            living.addEffect(new MobEffectInstance(EffectRegistries.DAMP, 5, 0));
         }
     }
 
@@ -89,6 +117,8 @@ public class ServerEvents {
                 event.getOriginal()
                         .getData(AttachmentReg.LEVEL_DATA)
         );
+
+        ClassHelper.setPlayerAttribute(event.getEntity());
     }
 
     @SubscribeEvent

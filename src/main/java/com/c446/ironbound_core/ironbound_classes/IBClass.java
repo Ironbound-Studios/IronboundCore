@@ -8,9 +8,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import java.util.HashMap;
 
 public abstract class IBClass {
-    public HashMap<Holder<Attribute>, AttributeModifier> attributes;
+    public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
     public final ResourceLocation classId;
 
+    public static int getMastery(int level){
+        return (int) (Math.floor(level/5.0D) + 2);
+    }
 
     protected IBClass(ResourceLocation classId) {
         this.classId = classId;

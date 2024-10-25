@@ -1,7 +1,5 @@
 package com.c446.ironbound_core.ironbound_classes;
 
-import com.c446.ironbound_core.data.attachements.ClassAttachement;
-import com.c446.ironbound_core.data.components.classescomponents.Classes;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -11,17 +9,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public abstract class SubClasses {
+public abstract class IBSubClasses {
     public final ArrayList<IBClass> parents = new ArrayList<>();
-    public HashMap<Holder<Attribute>, AttributeModifier> attributes;
+    public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
     public final ResourceLocation subClassID;
 
-    public SubClasses(ResourceLocation subClassID, IBClass... parents){
+    public IBSubClasses(ResourceLocation subClassID, IBClass... parents){
         this.subClassID = subClassID;
         this.parents.addAll(Arrays.asList(parents));
     }
 
-    public SubClasses(IBClass parent, ResourceLocation subClassID){
+    public IBSubClasses(IBClass parent, ResourceLocation subClassID){
         this.subClassID = subClassID;
         this.parents.add(parent);
     }

@@ -10,6 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -31,13 +32,15 @@ public class AttributeRegistry {
         UUIDS.put(registryObject, uuid);
         return registryObject;
     }
+
     @SubscribeEvent
-    public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
-        event.getTypes().stream().filter(e -> e == EntityType.PLAYER).forEach(e -> {
-            ATTRIBUTES.getEntries().forEach((v) -> {
-                event.add(e, v);
-            });
-        });
+    static void registerRegistries(NewRegistryEvent event) {
+        event.register(SubClassRegistry.SUBCLASS_REGISTRY);
+        event.register(ClassRegistry.CLASS_REGISTRY);
     }
 
+    @SubscribeEvent
+    public static void modifyEntityAttributes(EntityAttributeModificationEvent e) {
+        e.getTypes().forEach(entity -> ATTRIBUTES.getEntries().forEach(attribute -> e.add(entity, attribute)));
+    }
 }
