@@ -14,7 +14,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static com.c446.ironbound_core.Ironbound.MODID;
 
-
 public class ModSetup {
     public static void register(IEventBus eventBus) {
         ItemRegistry.ITEMS.register(eventBus);
@@ -25,6 +24,7 @@ public class ModSetup {
         ClassRegistry.IRONBOUND_CLASS_REGISTRY.register(eventBus);
         SubClassRegistry.IRONBOUND_SUBCLASS_REGISTRY.register(eventBus);
         ModCreativeTabReg.CREATIVE_MOD_TABS.register(eventBus);
+        ComponentRegistry.register(eventBus);
         //ModIngredientTypeRegistry.INGREDIENT_TYPES.register(eventBus);
     }
 

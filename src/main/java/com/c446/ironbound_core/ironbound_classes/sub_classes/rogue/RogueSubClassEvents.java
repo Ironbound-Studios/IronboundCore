@@ -12,21 +12,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
 import java.util.Objects;
 
-@EventBusSubscriber(value = Dist.DEDICATED_SERVER, modid = Ironbound.MODID, bus = EventBusSubscriber.Bus.GAME)
+//@EventBusSubscriber(value = Dist.DEDICATED_SERVER, modid = Ironbound.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class RogueSubClassEvents {
-    @SubscribeEvent
-    public static void onHitEvent(LivingDamageEvent.Pre event) {
 
-        try {
-            Objects.requireNonNull(event.getSource().getEntity()).getData(AttachmentReg.LEVEL_DATA).instances.forEach(
-                    a -> {
-                        if (a.classID.equals(RogueClass.instance.classId) && a.subClassID.equals(PlagueMaster.instance.subClassID) && a.getLevel() >= 5) {
-                            event.getEntity().addEffect(new MobEffectInstance(MobEffects.WITHER, 5*a.getLevel(), 0));
-                        }
-                    }
-            );
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

@@ -26,6 +26,9 @@ public class ClassRegistry {
     public static final DeferredHolder<IBClass, RangerClass> RANGER_CLASS = IRONBOUND_CLASS_REGISTRY.register("ranger_class", () -> RangerClass.instance);
 
     public static final DeferredHolder<IBClass, SorcererClass> SORCERER_CLASS = IRONBOUND_CLASS_REGISTRY.register("sorcerer_class", () -> SorcererClass.instance);
+    public static final DeferredHolder<IBClass, WizardClass> WIZARD_CLASS = IRONBOUND_CLASS_REGISTRY.register("wizard_class", () -> WizardClass.instance);
+//    public static final DeferredHolder<IBClass, SorcererClass> SORCERER_CLASS = IRONBOUND_CLASS_REGISTRY.register("sorcerer_class", () -> SorcererClass.instance);
+//    public static final DeferredHolder<IBClass, SorcererClass> SORCERER_CLASS = IRONBOUND_CLASS_REGISTRY.register("sorcerer_class", () -> SorcererClass.instance);
 
     public static IBClass getMainFromLoc(ResourceLocation loc){
         for (var key : ClassRegistry.IRONBOUND_CLASS_REGISTRY.getEntries()){

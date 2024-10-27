@@ -3,11 +3,12 @@ package com.c446.ironbound_core.events;
 import com.c446.ironbound_core.data.attachements.StatusAttachement;
 import com.c446.ironbound_core.data.attachements.StatusIncreasedEvent;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
-import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.ClassInstance;
-import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneIBSubClass;
+import com.c446.ironbound_core.ironbound_classes.IBClass;
+import com.c446.ironbound_core.ironbound_classes.main_classes.NoneClass;
+import com.c446.ironbound_core.items.ClassItem;
 import com.c446.ironbound_core.items.GenericPotion;
-import com.c446.ironbound_core.registries.AttachmentReg;
+import com.c446.ironbound_core.registries.ComponentRegistry;
 import com.c446.ironbound_core.registries.EffectRegistries;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
@@ -16,20 +17,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.PotionItem;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.entity.item.ItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.Objects;
 
 import static com.c446.ironbound_core.data.attachements.StatusTypes.*;
 import static com.c446.ironbound_core.registries.AttachmentReg.STATUS_DATA;
+import static com.c446.ironbound_core.registries.ComponentRegistry.CLASS_COMPONENT;
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.ENDER;
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.HOLY;
 
@@ -73,27 +78,22 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onFinishItem(LivingEntityUseItemEvent.Finish event) {
-        // LEVEL UP BEHAVIOR
+    public static void onItemUse(LivingEntityUseItemEvent.Finish event) {
         if (event.getItem().getItem() instanceof GenericPotion potion) {
-            var data = event.getEntity().getData(AttachmentReg.LEVEL_DATA);
-            if (data.containsClass(potion.ibClass)) {
-                data.instances.forEach(classes -> {
-                    if (classes.getLevel() == potion.level && classes.classID.equals(potion.ibClass.classId)) {
-                        classes.setLevel(potion.level);
+            CuriosApi.getCuriosInventory(event.getEntity()).flatMap(inv -> inv.findFirstCurio(stack -> stack.has(CLASS_COMPONENT) && Objects.requireNonNull(stack.get(CLASS_COMPONENT)).level() < 20)).ifPresent(a ->
+                    {
+                        if (potion.level >= Objects.requireNonNull(a.stack().get(CLASS_COMPONENT)).level() + 1) {
+                            a.stack().set(
+                                    CLASS_COMPONENT, new ClassInstance(
+                                            Objects.requireNonNull(a.stack().get(CLASS_COMPONENT)).classID(),
+                                            Objects.requireNonNull(a.stack().get(CLASS_COMPONENT)).subClassID(),
+                                            1 + Objects.requireNonNull(a.stack().get(CLASS_COMPONENT)).level()
+                                    )
+                            );
+                        }
                     }
-                });
-            }
-            else {
-                data.instances.add(new ClassInstance(potion.ibClass.classId, NoneIBSubClass.instance.subClassID, 1));
-            }
+            );
         }
-    }
-
-
-    @SubscribeEvent
-    public static void onPlayerJoins(PlayerEvent.PlayerLoggedInEvent event) {
-        ClassHelper.setPlayerAttribute(event.getEntity());
     }
 
     @SubscribeEvent
@@ -110,16 +110,6 @@ public class ServerEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onPlayerDeath(PlayerEvent.Clone event) {
-        event.getEntity().setData(
-                AttachmentReg.LEVEL_DATA,
-                event.getOriginal()
-                        .getData(AttachmentReg.LEVEL_DATA)
-        );
-
-        ClassHelper.setPlayerAttribute(event.getEntity());
-    }
 
     @SubscribeEvent
     public static void genDataAttachments(LivingDamageEvent.Pre event) {

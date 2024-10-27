@@ -1,5 +1,6 @@
 package com.c446.ironbound_core.ironbound_classes;
 
+import com.google.common.collect.HashMultimap;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -8,7 +9,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import java.util.HashMap;
 
 public abstract class IBClass {
+    public static IBClass instance;
+
     public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
+
     public final ResourceLocation classId;
 
     public static int getMastery(int level){
@@ -29,11 +33,12 @@ public abstract class IBClass {
         }
     }
 
-    public final HashMap<Holder<Attribute>, AttributeModifier> getAttributesForLevel(int level) {
-        var map = new HashMap<Holder<Attribute>, AttributeModifier>();
+    public final HashMultimap<Holder<Attribute>, AttributeModifier> getAttributesForLevel(int level) {
+        HashMultimap<Holder<Attribute>, AttributeModifier> multimap = HashMultimap.create();
         for (var key : this.attributes.keySet()) {
-            map.put(key, new AttributeModifier(this.attributes.get(key).id(), this.attributes.get(key).amount() * level, this.attributes.get(key).operation()));
+            multimap.put(key, new AttributeModifier(this.attributes.get(key).id(), this.attributes.get(key).amount() * level, this.attributes.get(key).operation()));
         }
-        return map;
+
+        return multimap;
     }
 }

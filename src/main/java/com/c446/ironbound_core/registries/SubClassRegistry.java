@@ -2,7 +2,7 @@ package com.c446.ironbound_core.registries;
 
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.ironbound_classes.IBSubClasses;
-import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneIBSubClass;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneSubClass;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.fighter.EldritchKnight;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -33,7 +33,7 @@ public class SubClassRegistry {
                 return (key.get());
             }
         }
-        return NoneIBSubClass.instance;
+        return NoneSubClass.instance;
     }
 
 }

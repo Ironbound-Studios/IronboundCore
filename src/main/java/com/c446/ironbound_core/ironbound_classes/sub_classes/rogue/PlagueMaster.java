@@ -20,18 +20,6 @@ public class PlagueMaster extends IBSubClasses {
         instance.addAttribute(NATURE_SPELL_POWER, new AttributeModifier(Ironbound.prefix("nature_rogue_nature_power"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
-    public static boolean canUsePoisonHand(Player player){
-        if (player.hasData(AttachmentReg.LEVEL_DATA)){
-            AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-            player.getData(AttachmentReg.LEVEL_DATA).instances.forEach(a->{
-                if (a.subClassID.equals(instance.subClassID)){
-                    atomicBoolean.set(true);
-                }
-            });
-            return atomicBoolean.get();
-        }
-        return false;
-    }
 
     public PlagueMaster(ResourceLocation subClassID, IBClass... parents) {
         super(subClassID, parents);

@@ -4,9 +4,6 @@ import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import org.apache.logging.log4j.util.IndexedReadOnlyStringMap;
-
-import java.lang.ref.SoftReference;
 
 import static com.c446.ironbound_core.registries.AttributeRegistry.FOCUS;
 import static com.c446.ironbound_core.registries.AttributeRegistry.VITALITY;
@@ -15,19 +12,19 @@ import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.PROT
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
 import static net.minecraft.world.entity.ai.attributes.Attributes.*;
 
-public class SorcererClass extends IBClass {
+public class WizardClass extends IBClass {
 
-    public static SorcererClass instance = new SorcererClass(Ironbound.prefix("sorcerer_class"));
+    public static WizardClass instance = new WizardClass(Ironbound.prefix("wizard_class"));
 
-    static{
+    static {
         instance.addAttribute(MAX_HEALTH, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_hp"), 4, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_mana"), 25, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(FOCUS, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_focus"), 0.5, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(VITALITY, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_vitality"), 0.5, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_mana"), 40, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(FOCUS, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_focus"), 1, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(VITALITY, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_vitality"), 0, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_cooldown_reduc"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(MANA_REGEN, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_mana_regen"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_spell_power"), 0.0125/2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_cast_time_reduc"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_spell_power"), 0.05/2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_cast_time_reduc"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ATTACK_DAMAGE, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_attack_damage"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ATTACK_SPEED, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_attack_speed"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(CRIT_DAMAGE, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_crit_damage"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
@@ -38,10 +35,8 @@ public class SorcererClass extends IBClass {
         instance.addAttribute(PROT_SHRED, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_protection_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
-    protected SorcererClass(ResourceLocation classId) {
+    protected WizardClass(ResourceLocation classId) {
         super(classId);
     }
-
-
 
 }

@@ -1,3 +1,40 @@
 {
-"death.ironbound.madness": "%s discovered the meaning of madness..."
+  "ironbounds_artefacts.attribute.mind": "Mind",
+  "ironbounds_artefacts.attribute.vitality": "Vitality",
+  "ironbounds_artefacts.attribute.insight": "Insight",
+
+  "death.ironbound.madness": "%s discovered the meaning of madness...",
+
+  "classes.ironbound_core.wizard_class": "Level %s Wizard",
+  "classes.ironbound_core.warlock_class": "Level %s Warlock",
+  "classes.ironbound_core.sorcerer_class": "Level %s Sorcerer",
+  "classes.ironbound_core.priest_class": "Level %s Priest",
+  "classes.ironbound_core.rogue_class": "Level %s Rogue",
+  "classes.ironbound_core.fighter_class": "Level %s Fighter",
+  "classes.ironbound_core.hunter_class": "Level %s Hunter",
+  "classes.ironbound_core.ranger_class": "Level %s Ranger",
+
+  "item.ironbound_core.wizard_item": "Wizard's Characteristic",
+  "item.ironbound_core.warlock_item": "Warlock's Characteristic",
+  "item.ironbound_core.sorcerer_item": "Sorcerer's Characteristic",
+  "item.ironbound_core.priest_item": "Priest's Characteristic",
+  "item.ironbound_core.fighter_item": "Fighter's Characteristic",
+  "item.ironbound_core.rogue_item": "Rogue's Characteristic",
+  "item.ironbound_core.hunter_item": "Hunter's Characteristic",
+  "item.ironbound_core.upgrade_potion_1": "First Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_1.tooltip": "Allows you to advance by one level, up to level Three.\nWill upgrade the first Characteristic you have.",
+  "item.ironbound_core.upgrade_potion_2": "Second Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_2.tooltip": "Allows you to advance by one level, up to level Six.\nWill upgrade the first Characteristic you have.",
+  "item.ironbound_core.upgrade_potion_3": "Third Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_3.tooltip": "Allows you to advance by one level, up to level Nine.\nWill upgrade the first Characteristic you have.",
+  "item.ironbound_core.upgrade_potion_4": "Fourth Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_4.tooltip": "Allows you to advance by one level, up to level Twelve.\nWill upgrade the first Characteristic you have.",
+  "item.ironbound_core.upgrade_potion_5": "Fifth Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_5.tooltip": "Allows you to advance by one level, up to level Fifteen.\nWill upgrade the first Characteristic you have.",
+  "item.ironbound_core.upgrade_potion_6": "Sixth Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_6.tooltip": "Allows you to advance by one level, up to level Eighteen.\nWill upgrade the first Characteristic you have.",
+  "item.ironbound_core.upgrade_potion_7": "Seventh Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_7.tooltip": "Allows you to advance by one level, up to level Nineteen.\nWill upgrade the first Characteristic you have.",
+  "item.ironbound_core.upgrade_potion_8": "Eighth Tier Upgrading Potion",
+  "item.ironbound_core.upgrade_potion_8.tooltip": "Allows you to advance by one level, up to level Twenty.\nWill upgrade the first Characteristic you have."
 }
