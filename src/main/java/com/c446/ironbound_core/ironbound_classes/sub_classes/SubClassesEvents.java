@@ -3,39 +3,32 @@ package com.c446.ironbound_core.ironbound_classes.sub_classes;
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
 import com.c446.ironbound_core.ironbound_classes.ClassHelper;
-import com.c446.ironbound_core.ironbound_classes.IBClass;
-import com.c446.ironbound_core.registries.AttachmentReg;
-import com.c446.ironbound_core.registries.ClassRegistry;
-import com.c446.ironbound_core.registries.EffectRegistries;
-import com.c446.ironbound_core.registries.SubClassRegistry;
+import com.c446.ironbound_core.registries.*;
+import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
+import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
-import net.minecraft.DetectedVersion;
+import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.c446.ironbound_core.registries.AttributeRegistry.INSIGHT;
+import static io.redspace.ironsspellbooks.api.magic.MagicData.*;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Ironbound.MODID)
 public class SubClassesEvents {
@@ -65,54 +58,61 @@ public class SubClassesEvents {
 
 
     @SubscribeEvent
-    public static void onSunlight(PlayerTickEvent.Pre event) {
+    public static void onTick(PlayerTickEvent.Pre event) {
         var player = event.getEntity();
         // Undying Sorcerer ticking
         var world = player.level();
-        {
-            System.out.println("is player undead : "+ ClassHelper.isSubClass(event.getEntity(), SubClassRegistry.UNDYING.get()));
-            if (ClassHelper.isSubClass(event.getEntity(), SubClassRegistry.UNDYING.get())){
-                player.getFoodData().setFoodLevel(15);
-                player.getFoodData().setSaturation(15);
-                player.getFoodData().setExhaustion(5);
-                var burn = new AtomicBoolean(false);
-                if (!world.isClientSide && world.isDay()) {
-                    BlockPos blockpos = player.getVehicle() instanceof Boat ? (new BlockPos((int) player.getX(), (int) Math.round(player.getY()), (int) player.getZ())).above() : new BlockPos((int) player.getX(), (int) Math.round(player.getY()), (int) player.getZ());
-                    if (world.canSeeSky(blockpos)) {
-                        burn.set(true);
-                        System.out.println(burn.get());
-                    }
-                }
-                // see if the player has a helmet
-                player.getArmorSlots().forEach(a -> {
-                    if (a.getItem() instanceof ArmorItem armorItem && armorItem.getEquipmentSlot().equals(EquipmentSlot.HEAD)) {
-                        burn.set(false);
-                        a.getItem().setDamage(a, a.getDamageValue() + 1);
-                    }
-                });
-                if (burn.get()) {
-                    player.setRemainingFireTicks(60);
-                }
+        var pos = player.getVehicle() instanceof Boat ? (new BlockPos((int) player.getX(), (int) Math.round(player.getY()), (int) player.getZ())).above() : new BlockPos((int) player.getX(), (int) Math.round(player.getY()), (int) player.getZ());
+        if (ClassHelper.isClass(player, ClassRegistry.SORCERER_CLASS.get())) {
+            // DO MAIN SORCERER ABILITIES
+        }
+        if (ClassHelper.isClass(player, ClassRegistry.ROGUE_CLASS.get())) {
+            // DO MAIN ROGUE ABILITIES
+            // DO BRIGHTNESS CHECK
+            if (true) {
+                player.addEffect(new MobEffectInstance(MobEffectRegistry.TRUE_INVISIBILITY, 1, 0));
             }
         }
-        if (ClassHelper.isClass(player, ClassRegistry.ROGUE_CLASS.get())){
 
+
+        // Chronurgist stuff
+        // Night Blessing
+        if (ClassHelper.isSubClass(player, SubClassRegistry.CHRONURGIST.get())) {
+            if (world.isNight()) {
+                player.addEffect(new MobEffectInstance(EffectRegistries.NIGHT_BLESSING, 10, 0));
+            }
         }
+
+
         // Eldritch Knight stuff
         // Revel in Madness
-        if (ClassHelper.isSubClass(player, SubClassRegistry.ELDRITCH_KNIGHT.get()))
-        {
+        else if (ClassHelper.isSubClass(player, SubClassRegistry.ELDRITCH_KNIGHT.get())) {
             AABB radius = player.getBoundingBox().inflate(10, 10, 10);
             List<Entity> targets = world.getEntities(player, radius);
 
-            for (Entity target : targets)
-            {
-                if (target instanceof LivingEntity livingTarget && livingTarget.hasEffect(EffectRegistries.MADNESS))
-                {
+            for (Entity target : targets) {
+                if (target instanceof LivingEntity livingTarget && livingTarget.hasEffect(EffectRegistries.MADNESS)) {
                     player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).addOrUpdateTransientModifier(new AttributeModifier(Ironbound.prefix("eldritch_knight_eldr_power"), 0.2, AttributeModifier.Operation.ADD_VALUE));
                     System.out.println("Attributes: " + player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).getAttribute());
                 }
             }
         }
+    }
+
+
+    // Chronomancy mage stuff
+    @SubscribeEvent
+    public static void beginCast(SpellPreCastEvent event) {
+        var data = getPlayerMagicData(event.getEntity());
+        var caster = event.getEntity();
+        if (ClassHelper.isSubClass(caster, SubClassRegistry.CHRONURGIST.get())) {
+            caster.addEffect(new MobEffectInstance(EffectRegistries.CAST_TIME_REDUC, 5,0));
+        }
+        //if (SpellRegistry.getSpell(event.getSpellId())){}
+    }
+
+    @SubscribeEvent
+    public static void endCast(SpellOnCastEvent event){
+            event.getEntity().removeEffect(EffectRegistries.CAST_TIME_REDUC);
     }
 }

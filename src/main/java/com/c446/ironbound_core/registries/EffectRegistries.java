@@ -6,6 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Mob;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -25,6 +26,10 @@ public class EffectRegistries {
 
     public static final DeferredHolder<MobEffect, MobEffect> MOONLIGHT_BLESSING = EFFECTS.register("moonlight_blessing", () -> {
         return new IronboundCoreEffect(MobEffectCategory.BENEFICIAL, rgbToInt(0, 175, 255));
+    });
+    public static final DeferredHolder<MobEffect, MobEffect> REVEL = EFFECTS.register("revel", () -> {
+        return new IronboundCoreEffect(MobEffectCategory.BENEFICIAL, rgbToInt(170, 30, 230))
+                .addAttributeModifier(ELDRITCH_SPELL_POWER, Ironbound.prefix("revel"), 0.2, ADD_MULTIPLIED_BASE);
     });
     public static final DeferredHolder<MobEffect, MobEffect> TIME_TWISTED = EFFECTS.register("time_twist", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(170, 30, 230))
@@ -58,13 +63,25 @@ public class EffectRegistries {
         return new IronboundCoreEffect(MobEffectCategory.NEUTRAL, rgbToInt(0, 0, 125)) {
         };
     });
-    public static final DeferredHolder<MobEffect, MobEffect> ROT = EFFECTS.register("rot", () -> {
+    public static final DeferredHolder<MobEffect, MobEffect> ROT = EFFECTS.register("decay", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(10, 70, 20))
                 .withDamage(1, 20, DamageRegistry.MADNESS);
     });
 
+    public static final DeferredHolder<MobEffect, MobEffect> NIGHT_BLESSING = EFFECTS.register("night_blessing", () -> {
+        return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 90, 255))
+                .addAttributeModifier(ENDER_SPELL_POWER, Ironbound.prefix("night_blessing"), 0.15, ADD_MULTIPLIED_TOTAL)
+                .addAttributeModifier(ELDRITCH_SPELL_POWER, Ironbound.prefix("night_blessing"), 0.15, ADD_MULTIPLIED_TOTAL);
+    });
+
+    public static final DeferredHolder<MobEffect, MobEffect> CAST_TIME_REDUC = EFFECTS.register("cast_time_reduc", () -> {
+        return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 90, 255))
+                .addAttributeModifier(CAST_TIME_REDUCTION, Ironbound.prefix("cast_time_reduc"), 0.15, ADD_MULTIPLIED_TOTAL);
+    });
+
     public static final DeferredHolder<MobEffect, MobEffect> FLAMMABLE = EFFECTS.register("flammable", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 125, 0)) {
+
         };
     });
 
