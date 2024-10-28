@@ -6,16 +6,21 @@ import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
 import com.c446.ironbound_core.registries.AttachmentReg;
 import com.c446.ironbound_core.registries.ClassRegistry;
+import com.c446.ironbound_core.registries.EffectRegistries;
 import com.c446.ironbound_core.registries.SubClassRegistry;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.DetectedVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -24,7 +29,9 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -90,6 +97,22 @@ public class SubClassesEvents {
         }
         if (ClassHelper.isClass(player, ClassRegistry.ROGUE_CLASS.get())){
 
+        }
+        // Eldritch Knight stuff
+        // Revel in Madness
+        if (ClassHelper.isSubClass(player, SubClassRegistry.ELDRITCH_KNIGHT.get()))
+        {
+            AABB radius = player.getBoundingBox().inflate(10, 10, 10);
+            List<Entity> targets = world.getEntities(player, radius);
+
+            for (Entity target : targets)
+            {
+                if (target instanceof LivingEntity livingTarget && livingTarget.hasEffect(EffectRegistries.MADNESS))
+                {
+                    player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).addOrUpdateTransientModifier(new AttributeModifier(Ironbound.prefix("eldritch_knight_eldr_power"), 0.2, AttributeModifier.Operation.ADD_VALUE));
+                    System.out.println("Attributes: " + player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).getAttribute());
+                }
+            }
         }
     }
 }
