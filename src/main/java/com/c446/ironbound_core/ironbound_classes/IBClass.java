@@ -1,15 +1,36 @@
 package com.c446.ironbound_core.ironbound_classes;
 
+import com.c446.ironbound_core.registries.ComponentRegistry;
+import com.c446.ironbound_core.registries.SubClassRegistry;
 import com.google.common.collect.HashMultimap;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class IBClass {
     public static IBClass instance;
+
+    public List<Component> getClassPerks(int level, ItemStack stack){
+        return new ArrayList<>();
+    }
+
+    public ResourceLocation getClassId() {
+        return classId;
+    }
+
+    public List<Component> getSubClassPerks(ItemStack stack){
+
+
+        return SubClassRegistry.getSubFromLoc(ResourceLocation.parse(stack.get(ComponentRegistry.CLASS_COMPONENT).classID())).getClassPerks(stack.get(ComponentRegistry.CLASS_COMPONENT).level());
+
+    }
 
     public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
 
@@ -26,6 +47,7 @@ public abstract class IBClass {
     public void addAttribute(Holder<Attribute> attribute, AttributeModifier modifier) {
         this.attributes.putIfAbsent(attribute, modifier);
     }
+
 
     public void addAttributes(HashMap<Holder<Attribute>, AttributeModifier> attributes) {
         for (Holder<Attribute> key : attributes.keySet()) {

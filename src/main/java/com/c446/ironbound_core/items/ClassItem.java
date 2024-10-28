@@ -3,6 +3,7 @@ package com.c446.ironbound_core.items;
 import com.c446.ironbound_core.ironbound_classes.ClassInstance;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
 import com.c446.ironbound_core.ironbound_classes.main_classes.NoneClass;
+import com.c446.ironbound_core.ironbound_classes.main_classes.WizardClass;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneSubClass;
 import com.c446.ironbound_core.registries.ClassRegistry;
 import com.c446.ironbound_core.registries.ComponentRegistry;
@@ -12,22 +13,37 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ClassItem extends Item implements ICurioItem {
-    public ClassItem(Properties properties) {
+public class ClassItem extends Item implements ICurioItem {
+    public final IBClass ibClass;
+
+    public ClassItem(Properties properties, IBClass ibClass) {
         super(properties);
+        this.ibClass = ibClass;
     }
 
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (!(stack.has(ComponentRegistry.CLASS_COMPONENT.get()))) {
+
+            stack.set(ComponentRegistry.CLASS_COMPONENT.value(), new ClassInstance(this.ibClass.classId.toString(), NoneSubClass.instance.subClassID.toString(), 1));
+
+        }
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+    }
     public static ClassInstance getClassComponent(ItemStack stack){
         if (stack.has(ComponentRegistry.CLASS_COMPONENT)){
             return stack.get(ComponentRegistry.CLASS_COMPONENT);

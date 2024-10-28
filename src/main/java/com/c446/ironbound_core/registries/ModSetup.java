@@ -53,6 +53,23 @@ public class ModSetup {
                         .title(Component.translatable("tab.ironbound.main"))
                         .icon(() -> new ItemStack(io.redspace.ironsspellbooks.registries.ItemRegistry.RAW_MITHRIL))
                         .displayItems((enabledFeatures, entries) -> {
+                            entries.accept(new ItemStack(ItemRegistry.FIGHTER_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.HUNTER_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.ROGUE_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.RANGER_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.SORCERER_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.PRIEST_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.WARLOCK_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.WIZARD_CURIO));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION1));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION2));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION3));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION4));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION5));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION6));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION7));
+                            entries.accept(new ItemStack(ItemRegistry.UPGRADE_POTION8));
+
                         })
                         .build()
         );

@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static com.c446.ironbound_core.registries.AttributeRegistry.*;
+import static com.c446.ironbound_core.registries.EffectRegistries.HOLLOW;
 import static com.c446.ironbound_core.registries.EffectRegistries.MADNESS;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH;
 
@@ -32,7 +33,6 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
         this.madnessCurrent = 0;
         this.overChargedCurrent = 0;
     }
-
 
 
     public static void handleEffect(StatusTypes type, LivingEntity livingEntity) {
@@ -57,8 +57,7 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
             }
             case HOLLOW -> {
                 if (livingEntity.hasEffect(EffectRegistries.HOLLOW)) {
-                    int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.HOLLOW)).getAmplifier();
-                    livingEntity.forceAddEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 60 * 20 * mult, mult + 1), livingEntity);
+                    livingEntity.forceAddEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 60 * 20 * Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier(), Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier() + 1), livingEntity);
                 } else {
                     livingEntity.addEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 20 * 60, 0));
                 }

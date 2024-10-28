@@ -1,4 +1,13 @@
 {
   "replace": false,
-  "values": ["ironbound_core:wizard_tome"]
+  "values": [
+    "ironbound_core:wizard_item",
+    "ironbound_core:warlock_item",
+    "ironbound_core:sorcerer_item",
+    "ironbound_core:priest_item",
+    "ironbound_core:rogue_item",
+    "ironbound_core:fighter_item",
+    "ironbound_core:hunter_item",
+    "ironbound_core:ranger_item"
+  ]
 }

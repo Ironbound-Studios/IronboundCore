@@ -2,14 +2,14 @@ package com.c446.ironbound_core.ironbound_classes.sub_classes.sorcerer;
 
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
-import com.c446.ironbound_core.ironbound_classes.IBSubClasses;
+import com.c446.ironbound_core.ironbound_classes.IBSubClass;
 import com.c446.ironbound_core.ironbound_classes.main_classes.SorcererClass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
 
-public class UndyingSorcerer extends IBSubClasses {
+public class UndyingSorcerer extends IBSubClass {
     public static final UndyingSorcerer instance = new UndyingSorcerer(Ironbound.prefix("sub_class_eldritch_knight"), SorcererClass.instance);
     static{
         instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("undying_subclass_mana"), 25, AttributeModifier.Operation.ADD_VALUE));
@@ -25,7 +25,9 @@ public class UndyingSorcerer extends IBSubClasses {
         super(parent, subClassID);
     }
 
-
-
+    @Override
+    public ResourceLocation getResource() {
+        return this.subClassID;
+    }
 }
 
