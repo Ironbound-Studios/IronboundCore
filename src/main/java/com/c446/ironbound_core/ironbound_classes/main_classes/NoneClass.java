@@ -10,4 +10,9 @@ public class NoneClass extends IBClass {
     protected NoneClass(ResourceLocation classId) {
         super(classId);
     }
+
+    @Override
+    public ResourceLocation getResource() {
+        return this.classId;
+    }
 }

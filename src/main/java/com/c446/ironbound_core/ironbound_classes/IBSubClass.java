@@ -2,6 +2,7 @@ package com.c446.ironbound_core.ironbound_classes;
 
 import com.c446.ironbound_core.registries.SubClassRegistry;
 import com.google.common.collect.HashMultimap;
+import io.redspace.ironsspellbooks.api.spells.SchoolType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,7 @@ public abstract class IBSubClass {
     public final ArrayList<IBClass> parents = new ArrayList<>();
     public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
     public final ResourceLocation subClassID;
+    public final ResourceLocation school;
 
     public List<Component> getClassPerks(int level) {
         ArrayList<Component> list = new ArrayList<>();
@@ -37,7 +39,7 @@ public abstract class IBSubClass {
     public boolean canUseFirstPerk(LivingEntity entity) {
         AtomicBoolean bool = new AtomicBoolean(false);
         ClassHelper.collectClassItems(entity).forEach(a -> {
-            var data = ClassHelper.getData(a);
+            var data = ClassHelper.safeGetData(a);
             if (data.subClassID().equals(this.subClassID.getPath()) && data.level() >= 6) {
                 bool.set(true);
             }
@@ -48,7 +50,7 @@ public abstract class IBSubClass {
     public boolean canUseSecondPerk(LivingEntity entity) {
         AtomicBoolean bool = new AtomicBoolean(false);
         ClassHelper.collectClassItems(entity).forEach(a -> {
-            var data = ClassHelper.getData(a);
+            var data = ClassHelper.safeGetData(a);
             if (data.subClassID().equals(this.subClassID.getPath()) && data.level() >= 12) {
                 bool.set(true);
             }
@@ -59,7 +61,7 @@ public abstract class IBSubClass {
     public boolean canUseThirdPerk(LivingEntity entity) {
         AtomicBoolean bool = new AtomicBoolean(false);
         ClassHelper.collectClassItems(entity).forEach(a -> {
-            var data = ClassHelper.getData(a);
+            var data = ClassHelper.safeGetData(a);
             if (data.subClassID().equals(this.subClassID.getPath()) && data.level() >= 18) {
                 bool.set(true);
             }
@@ -68,13 +70,15 @@ public abstract class IBSubClass {
     }
 
 
-    public IBSubClass(ResourceLocation subClassID, IBClass... parents) {
+    public IBSubClass(ResourceLocation subClassID, ResourceLocation school, IBClass... parents) {
         this.subClassID = subClassID;
+        this.school = school;
         this.parents.addAll(Arrays.asList(parents));
     }
 
-    public IBSubClass(IBClass parent, ResourceLocation subClassID) {
+    public IBSubClass(ResourceLocation subClassID, ResourceLocation school, IBClass parent) {
         this.subClassID = subClassID;
+        this.school = school;
         this.parents.add(parent);
     }
 
@@ -86,6 +90,11 @@ public abstract class IBSubClass {
         for (Holder<Attribute> key : attributes.keySet()) {
             this.attributes.putIfAbsent(key, attributes.get(key));
         }
+    }
+
+    public IBSubClass withAttribute(Holder<Attribute> attribute, AttributeModifier modifier){
+        this.attributes.putIfAbsent(attribute, modifier);
+        return this;
     }
 
     public final HashMultimap<Holder<Attribute>, AttributeModifier> getAttributesForLevel(int level) {

@@ -27,8 +27,8 @@ public class ClassRegistry {
 
     public static final DeferredHolder<IBClass, SorcererClass> SORCERER_CLASS = IRONBOUND_CLASS_REGISTRY.register("sorcerer_class", () -> SorcererClass.instance);
     public static final DeferredHolder<IBClass, WizardClass> WIZARD_CLASS = IRONBOUND_CLASS_REGISTRY.register("wizard_class", () -> WizardClass.instance);
-//    public static final DeferredHolder<IBClass, SorcererClass> SORCERER_CLASS = IRONBOUND_CLASS_REGISTRY.register("sorcerer_class", () -> SorcererClass.instance);
-//    public static final DeferredHolder<IBClass, SorcererClass> SORCERER_CLASS = IRONBOUND_CLASS_REGISTRY.register("sorcerer_class", () -> SorcererClass.instance);
+    public static final DeferredHolder<IBClass, PriestClass> PRIEST_CLASS = IRONBOUND_CLASS_REGISTRY.register("priest_class", () -> PriestClass.instance);
+    public static final DeferredHolder<IBClass, WarlockClass> WARLOCK_CLASS = IRONBOUND_CLASS_REGISTRY.register("warlock_player", () -> WarlockClass.instance);
 
     public static IBClass getMainFromLoc(ResourceLocation loc){
         for (var key : ClassRegistry.IRONBOUND_CLASS_REGISTRY.getEntries()){
@@ -37,6 +37,10 @@ public class ClassRegistry {
             }
         }
         return NoneClass.instance;
+    }
+
+    public static IBClass getMainFromLoc(String loc){
+        return getMainFromLoc(ResourceLocation.parse(loc));
     }
 
 }

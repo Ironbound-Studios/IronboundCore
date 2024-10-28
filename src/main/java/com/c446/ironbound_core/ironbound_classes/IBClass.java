@@ -1,5 +1,6 @@
 package com.c446.ironbound_core.ironbound_classes;
 
+import com.c446.ironbound_core.registries.ClassRegistry;
 import com.c446.ironbound_core.registries.ComponentRegistry;
 import com.c446.ironbound_core.registries.SubClassRegistry;
 import com.google.common.collect.HashMultimap;
@@ -17,7 +18,7 @@ import java.util.List;
 public abstract class IBClass {
     public static IBClass instance;
 
-    public List<Component> getClassPerks(int level, ItemStack stack){
+    public List<Component> getClassPerks(int level, ItemStack stack) {
         return new ArrayList<>();
     }
 
@@ -25,19 +26,27 @@ public abstract class IBClass {
         return classId;
     }
 
-    public List<Component> getSubClassPerks(ItemStack stack){
-
-
-        return SubClassRegistry.getSubFromLoc(ResourceLocation.parse(stack.get(ComponentRegistry.CLASS_COMPONENT).classID())).getClassPerks(stack.get(ComponentRegistry.CLASS_COMPONENT).level());
-
+    public List<Component> getSubClassPerks(int level) {
+        ArrayList<Component> list = new ArrayList<>();
+        if (level >= 6) {
+            list.add(Component.translatable(ClassRegistry.getMainFromLoc(getResource()).classId.getPath() + ".ability.1"));
+        }
+        if (level >= 12) {
+            list.add(Component.translatable(ClassRegistry.getMainFromLoc(getResource()).classId.getPath() + ".ability.2"));
+        }
+        if (level >= 18) {
+            list.add(Component.translatable(ClassRegistry.getMainFromLoc(getResource()).classId.getPath() + ".ability.3"));
+        }
+        return list;
     }
+
 
     public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
 
     public final ResourceLocation classId;
 
-    public static int getMastery(int level){
-        return (int) (Math.floor(level/5.0D) + 2);
+    public static int getMastery(int level) {
+        return (int) (Math.floor(level / 5.0D) + 2);
     }
 
     protected IBClass(ResourceLocation classId) {
@@ -63,4 +72,6 @@ public abstract class IBClass {
 
         return multimap;
     }
+
+    public abstract ResourceLocation getResource();
 }

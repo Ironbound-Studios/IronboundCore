@@ -3,7 +3,7 @@
   "ironbounds_artefacts.attribute.vitality": "Vitality",
   "ironbounds_artefacts.attribute.insight": "Insight",
 
-  "death.ironbound.madness": "%s discovered the meaning of madness...",
+  "death.ironbound.madness": "%s discovered the meaning of insanity...",
 
   "classes.ironbound_core.wizard_class": "Level %s Wizard",
   "classes.ironbound_core.warlock_class": "Level %s Warlock",
@@ -21,6 +21,7 @@
   "item.ironbound_core.fighter_item": "Fighter's Characteristic",
   "item.ironbound_core.rogue_item": "Rogue's Characteristic",
   "item.ironbound_core.hunter_item": "Hunter's Characteristic",
+  "item.ironbound_core.ranger_item": "Ranger's Characteristic",
   "item.ironbound_core.upgrade_potion_1": "First Tier Upgrading Potion",
   "item.ironbound_core.upgrade_potion_1.tooltip": "Allows you to advance by one level, up to level Three.\nWill upgrade the first Characteristic you have.",
   "item.ironbound_core.upgrade_potion_2": "Second Tier Upgrading Potion",

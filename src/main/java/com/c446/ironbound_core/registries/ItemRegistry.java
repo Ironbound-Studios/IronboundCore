@@ -1,9 +1,12 @@
 package com.c446.ironbound_core.registries;
 
 import com.c446.ironbound_core.ironbound_classes.main_classes.*;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.eldritch.EldritchKnight;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.blood.UndyingSorcerer;
 import com.c446.ironbound_core.items.ClassItem;
 import com.c446.ironbound_core.items.GenericPotion;
 
+import com.c446.ironbound_core.items.SubClassPotion;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -31,6 +34,10 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, ClassItem> ROGUE_CURIO = ITEMS.register("rogue_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), RogueClass.instance));
     public static final DeferredHolder<Item, ClassItem> RANGER_CURIO = ITEMS.register("ranger_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), RangerClass.instance));
     public static final DeferredHolder<Item, ClassItem> HUNTER_CURIO = ITEMS.register("hunter_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), HunterClass.instance));
+
+
+    public static final DeferredHolder<Item, SubClassPotion> ABYSS_HEART = ITEMS.register("abyss_potion", () -> new SubClassPotion(new Item.Properties().stacksTo(1).fireResistant(), EldritchKnight.instance));
+    public static final DeferredHolder<Item, SubClassPotion> OLD_BLOOD_VIAL = ITEMS.register("old_blood_vial", () -> new SubClassPotion(new Item.Properties().stacksTo(1).fireResistant(), UndyingSorcerer.instance));
 
 
 

@@ -160,10 +160,10 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
     public double getMaxFromType(LivingEntity entity, StatusTypes types) {
         var x = switch (types) {
             case HOLLOW, FERVOR, WEAK_MIND ->
-                    10 * entity.getAttributeValue(FOCUS) + 20 * entity.getAttributeValue(INSIGHT);
+                    150+ (entity.getAttributeValue(FOCUS) + entity.getAttributeValue(INSIGHT));
             case BLEED, FROST, OVERCHARGED ->
-                    10 * entity.getAttributeValue(MAX_HEALTH) + 20 * entity.getAttributeValue(VITALITY);
-            case MADNESS -> 15 * entity.getAttributeValue(FOCUS) - 5 * entity.getAttributeValue(INSIGHT);
+                    20 + (entity.getAttributeValue(MAX_HEALTH) + 20 * entity.getAttributeValue(VITALITY));
+            case MADNESS -> 200 + 15 * entity.getAttributeValue(FOCUS) - 5 * entity.getAttributeValue(INSIGHT);
             default -> -1;
         };
         System.out.println("getMaxFromType : " + types.name().toLowerCase() + " " + "x");

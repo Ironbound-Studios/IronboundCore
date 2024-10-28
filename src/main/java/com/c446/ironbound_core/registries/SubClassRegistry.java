@@ -3,8 +3,9 @@ package com.c446.ironbound_core.registries;
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.ironbound_classes.IBSubClass;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneSubClass;
-import com.c446.ironbound_core.ironbound_classes.sub_classes.fighter.EldritchKnight;
-import com.c446.ironbound_core.ironbound_classes.sub_classes.rogue.PlagueMaster;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.eldritch.EldritchKnight;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.nature.PlagueMaster;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.blood.UndyingSorcerer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ public class SubClassRegistry {
 
     public static final DeferredHolder<IBSubClass, EldritchKnight> ELDRITCH_KNIGHT = IRONBOUND_SUBCLASS_REGISTRY.register("eldritch_knight", ()-> EldritchKnight.instance);
     public static final DeferredHolder<IBSubClass, PlagueMaster> PLAGUE_MASTER = IRONBOUND_SUBCLASS_REGISTRY.register("plague_master", ()-> PlagueMaster.instance);
+    public static final DeferredHolder<IBSubClass, UndyingSorcerer> UNDYING = IRONBOUND_SUBCLASS_REGISTRY.register("undying", ()-> UndyingSorcerer.instance);
 
     public static IBSubClass getSubFromLoc(@NonNull ResourceLocation loc){
         for (var key : SubClassRegistry.IRONBOUND_SUBCLASS_REGISTRY.getEntries()){
@@ -38,4 +40,7 @@ public class SubClassRegistry {
         return NoneSubClass.instance;
     }
 
+    public static IBSubClass getSubFromLoc(@NonNull String loc){
+        return getSubFromLoc(ResourceLocation.parse(loc));
+    }
 }

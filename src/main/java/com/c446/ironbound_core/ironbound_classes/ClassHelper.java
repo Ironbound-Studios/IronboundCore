@@ -14,14 +14,19 @@ import static com.c446.ironbound_core.registries.ComponentRegistry.CLASS_COMPONE
 
 public abstract class ClassHelper {
 
-    public static ClassInstance getData(ItemStack stack) {
+    public static ClassInstance safeGetData(ItemStack stack) {
         return (stack.has(CLASS_COMPONENT)) ? (stack.get(CLASS_COMPONENT)) : (new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0));
     }
 
+    public static List<ClassInstance> safeGetData(LivingEntity living) {
+        ArrayList<ClassInstance> list = new ArrayList<ClassInstance>();
+        collectClassItems(living).forEach(a->list.add(safeGetData(a)));
+        return list;
+    }
 
     public static void setSubClass(ItemStack stack, IBSubClass subClasses) {
-        if (!getData(stack).classID().equals(NoneClass.instance.classId.toString())) {
-            var data = getData(stack);
+        if (!safeGetData(stack).classID().equals(NoneClass.instance.classId.toString())) {
+            var data = safeGetData(stack);
             stack.set(CLASS_COMPONENT, new ClassInstance(data.classID(), subClasses.getResource().toString(), data.level()));
         }
     }
@@ -29,7 +34,7 @@ public abstract class ClassHelper {
     public static boolean isClass(LivingEntity living, IBClass ibClass) {
         var bool = new AtomicBoolean(false);
         collectClassItems(living).forEach(a -> {
-            if (getData(a).classID().equals(ibClass.classId.getPath())) {
+            if (safeGetData(a).classID().equals(ibClass.classId.getPath())) {
                 bool.set(true);
             }
         });
@@ -39,7 +44,7 @@ public abstract class ClassHelper {
     public static boolean isSubClass(LivingEntity living, IBSubClass ibClass) {
         var bool = new AtomicBoolean(false);
         collectClassItems(living).forEach(a -> {
-            if (getData(a).classID().equals(ibClass.subClassID.getPath())) {
+            if (safeGetData(a).subClassID().equals(ibClass.subClassID.toString())) {
                 bool.set(true);
             }
         });

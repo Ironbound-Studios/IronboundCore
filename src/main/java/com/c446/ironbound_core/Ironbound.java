@@ -22,7 +22,7 @@ public class Ironbound {
     public static final String MODID = "ironbound_core";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
-    // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
+    // Create a Deferred Register to hold Blocks which will all be registered under the "ironbound_core" namespace
 
     public static ResourceLocation prefix(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);

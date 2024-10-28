@@ -15,26 +15,31 @@ public class FighterClass extends IBClass {
     public static final FighterClass instance = new FighterClass(Ironbound.prefix("fighter_class"));
 
     static {
-        instance.addAttribute(MAX_HEALTH, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_hp"), 6, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_mana"), 5, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(FOCUS, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_focus"), 0, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(VITALITY, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_vitality"), 1, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_cooldown_reduc"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(MANA_REGEN, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_mana_regen"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_spell_power"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_cast_time_reduc"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(ATTACK_DAMAGE, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_attack_damage"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(ATTACK_SPEED, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_attack_speed"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(CRIT_DAMAGE, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_crit_damage"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(CRIT_CHANCE, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_crit_chance"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(ARROW_DAMAGE, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_arrow_damage"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(ARROW_VELOCITY, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_arrow_velocity"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(ARMOR_SHRED, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_armor_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(PROT_SHRED, new AttributeModifier(Ironbound.prefix(instance.classId.getPath() + "_protection_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(MAX_HEALTH, new AttributeModifier(Ironbound.prefix("class_hp"), 6, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("class_mana"), 5, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(FOCUS, new AttributeModifier(Ironbound.prefix("class_focus"), 0, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(VITALITY, new AttributeModifier(Ironbound.prefix("class_vitality"), 1, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix("class_cooldown_reduc"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(MANA_REGEN, new AttributeModifier(Ironbound.prefix("class_mana_regen"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix("class_spell_power"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix("class_cast_time_reduc"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(ATTACK_DAMAGE, new AttributeModifier(Ironbound.prefix("class_attack_damage"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(ATTACK_SPEED, new AttributeModifier(Ironbound.prefix("class_attack_speed"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(CRIT_DAMAGE, new AttributeModifier(Ironbound.prefix("class_crit_damage"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(CRIT_CHANCE, new AttributeModifier(Ironbound.prefix("class_crit_chance"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(ARROW_DAMAGE, new AttributeModifier(Ironbound.prefix("class_arrow_damage"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(ARROW_VELOCITY, new AttributeModifier(Ironbound.prefix("class_arrow_velocity"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(ARMOR_SHRED, new AttributeModifier(Ironbound.prefix("class_armor_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(PROT_SHRED, new AttributeModifier(Ironbound.prefix("class_protection_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
     protected FighterClass(ResourceLocation classId) {
         super(classId);
+    }
+
+    @Override
+    public ResourceLocation getResource() {
+        return this.classId;
     }
 
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ironbound_core:item/hunter_item"
+  }
+}
