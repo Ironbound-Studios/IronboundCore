@@ -2,6 +2,7 @@ package com.c446.ironbound_core.ironbound_classes;
 
 import com.c446.ironbound_core.registries.IBSubClassRegistry;
 import com.google.common.collect.HashMultimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,13 +25,13 @@ public abstract class IBSubClass {
     public List<Component> getClassPerks(int level) {
         ArrayList<Component> list = new ArrayList<>();
         if (level >= 3) {
-            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.1"));
+            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.1").withStyle(ChatFormatting.GRAY));
         }
         if (level >= 9) {
-            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.2"));
+            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.2").withStyle(ChatFormatting.GRAY));
         }
         if (level >= 15) {
-            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.3"));
+            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.3").withStyle(ChatFormatting.GRAY));
         }
         return list;
     }

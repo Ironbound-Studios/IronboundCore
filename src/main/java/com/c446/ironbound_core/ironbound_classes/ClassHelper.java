@@ -23,9 +23,13 @@ public abstract class ClassHelper {
         return (stack.has(CLASS_COMPONENT)) ? (stack.get(CLASS_COMPONENT)) : (new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0));
     }
 
+    public static boolean hasSubClass(ItemStack stack) {
+        return !(safeGetData(stack).subClassID().equals(NoneSubClass.instance.subClassID.toString()));
+    }
+
     public static List<ClassInstance> safeGetData(LivingEntity living) {
         ArrayList<ClassInstance> list = new ArrayList<ClassInstance>();
-        collectClassItems(living).forEach(a->list.add(safeGetData(a)));
+        collectClassItems(living).forEach(a -> list.add(safeGetData(a)));
         return list;
     }
 
@@ -69,7 +73,7 @@ public abstract class ClassHelper {
         return stacks;
     }
 
-    public static int getLevel(LivingEntity entity){
+    public static int getLevel(LivingEntity entity) {
         return safeGetData(entity).getFirst().level();
     }
 }

@@ -13,7 +13,8 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class GenericAttachement implements INBTSerializable<CompoundTag> {
-    public ArrayList<Integer> read_book = new ArrayList<>();
+     public ArrayList<Integer> read_book = new ArrayList<>();
+    private boolean isEndlessImmortalityConsumed = false;
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
@@ -43,5 +44,13 @@ public class GenericAttachement implements INBTSerializable<CompoundTag> {
         for (int tagBook : tagBooks) {
             this.read_book.add(tagBook);
         }
+    }
+
+    public boolean isEndlessImmortalityConsumed() {
+        return isEndlessImmortalityConsumed;
+    }
+
+    public void setEndlessImmortalityConsumed(boolean endlessImmortalityConsumed) {
+        isEndlessImmortalityConsumed = endlessImmortalityConsumed;
     }
 }

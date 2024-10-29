@@ -6,8 +6,10 @@ import com.c446.ironbound_core.ironbound_classes.main_classes.WizardClass;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import io.redspace.ironsspellbooks.spells.ender.StarfallSpell;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,5 +37,19 @@ public class WizardItem extends ClassItem {
 
         defaultAttributes.putAll(wizardSpecific);
         return defaultAttributes;
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        if (slotContext.entity() != null){
+            var entity = slotContext.entity();
+            if (entity.level() instanceof ServerLevel server){
+                //TODO : do "Time-Sensitive" subclass ability.
+            }
+        }
+
+
+
+        super.curioTick(slotContext, stack);
     }
 }

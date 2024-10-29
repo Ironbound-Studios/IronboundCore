@@ -3,9 +3,13 @@ package com.c446.ironbound_core.events;
 import com.c446.ironbound_core.data.attachements.StatusAttachement;
 import com.c446.ironbound_core.data.attachements.StatusIncreasedEvent;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
+import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.ClassInstance;
 import com.c446.ironbound_core.items.GenericPotion;
+import com.c446.ironbound_core.registries.IBAttachmentRegistry;
+import com.c446.ironbound_core.registries.IBClassRegistry;
 import com.c446.ironbound_core.registries.IBMobEffectRegistry;
+import com.c446.ironbound_core.registries.IBSubClassRegistry;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
@@ -13,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
@@ -132,5 +137,11 @@ public class ServerEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onReadBook(LivingEntityUseItemEvent.Start event){
+        if (ClassHelper.isClass(event.getEntity(), IBClassRegistry.WIZARD_CLASS.get()) && event.getEntity() instanceof Player player){
+            player.getData(GENERIC_DATA).addBook(event.getItem());
+        }
+    }
 
 }

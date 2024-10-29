@@ -60,11 +60,12 @@ public class ClassItem extends Item implements ICurioItem {
         var mainClass = IBClassRegistry.getMainFromLoc(ResourceLocation.parse(component != null ? component.classID() : NoneClass.instance.classId.toString()));
         var subClass = IBSubClassRegistry.getSubFromLoc(ResourceLocation.parse(component != null ? component.subClassID() : NoneSubClass.instance.subClassID.toString()));
         var level = component != null ? component.level() : 0;
-        if (!(mainClass instanceof NoneClass)){
+        if (!(mainClass instanceof NoneClass)) {
             map.putAll(mainClass.getAttributesForLevel(level));
         }
-        if (!(subClass instanceof NoneSubClass)){
-            map.putAll(subClass.getAttributesForLevel(level));;
+        if (!(subClass instanceof NoneSubClass)) {
+            map.putAll(subClass.getAttributesForLevel(level));
+            ;
         }
         return map;
     }
@@ -77,9 +78,18 @@ public class ClassItem extends Item implements ICurioItem {
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
         var value = ClassHelper.safeGetData(stack);
         tooltipComponents.add(Component.translatable("classes.ironbound_core." + ResourceLocation.parse(value.classID()).getPath(), value.level()).withStyle(ChatFormatting.GOLD));
-        tooltipComponents.addAll(IBClassRegistry.getMainFromLoc(value.classID()).getSubClassPerks(value.level()));
-        tooltipComponents.addAll(IBSubClassRegistry.getSubFromLoc(value.subClassID()).getClassPerks(value.level()));
+        if (tooltipFlag.hasShiftDown()) {
+            tooltipComponents.add(Component.translatable("classes.ironbound_core." + ResourceLocation.parse(value.classID()).getPath()+ "_name").withStyle(ChatFormatting.DARK_PURPLE).append(Component.translatable("classes.ironbound_core.class_ability").withStyle(ChatFormatting.DARK_PURPLE)));
+            tooltipComponents.addAll(IBClassRegistry.getMainFromLoc(value.classID()).getSubClassPerks(value.level()));
+            if (ClassHelper.hasSubClass(stack)) {
 
+                tooltipComponents.add(Component.translatable("classes.ironbound_core." + ResourceLocation.parse(value.subClassID()).getPath() + "_name").withStyle(ChatFormatting.DARK_PURPLE).append(Component.translatable("classes.ironbound_core.sub_class_ability").withStyle(ChatFormatting.DARK_PURPLE)));
+                tooltipComponents.addAll(IBSubClassRegistry.getSubFromLoc(value.subClassID()).getClassPerks(value.level()));
+
+            }
+        } else {
+            tooltipComponents.add(Component.translatable("tooltip.ironbound.hold_shift").withStyle(ChatFormatting.ITALIC));
+        }
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }

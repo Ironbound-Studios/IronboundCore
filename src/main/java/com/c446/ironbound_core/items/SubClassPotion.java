@@ -3,7 +3,7 @@ package com.c446.ironbound_core.items;
 import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.IBSubClass;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneSubClass;
-import com.c446.ironbound_core.registries.ClassRegistry;
+import com.c446.ironbound_core.registries.IBClassRegistry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +39,7 @@ public class SubClassPotion extends Item {
 
 
             for (IBSubClass subClass : this.subClasses) {
-                if (subClass.parents.contains(ClassRegistry.getMainFromLoc(ClassHelper.safeGetData(a).classID())) && ClassHelper.safeGetData(a).subClassID().equals(NoneSubClass.instance.subClassID.toString())) {
+                if (subClass.parents.contains(IBClassRegistry.getMainFromLoc(ClassHelper.safeGetData(a).classID())) && ClassHelper.safeGetData(a).subClassID().equals(NoneSubClass.instance.subClassID.toString())) {
 
                     ClassHelper.setSubClass(a, subClass);
                 }

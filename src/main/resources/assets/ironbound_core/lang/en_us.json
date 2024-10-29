@@ -2,9 +2,8 @@
   "ironbounds_artefacts.attribute.mind": "Mind",
   "ironbounds_artefacts.attribute.vitality": "Vitality",
   "ironbounds_artefacts.attribute.insight": "Insight",
-
   "death.ironbound.madness": "%s discovered the meaning of insanity...",
-
+  "tooltip.ironbound.hold_shift": "hold [SHIFT] for more information.",
   "classes.ironbound_core.wizard_class": "Level %s Wizard",
   "classes.ironbound_core.warlock_class": "Level %s Warlock",
   "classes.ironbound_core.sorcerer_class": "Level %s Sorcerer",
@@ -13,6 +12,39 @@
   "classes.ironbound_core.fighter_class": "Level %s Fighter",
   "classes.ironbound_core.hunter_class": "Level %s Hunter",
   "classes.ironbound_core.ranger_class": "Level %s Ranger",
+
+  "classes.ironbound_core.wizard_class.name" : "Wizard",
+
+
+  "classes.ironbound_core.class_ability": " Class Ability :\n",
+  "classes.ironbound_core.sub_class_ability": " Sub Class Ability :\n",
+
+  "wizard_class.ability.1": "Bookwyrm :\nThe more books you have read, the more effective the spells from your Arcane tradition will become.\n",
+  "wizard_class.ability.2": "Magical Conduit :\nWearing less armor will grant you a great boost in mana regeneration.\nHowever, wearing armor will not impede your normal spellcasting.\n",
+  "wizard_class.ability.3": "Arcane Efficiency :\nUpon successfully casting a spell that costs more than a thousand mana, regain mana equal to 20% of the spell’s cost",
+
+
+
+
+
+  "__subclasses__": "SUB CLASS ABILITIES",
+
+
+
+  "classes.ironbound_core.astrologer_class_name": "Astrologer",
+  "astrologer_class.ability.1": "NOT YET IMPLEMENTED\n",
+  "astrologer_class.ability.2": "Chronomancy Savant: \nThe Slow, Haste, Teleport and Time Stop spells gain extra levels based on your level.\n",
+  "astrologer_class.ability.3": "Ever-lasting:\nThe duration of all outgoing magical potion effect is greatly extended, based on your level.\n",
+
+
+
+
+
+
+
+
+
+
 
   "item.ironbound_core.wizard_item": "Wizard's Characteristic",
   "item.ironbound_core.warlock_item": "Warlock's Characteristic",

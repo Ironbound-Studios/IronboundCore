@@ -13,6 +13,9 @@ import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.effect.MagicMobEffect;
+import io.redspace.ironsspellbooks.entity.mobs.SummonedSkeleton;
+import io.redspace.ironsspellbooks.entity.mobs.SummonedZombie;
+import io.redspace.ironsspellbooks.registries.DataAttachmentRegistry;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,7 +29,9 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;
@@ -34,6 +39,7 @@ import java.util.Objects;
 
 import static com.c446.ironbound_core.registries.IBAttributeRegistry.INSIGHT;
 import static io.redspace.ironsspellbooks.api.magic.MagicData.*;
+import static io.redspace.ironsspellbooks.registries.DataAttachmentRegistry.MAGIC_DATA;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Ironbound.MODID)
 public class SubClassesEvents {
@@ -128,7 +134,6 @@ public class SubClassesEvents {
     }
 
 
-
     // ARCANE EFFICIENCY PERK
     @SubscribeEvent
     public static void onManaChangeEvent(ChangeManaEvent event) {
@@ -139,5 +144,23 @@ public class SubClassesEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onSummonDeath(LivingDeathEvent event) {
 
+        if (event.getEntity() instanceof SummonedZombie mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.UNDYING.get()) ) {
+            var owner = mob.getSummoner();
+            if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2){
+                owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
+                event.setCanceled(true);
+                mob.heal(mob.getMaxHealth() / 2);
+            }
+        } else if (event.getEntity() instanceof SummonedSkeleton mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.UNDYING.get())) {
+            var owner = mob.getSummoner();
+            if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2){
+                owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
+                event.setCanceled(true);
+                mob.heal(mob.getMaxHealth() / 2);
+            }
+        }
+    }
 }
