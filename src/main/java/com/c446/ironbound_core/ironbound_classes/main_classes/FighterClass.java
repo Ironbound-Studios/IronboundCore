@@ -2,11 +2,10 @@ package com.c446.ironbound_core.ironbound_classes.main_classes;
 
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
-import dev.shadowsoffire.apothic_attributes.api.ALObjects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-import static com.c446.ironbound_core.registries.AttributeRegistry.*;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.*;
 import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.*;
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
 import static net.minecraft.world.entity.ai.attributes.Attributes.*;

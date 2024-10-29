@@ -13,9 +13,9 @@ import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
 public class UndyingSorcerer extends IBSubClass {
     public static final UndyingSorcerer instance = new UndyingSorcerer(Ironbound.prefix("sub_class_sorcerer"), SchoolRegistry.BLOOD_RESOURCE,SorcererClass.instance);
     static{
-        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("undying_subclass_mana"), 25/2D, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(BLOOD_SPELL_POWER, new AttributeModifier(Ironbound.prefix("undead_sorcerer_blood_power"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(HOLY_MAGIC_RESIST, new AttributeModifier(Ironbound.prefix("undead_sorcerer_holy_debuff"), -0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("undying_subclass_mana"), 12.5, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(BLOOD_SPELL_POWER, new AttributeModifier(Ironbound.prefix("undead_sorcerer_blood_power"), 0.00625*1/3, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(HOLY_MAGIC_RESIST, new AttributeModifier(Ironbound.prefix("undead_sorcerer_holy_debuff"), -0.00625, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
     public UndyingSorcerer(ResourceLocation subClassID, ResourceLocation type, IBClass... parents) {

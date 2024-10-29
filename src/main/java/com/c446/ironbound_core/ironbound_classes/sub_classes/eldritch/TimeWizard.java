@@ -5,6 +5,8 @@ import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
 import com.c446.ironbound_core.ironbound_classes.IBSubClass;
 import com.c446.ironbound_core.ironbound_classes.main_classes.WizardClass;
+import com.c446.ironbound_core.registries.IBAttachmentRegistry;
+import com.c446.ironbound_core.util.Base2Log;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -20,11 +22,15 @@ public class TimeWizard extends IBSubClass {
 
 
     static {
-        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("astrologer_mana"), 25, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("astrologer_mana"), 15, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(ELDRITCH_SPELL_POWER, new AttributeModifier(Ironbound.prefix("astrologer_eldritch_power"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ENDER_SPELL_POWER, new AttributeModifier(Ironbound.prefix("astrologer_ender_power"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
+
+    /**
+     * @return returns the list of spells that the class will boost. For a Healing Domain Clerc, stuff like Heal, Greater Heal, or Fortification would have been found.
+     */
     public List<ResourceLocation> getLevelBoostedSpells() {
         return List.of(
                 SpellRegistry.SLOW_SPELL.get().getSpellResource(),
@@ -35,9 +41,19 @@ public class TimeWizard extends IBSubClass {
         );
     }
 
+
+    /**
+     * @param entity : the entity to get the total boost for
+     * @return
+     */
     public int getLevelBoost(LivingEntity entity){
-        return (int) ((ClassHelper.safeGetData(ClassHelper.collectClassItems(entity).getFirst()).level())/10D+1);
+        return (int) (Math.floor((ClassHelper.safeGetData(ClassHelper.collectClassItems(entity).getFirst()).level())/10D) + getBookWyrm(entity) + getBookWyrm(entity));
     }
+
+    public double getBookWyrm(LivingEntity entity){
+        return Base2Log.log2(entity.getData(IBAttachmentRegistry.GENERIC_DATA).read_book.size()) /2D;
+    }
+
 
     public List<ResourceLocation> getReducedCastTimeSpells() {
         return List.of(
@@ -49,6 +65,7 @@ public class TimeWizard extends IBSubClass {
                 ResourceLocation.fromNamespaceAndPath("ironbounds_artefacts", "time_stop")
         );
     }
+
 
     public TimeWizard(ResourceLocation subClassID, ResourceLocation school, IBClass... parents) {
         super(subClassID, school, parents);

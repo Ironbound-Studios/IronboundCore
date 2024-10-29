@@ -13,16 +13,23 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * For your inconvenience, i am not writing any useful doc.
+ * JK~ this should be simple, simplily an inheritor of MobEffect that has got some methods to use less inheritance for the future(TM)
+ */
 public class IronboundCoreEffect extends MobEffect {
     public final List<ItemStack> curativeItems;
 
-    static{
-
-    }
     protected double tickDamage=0;
     protected int interval=0;
     protected ResourceKey<DamageType> type = null;
 
+    /**
+     * @param damagePerLevel : the amount of damage dealt per tick interval.
+     * @param tickInterval : the cooldown between each interval. minimum is one, ZERO is forbidden !
+     * @param type : the damage type that will be used.
+     * @return : returns a new @link{com.c446.ironbound_core.util.IronboundCoreEffect} with the applied change.
+     */
     public IronboundCoreEffect withDamage(double damagePerLevel, int tickInterval, ResourceKey<DamageType> type){
         var newEffect = new IronboundCoreEffect(this.getCategory(), this.getColor());
         newEffect.tickDamage = damagePerLevel;

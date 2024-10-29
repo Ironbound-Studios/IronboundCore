@@ -1,19 +1,18 @@
 package com.c446.ironbound_core.data.attachements;
 
-import com.c446.ironbound_core.registries.EffectRegistries;
+import com.c446.ironbound_core.registries.IBMobEffectRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import static com.c446.ironbound_core.registries.AttributeRegistry.*;
-import static com.c446.ironbound_core.registries.EffectRegistries.HOLLOW;
-import static com.c446.ironbound_core.registries.EffectRegistries.MADNESS;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.*;
+import static com.c446.ironbound_core.registries.IBMobEffectRegistry.HOLLOW;
+import static com.c446.ironbound_core.registries.IBMobEffectRegistry.MADNESS;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH;
 
 public class StatusAttachement implements INBTSerializable<CompoundTag> {
@@ -48,18 +47,18 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
                 }
             }
             case FERVOR -> {
-                if (livingEntity.hasEffect(EffectRegistries.FERVOR)) {
-                    int mult = Objects.requireNonNull(livingEntity.getEffect(EffectRegistries.FERVOR)).getAmplifier();
-                    livingEntity.forceAddEffect(new MobEffectInstance(EffectRegistries.FERVOR, 60 * 20 * mult, mult + 1), livingEntity);
+                if (livingEntity.hasEffect(IBMobEffectRegistry.FERVOR)) {
+                    int mult = Objects.requireNonNull(livingEntity.getEffect(IBMobEffectRegistry.FERVOR)).getAmplifier();
+                    livingEntity.forceAddEffect(new MobEffectInstance(IBMobEffectRegistry.FERVOR, 60 * 20 * mult, mult + 1), livingEntity);
                 } else {
-                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.FERVOR, 20 * 60, 0));
+                    livingEntity.addEffect(new MobEffectInstance(IBMobEffectRegistry.FERVOR, 20 * 60, 0));
                 }
             }
             case HOLLOW -> {
-                if (livingEntity.hasEffect(EffectRegistries.HOLLOW)) {
-                    livingEntity.forceAddEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 60 * 20 * Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier(), Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier() + 1), livingEntity);
+                if (livingEntity.hasEffect(IBMobEffectRegistry.HOLLOW)) {
+                    livingEntity.forceAddEffect(new MobEffectInstance(IBMobEffectRegistry.HOLLOW, 60 * 20 * Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier(), Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier() + 1), livingEntity);
                 } else {
-                    livingEntity.addEffect(new MobEffectInstance(EffectRegistries.HOLLOW, 20 * 60, 0));
+                    livingEntity.addEffect(new MobEffectInstance(IBMobEffectRegistry.HOLLOW, 20 * 60, 0));
                 }
             }
             default -> {

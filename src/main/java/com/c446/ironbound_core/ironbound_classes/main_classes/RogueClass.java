@@ -5,8 +5,8 @@ import com.c446.ironbound_core.ironbound_classes.IBClass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-import static com.c446.ironbound_core.registries.AttributeRegistry.FOCUS;
-import static com.c446.ironbound_core.registries.AttributeRegistry.VITALITY;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.FOCUS;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.VITALITY;
 import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.*;
 import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.PROT_SHRED;
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;

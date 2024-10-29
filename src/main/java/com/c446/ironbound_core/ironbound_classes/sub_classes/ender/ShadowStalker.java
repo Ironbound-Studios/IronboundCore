@@ -20,8 +20,8 @@ public class ShadowStalker extends IBSubClass {
     public static final ShadowStalker instance = new ShadowStalker(Ironbound.prefix("sub_class_ender_rogue"), SchoolRegistry.ENDER_RESOURCE, FighterClass.instance, HunterClass.instance);
 
     static {
-        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("ender_rogue_mana"), 15, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(ENDER_SPELL_POWER, new AttributeModifier(Ironbound.prefix("ender_rogue_ender_power"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("ender_rogue_mana"), 7.5, AttributeModifier.Operation.ADD_VALUE));
+        instance.addAttribute(ENDER_SPELL_POWER, new AttributeModifier(Ironbound.prefix("ender_rogue_ender_power"), 0.00625, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ALObjects.Attributes.DODGE_CHANCE, new AttributeModifier(Ironbound.prefix("ender_rogue_dodge"), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 

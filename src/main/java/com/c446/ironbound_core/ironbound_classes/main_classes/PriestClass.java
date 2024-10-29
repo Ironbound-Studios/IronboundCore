@@ -5,8 +5,8 @@ import com.c446.ironbound_core.ironbound_classes.IBClass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-import static com.c446.ironbound_core.registries.AttributeRegistry.FOCUS;
-import static com.c446.ironbound_core.registries.AttributeRegistry.VITALITY;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.FOCUS;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.VITALITY;
 import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.*;
 import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.PROT_SHRED;
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
@@ -21,10 +21,10 @@ public class PriestClass extends IBClass {
         instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("class" + "_mana"), 25, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(FOCUS, new AttributeModifier(Ironbound.prefix("class" + "_focus"), 0.75, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(VITALITY, new AttributeModifier(Ironbound.prefix("class" + "_vitality"), 0.25, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix("class" + "_cooldown_reduc"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix("class" + "_cooldown_reduc"), 0.125/2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(MANA_REGEN, new AttributeModifier(Ironbound.prefix("class" + "_mana_regen"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix("class" + "_spell_power"), 0.025/2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix("class" + "_cast_time_reduc"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix("class" + "_spell_power"), 0.025/4, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix("class" + "_cast_time_reduc"), 0.025/2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ATTACK_DAMAGE, new AttributeModifier(Ironbound.prefix("class" + "_attack_damage"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ATTACK_SPEED, new AttributeModifier(Ironbound.prefix("class" + "_attack_speed"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(CRIT_DAMAGE, new AttributeModifier(Ironbound.prefix("class" + "_crit_damage"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));

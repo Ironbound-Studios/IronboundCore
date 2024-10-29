@@ -10,7 +10,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.c446.ironbound_core.registries.ComponentRegistry.CLASS_COMPONENT;
+import static com.c446.ironbound_core.registries.IBComponentRegistry.CLASS_COMPONENT;
 
 public abstract class ClassHelper {
 
@@ -69,4 +69,7 @@ public abstract class ClassHelper {
         return stacks;
     }
 
+    public static int getLevel(LivingEntity entity){
+        return safeGetData(entity).getFirst().level();
+    }
 }

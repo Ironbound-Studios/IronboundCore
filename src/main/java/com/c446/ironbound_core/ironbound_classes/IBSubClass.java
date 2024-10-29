@@ -1,8 +1,7 @@
 package com.c446.ironbound_core.ironbound_classes;
 
-import com.c446.ironbound_core.registries.SubClassRegistry;
+import com.c446.ironbound_core.registries.IBSubClassRegistry;
 import com.google.common.collect.HashMultimap;
-import io.redspace.ironsspellbooks.api.spells.SchoolType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,13 +24,13 @@ public abstract class IBSubClass {
     public List<Component> getClassPerks(int level) {
         ArrayList<Component> list = new ArrayList<>();
         if (level >= 3) {
-            list.add(Component.translatable(SubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.1"));
+            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.1"));
         }
         if (level >= 9) {
-            list.add(Component.translatable(SubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.2"));
+            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.2"));
         }
         if (level >= 15) {
-            list.add(Component.translatable(SubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.3"));
+            list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.3"));
         }
         return list;
     }

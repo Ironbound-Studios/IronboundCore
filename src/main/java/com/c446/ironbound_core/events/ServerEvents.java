@@ -4,12 +4,8 @@ import com.c446.ironbound_core.data.attachements.StatusAttachement;
 import com.c446.ironbound_core.data.attachements.StatusIncreasedEvent;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
 import com.c446.ironbound_core.ironbound_classes.ClassInstance;
-import com.c446.ironbound_core.ironbound_classes.IBClass;
-import com.c446.ironbound_core.ironbound_classes.main_classes.NoneClass;
-import com.c446.ironbound_core.items.ClassItem;
 import com.c446.ironbound_core.items.GenericPotion;
-import com.c446.ironbound_core.registries.ComponentRegistry;
-import com.c446.ironbound_core.registries.EffectRegistries;
+import com.c446.ironbound_core.registries.IBMobEffectRegistry;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
@@ -17,12 +13,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.PotionItem;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.event.entity.item.ItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
@@ -33,8 +27,9 @@ import top.theillusivec4.curios.api.CuriosApi;
 import java.util.Objects;
 
 import static com.c446.ironbound_core.data.attachements.StatusTypes.*;
-import static com.c446.ironbound_core.registries.AttachmentReg.STATUS_DATA;
-import static com.c446.ironbound_core.registries.ComponentRegistry.CLASS_COMPONENT;
+import static com.c446.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
+import static com.c446.ironbound_core.registries.IBAttachmentRegistry.STATUS_DATA;
+import static com.c446.ironbound_core.registries.IBComponentRegistry.CLASS_COMPONENT;
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.ENDER;
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.HOLY;
 
@@ -99,14 +94,14 @@ public class ServerEvents {
     @SubscribeEvent
     public static void tryDampenEntity(LivingBreatheEvent event) {
         if (!event.canBreathe()) {
-            event.getEntity().forceAddEffect(new MobEffectInstance(EffectRegistries.DAMP, 10, 0), event.getEntity());
+            event.getEntity().forceAddEffect(new MobEffectInstance(IBMobEffectRegistry.DAMP, 10, 0), event.getEntity());
         }
     }
 
     @SubscribeEvent
     public static void onPlayerRain(EntityTickEvent.Post event) {
         if (event.getEntity() instanceof LivingEntity living && event.getEntity().level() instanceof ServerLevel serverLevel && serverLevel.isRainingAt(event.getEntity().getOnPos())) {
-            living.addEffect(new MobEffectInstance(EffectRegistries.DAMP, 5, 0));
+            living.addEffect(new MobEffectInstance(IBMobEffectRegistry.DAMP, 5, 0));
         }
     }
 
@@ -128,4 +123,14 @@ public class ServerEvents {
             entity.setData(STATUS_DATA, newData);
         }
     }
+
+
+    @SubscribeEvent
+    public static void onClone(PlayerEvent.Clone event) {
+        if (event.isWasDeath() && event.getOriginal().hasData(GENERIC_DATA)) {
+            event.getEntity().getData(GENERIC_DATA).read_book = event.getOriginal().getData(GENERIC_DATA).read_book;
+        }
+    }
+
+
 }

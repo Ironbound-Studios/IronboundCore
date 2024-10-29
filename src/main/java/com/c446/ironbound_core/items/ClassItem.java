@@ -4,12 +4,10 @@ import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.ClassInstance;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
 import com.c446.ironbound_core.ironbound_classes.main_classes.NoneClass;
-import com.c446.ironbound_core.ironbound_classes.main_classes.WizardClass;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.NoneSubClass;
-import com.c446.ironbound_core.registries.ClassRegistry;
-import com.c446.ironbound_core.registries.ComponentRegistry;
-import com.c446.ironbound_core.registries.SubClassRegistry;
-import com.google.common.collect.HashMultimap;
+import com.c446.ironbound_core.registries.IBClassRegistry;
+import com.c446.ironbound_core.registries.IBComponentRegistry;
+import com.c446.ironbound_core.registries.IBSubClassRegistry;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -39,17 +37,17 @@ public class ClassItem extends Item implements ICurioItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (!(stack.has(ComponentRegistry.CLASS_COMPONENT.get()))) {
+        if (!(stack.has(IBComponentRegistry.CLASS_COMPONENT.get()))) {
 
-            stack.set(ComponentRegistry.CLASS_COMPONENT.value(), new ClassInstance(this.ibClass.classId.toString(), NoneSubClass.instance.subClassID.toString(), 1));
+            stack.set(IBComponentRegistry.CLASS_COMPONENT.value(), new ClassInstance(this.ibClass.classId.toString(), NoneSubClass.instance.subClassID.toString(), 1));
 
         }
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
 
     public static ClassInstance getClassComponent(ItemStack stack) {
-        if (stack.has(ComponentRegistry.CLASS_COMPONENT)) {
-            return stack.get(ComponentRegistry.CLASS_COMPONENT);
+        if (stack.has(IBComponentRegistry.CLASS_COMPONENT)) {
+            return stack.get(IBComponentRegistry.CLASS_COMPONENT);
         } else {
             return new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0);
         }
@@ -59,8 +57,8 @@ public class ClassItem extends Item implements ICurioItem {
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
         var map = ICurioItem.defaultInstance.getAttributeModifiers(slotContext, id);
         var component = ClassHelper.safeGetData(stack);
-        var mainClass = ClassRegistry.getMainFromLoc(ResourceLocation.parse(component != null ? component.classID() : NoneClass.instance.classId.toString()));
-        var subClass = SubClassRegistry.getSubFromLoc(ResourceLocation.parse(component != null ? component.subClassID() : NoneSubClass.instance.subClassID.toString()));
+        var mainClass = IBClassRegistry.getMainFromLoc(ResourceLocation.parse(component != null ? component.classID() : NoneClass.instance.classId.toString()));
+        var subClass = IBSubClassRegistry.getSubFromLoc(ResourceLocation.parse(component != null ? component.subClassID() : NoneSubClass.instance.subClassID.toString()));
         var level = component != null ? component.level() : 0;
         if (!(mainClass instanceof NoneClass)){
             map.putAll(mainClass.getAttributesForLevel(level));
@@ -79,8 +77,8 @@ public class ClassItem extends Item implements ICurioItem {
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
         var value = ClassHelper.safeGetData(stack);
         tooltipComponents.add(Component.translatable("classes.ironbound_core." + ResourceLocation.parse(value.classID()).getPath(), value.level()).withStyle(ChatFormatting.GOLD));
-        tooltipComponents.addAll(ClassRegistry.getMainFromLoc(value.classID()).getSubClassPerks(value.level()));
-        tooltipComponents.addAll(SubClassRegistry.getSubFromLoc(value.subClassID()).getClassPerks(value.level()));
+        tooltipComponents.addAll(IBClassRegistry.getMainFromLoc(value.classID()).getSubClassPerks(value.level()));
+        tooltipComponents.addAll(IBSubClassRegistry.getSubFromLoc(value.subClassID()).getClassPerks(value.level()));
 
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);

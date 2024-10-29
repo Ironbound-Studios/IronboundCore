@@ -4,12 +4,9 @@ import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import org.apache.logging.log4j.util.IndexedReadOnlyStringMap;
 
-import java.lang.ref.SoftReference;
-
-import static com.c446.ironbound_core.registries.AttributeRegistry.FOCUS;
-import static com.c446.ironbound_core.registries.AttributeRegistry.VITALITY;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.FOCUS;
+import static com.c446.ironbound_core.registries.IBAttributeRegistry.VITALITY;
 import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.*;
 import static dev.shadowsoffire.apothic_attributes.api.ALObjects.Attributes.PROT_SHRED;
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
@@ -24,10 +21,10 @@ public class SorcererClass extends IBClass {
         instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("class_mana"), 25, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(FOCUS, new AttributeModifier(Ironbound.prefix("class_focus"), 0.5, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(VITALITY, new AttributeModifier(Ironbound.prefix("class_vitality"), 0.5, AttributeModifier.Operation.ADD_VALUE));
-        instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix("class_cooldown_reduc"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix("class_cooldown_reduc"), 0.025/2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(MANA_REGEN, new AttributeModifier(Ironbound.prefix("class_mana_regen"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix("class_spell_power"), 0.00625, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix("class_cast_time_reduc"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(SPELL_POWER, new AttributeModifier(Ironbound.prefix("class_spell_power"), 0.0125/4, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(CAST_TIME_REDUCTION, new AttributeModifier(Ironbound.prefix("class_cast_time_reduc"), 0.05/2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ATTACK_DAMAGE, new AttributeModifier(Ironbound.prefix("class_attack_damage"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ARROW_VELOCITY, new AttributeModifier(Ironbound.prefix("class_arrow_velocity"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ARMOR_SHRED, new AttributeModifier(Ironbound.prefix("class_armor_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));

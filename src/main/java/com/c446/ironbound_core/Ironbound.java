@@ -1,14 +1,10 @@
 package com.c446.ironbound_core;
 
-import com.c446.ironbound_core.registries.ClassRegistry;
-import com.c446.ironbound_core.registries.ModSetup;
-import com.c446.ironbound_core.registries.SubClassRegistry;
+import com.c446.ironbound_core.registries.IBModSetup;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -28,7 +24,7 @@ public class Ironbound {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
     public Ironbound(IEventBus modEventBus, ModContainer modContainer) {
-        ModSetup.register(modEventBus);
+        IBModSetup.register(modEventBus);
 //        modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
 
         modEventBus.addListener(this::setup);

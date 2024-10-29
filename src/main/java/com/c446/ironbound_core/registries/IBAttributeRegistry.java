@@ -2,7 +2,6 @@ package com.c446.ironbound_core.registries;
 
 import com.c446.ironbound_core.Ironbound;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -18,7 +17,7 @@ import java.util.function.Function;
 
 
 @EventBusSubscriber(modid = Ironbound.MODID, bus = EventBusSubscriber.Bus.MOD)
-public class AttributeRegistry {
+public class IBAttributeRegistry {
     public static final HashMap<DeferredHolder<Attribute, Attribute>, UUID> UUIDS = new HashMap<DeferredHolder<Attribute, Attribute>, UUID>();
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Ironbound.MODID);
 
@@ -35,8 +34,8 @@ public class AttributeRegistry {
 
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
-        event.register(SubClassRegistry.SUBCLASS_REGISTRY);
-        event.register(ClassRegistry.CLASS_REGISTRY);
+        event.register(IBSubClassRegistry.SUBCLASS_REGISTRY);
+        event.register(IBClassRegistry.CLASS_REGISTRY);
     }
 
     @SubscribeEvent
