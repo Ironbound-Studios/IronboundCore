@@ -18,6 +18,11 @@ public abstract class ClassHelper {
         return (stack.has(CLASS_COMPONENT)) ? (stack.get(CLASS_COMPONENT)) : (new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0));
     }
 
+    public static ClassInstance getFirstData(LivingEntity entity) {
+        var stack = collectClassItems(entity).getFirst();
+        return (stack.has(CLASS_COMPONENT)) ? (stack.get(CLASS_COMPONENT)) : (new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0));
+    }
+
     public static List<ClassInstance> safeGetData(LivingEntity living) {
         ArrayList<ClassInstance> list = new ArrayList<ClassInstance>();
         collectClassItems(living).forEach(a->list.add(safeGetData(a)));

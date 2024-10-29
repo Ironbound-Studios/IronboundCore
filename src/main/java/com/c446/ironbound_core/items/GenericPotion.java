@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class GenericPotion extends Item {
     public final int level;
 
-    public GenericPotion(Properties properties, int level) {
+    public GenericPotion(Properties properties, int level, int potionNumber) {
         super(properties.food(new FoodProperties.Builder().alwaysEdible().fast().nutrition(0).saturationModifier(0).build()));
         this.level = level;
     }

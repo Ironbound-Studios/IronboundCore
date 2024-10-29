@@ -3,13 +3,17 @@ package com.c446.ironbound_core.ironbound_classes.sub_classes;
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
 import com.c446.ironbound_core.ironbound_classes.ClassHelper;
+import com.c446.ironbound_core.ironbound_classes.IBClass;
+import com.c446.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
 import com.c446.ironbound_core.registries.*;
+import io.redspace.ironsspellbooks.api.events.ModifySpellLevelEvent;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.effect.MagicMobEffect;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -33,15 +37,24 @@ import static io.redspace.ironsspellbooks.api.magic.MagicData.*;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Ironbound.MODID)
 public class SubClassesEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onInflictPoison(MobEffectEvent.Added event) {
-        if (event.getEffectSource() instanceof LivingEntity entity && ClassHelper.isClass(entity, ClassRegistry.ROGUE_CLASS.get()) && ClassHelper.isSubClass(entity, SubClassRegistry.PLAGUE_MASTER.get())) {
-            if (Objects.requireNonNull(event.getEffectInstance()).getEffect().equals(MobEffects.POISON)) {
-                var instance = event.getEffectInstance();
-                event.getEntity().removeEffect(instance.getEffect());
-                event.getEntity().addEffect(new MobEffectInstance(instance.getEffect(), instance.getDuration(), instance.getAmplifier() + 1));
+    public static void onEffectAdded(MobEffectEvent.Added event) {
+        if (event.getEffectSource() instanceof LivingEntity entity && event.getEffectSource() instanceof LivingEntity source) {
+            if (ClassHelper.isClass(entity, ClassRegistry.ROGUE_CLASS.get()) && ClassHelper.isSubClass(entity, SubClassRegistry.PLAGUE_MASTER.get())) {
+                if (Objects.requireNonNull(event.getEffectInstance()).getEffect().equals(MobEffects.POISON)) {
+                    var instance = event.getEffectInstance();
+                    event.getEntity().removeEffect(instance.getEffect());
+                    event.getEntity().addEffect(new MobEffectInstance(instance.getEffect(), instance.getDuration(), instance.getAmplifier() + 1));
+                }
+            }
+            if (ClassHelper.isSubClass(source, SubClassRegistry.CHRONURGIST.get())) {
+                if (Objects.requireNonNull(event.getEffectInstance()).getEffect() instanceof MagicMobEffect effect) {
+                    entity.removeEffect(event.getEffectInstance().getEffect());
+                    entity.addEffect(new MobEffectInstance(event.getEffectInstance().getEffect(), event.getEffectInstance().getDuration() * IBClass.getMastery(source) / 2));
+                }
             }
         }
     }
+
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onHit(LivingDamageEvent.Pre event) {
@@ -105,14 +118,23 @@ public class SubClassesEvents {
     public static void beginCast(SpellPreCastEvent event) {
         var data = getPlayerMagicData(event.getEntity());
         var caster = event.getEntity();
-        if (ClassHelper.isSubClass(caster, SubClassRegistry.CHRONURGIST.get())) {
-            caster.addEffect(new MobEffectInstance(EffectRegistries.CAST_TIME_REDUC, 5,0));
+        if (TimeWizard.instance.canUseThirdPerk(event.getEntity())&&ClassHelper.isSubClass(caster, SubClassRegistry.CHRONURGIST.get()) && TimeWizard.instance.getReducedCastTimeSpells().contains(SpellRegistry.getSpell(event.getSpellId()).getSpellResource())) {
+            caster.addEffect(new MobEffectInstance(EffectRegistries.CAST_TIME_REDUC, 5, 0));
         }
-        //if (SpellRegistry.getSpell(event.getSpellId())){}
     }
 
     @SubscribeEvent
-    public static void endCast(SpellOnCastEvent event){
-            event.getEntity().removeEffect(EffectRegistries.CAST_TIME_REDUC);
+    public static void onGetLevel(ModifySpellLevelEvent event) {
+        // increase level of TimeWizard compatible spells by correct amount.
+        if (TimeWizard.instance.canUseSecondPerk(event.getEntity()) &&ClassHelper.isSubClass(event.getEntity(), SubClassRegistry.CHRONURGIST.get()) && TimeWizard.instance.getLevelBoostedSpells().contains(event.getSpell().getSpellResource())) {
+            event.addLevels(TimeWizard.instance.getLevelBoost(event.getEntity()));
+        }
     }
+
+    @SubscribeEvent
+    public static void endCast(SpellOnCastEvent event) {
+        event.getEntity().removeEffect(EffectRegistries.CAST_TIME_REDUC);
+    }
+
+
 }
