@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
-public class ClassRegistry {
+public class IBClassRegistry {
     public static final ResourceKey<Registry<IBClass>> CLASS_REGISTRY_KEY = ResourceKey.createRegistryKey(Ironbound.prefix("main_classes_registry_keys"));
     public static final Registry<IBClass> CLASS_REGISTRY = new RegistryBuilder<>(CLASS_REGISTRY_KEY)
             .sync(true)
@@ -31,7 +31,7 @@ public class ClassRegistry {
     public static final DeferredHolder<IBClass, WarlockClass> WARLOCK_CLASS = IRONBOUND_CLASS_REGISTRY.register("warlock_player", () -> WarlockClass.instance);
 
     public static IBClass getMainFromLoc(ResourceLocation loc){
-        for (var key : ClassRegistry.IRONBOUND_CLASS_REGISTRY.getEntries()){
+        for (var key : IBClassRegistry.IRONBOUND_CLASS_REGISTRY.getEntries()){
             if (key.get().classId.equals(loc)){
                 return key.get();
             }

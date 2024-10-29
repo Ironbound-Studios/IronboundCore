@@ -7,7 +7,6 @@ import com.c446.ironbound_core.ironbound_classes.sub_classes.eldritch.EldritchKn
 import com.c446.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.nature.PlagueMaster;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.blood.UndyingSorcerer;
-import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -16,9 +15,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.sql.Time;
-
-public class SubClassRegistry {
+public class IBSubClassRegistry {
 
     //        subClasses.put(EldritchKnight.instance.subClassID, EldritchKnight.instance);
 
@@ -38,7 +35,7 @@ public class SubClassRegistry {
 
 
     public static IBSubClass getSubFromLoc(@NonNull ResourceLocation loc) {
-        for (var key : SubClassRegistry.IRONBOUND_SUBCLASS_REGISTRY.getEntries()) {
+        for (var key : IBSubClassRegistry.IRONBOUND_SUBCLASS_REGISTRY.getEntries()) {
             if (key.get().subClassID.equals(loc)) {
                 return (key.get());
             }

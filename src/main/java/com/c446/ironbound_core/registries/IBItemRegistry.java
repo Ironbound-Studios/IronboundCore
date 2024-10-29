@@ -9,6 +9,7 @@ import com.c446.ironbound_core.items.ClassItem;
 import com.c446.ironbound_core.items.GenericPotion;
 
 import com.c446.ironbound_core.items.SubClassPotion;
+import com.c446.ironbound_core.items.WizardItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -16,7 +17,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static com.c446.ironbound_core.Ironbound.MODID;
 
-public class ItemRegistry {
+public class IBItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, MODID);
 
     public static final DeferredHolder<Item, GenericPotion> UPGRADE_POTION1 = ITEMS.register("upgrade_potion1", ()->new GenericPotion(new Item.Properties(),3,1));
@@ -28,7 +29,7 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, GenericPotion> UPGRADE_POTION7 = ITEMS.register("upgrade_potion7", ()->new GenericPotion(new Item.Properties(),19,7));
     public static final DeferredHolder<Item, GenericPotion> UPGRADE_POTION8 = ITEMS.register("upgrade_potion8", ()->new GenericPotion(new Item.Properties(),20,8));
 
-    public static final DeferredHolder<Item, ClassItem> WIZARD_CURIO = ITEMS.register("wizard_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), WizardClass.instance));
+    public static final DeferredHolder<Item, ClassItem> WIZARD_CURIO = ITEMS.register("wizard_item", () -> new WizardItem(new Item.Properties().stacksTo(1).fireResistant(), WizardClass.instance));
     public static final DeferredHolder<Item, ClassItem> WARLOCK_CURIO = ITEMS.register("warlock_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), WarlockClass.instance));
     public static final DeferredHolder<Item, ClassItem> PRIEST_CURIO = ITEMS.register("priest_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), PriestClass.instance));
     public static final DeferredHolder<Item, ClassItem> SORCERER_CURIO = ITEMS.register("sorcerer_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), SorcererClass.instance));
