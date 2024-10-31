@@ -18,7 +18,7 @@ public abstract class ClassHelper {
         return (stack.has(CLASS_COMPONENT)) ? (stack.get(CLASS_COMPONENT)) : (new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0));
     }
 
-    public static ClassInstance getFirstData(LivingEntity entity) {
+    public static ClassInstance getData(LivingEntity entity) {
         var stack = collectClassItems(entity).getFirst();
         return (stack.has(CLASS_COMPONENT)) ? (stack.get(CLASS_COMPONENT)) : (new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0));
     }

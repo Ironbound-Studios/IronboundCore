@@ -1,6 +1,8 @@
 package com.c446.ironbound_core.util;
 
 
+import com.c446.ironbound_core.registries.IBDamageSourcesReg;
+import dev.shadowsoffire.apothic_attributes.api.ALObjects;
 import io.redspace.ironsspellbooks.damage.DamageSources;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,17 +22,17 @@ import java.util.List;
 public class IronboundCoreEffect extends MobEffect {
     public final List<ItemStack> curativeItems;
 
-    protected double tickDamage=0;
-    protected int interval=0;
+    protected double tickDamage = 0;
+    protected int interval = 0;
     protected ResourceKey<DamageType> type = null;
 
     /**
      * @param damagePerLevel : the amount of damage dealt per tick interval.
-     * @param tickInterval : the cooldown between each interval. minimum is one, ZERO is forbidden !
-     * @param type : the damage type that will be used.
+     * @param tickInterval   : the cooldown between each interval. minimum is one, ZERO is forbidden !
+     * @param type           : the damage type that will be used.
      * @return : returns a new @link{com.c446.ironbound_core.util.IronboundCoreEffect} with the applied change.
      */
-    public IronboundCoreEffect withDamage(double damagePerLevel, int tickInterval, ResourceKey<DamageType> type){
+    public IronboundCoreEffect withDamage(double damagePerLevel, int tickInterval, ResourceKey<DamageType> type) {
         var newEffect = new IronboundCoreEffect(this.getCategory(), this.getColor());
         newEffect.tickDamage = damagePerLevel;
         newEffect.interval = tickInterval;
@@ -44,8 +46,9 @@ public class IronboundCoreEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(@NotNull LivingEntity livingEntity, int amplifier) {
-        if (this.tickDamage != 0 && livingEntity.tickCount % 20 == 0){
-            DamageSources.applyDamage(livingEntity, (float) this.tickDamage, new DamageSource(livingEntity.level().registryAccess().holderOrThrow(type)));
+        if (this.tickDamage != 0 && livingEntity.tickCount % 20 == 0) {
+            livingEntity.hurt(new DamageSource(IBDamageSourcesReg.getFromKey(livingEntity, type)), (float) this.tickDamage)
+            ;
         }
         return super.applyEffectTick(livingEntity, amplifier);
     }

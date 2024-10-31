@@ -13,6 +13,7 @@ import com.c446.ironbound_core.registries.IBSubClassRegistry;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.registries.DataAttachmentRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -75,6 +76,7 @@ public class ServerEvents {
         if (event.entity.getData(STATUS_DATA).getMaxFromType(event.entity, event.status) < event.entity.getData(STATUS_DATA).getCurrentFromType(event.status)) {
             StatusAttachement.handleEffect(event.status, event.entity);
         }
+        System.out.println(event.entity.getData(STATUS_DATA).getCurrentFromType(event.status));
     }
 
     @SubscribeEvent
@@ -120,7 +122,6 @@ public class ServerEvents {
         if (event.getSource().is(Tags.DamageTypes.IS_PHYSICAL)) {
 
             var entity = event.getEntity();
-            var current = entity.getData(STATUS_DATA).getCurrentFromType(StatusTypes.BLEED);
 
             var newData = entity.getData(STATUS_DATA);
             NeoForge.EVENT_BUS.post(new StatusIncreasedEvent(entity, BLEED, (int) (newData.getBleedCurrent() + event.getNewDamage())));

@@ -1,5 +1,6 @@
 package com.c446.ironbound_core.data.attachements;
 
+import io.redspace.ironsspellbooks.spells.holy.HasteSpell;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class GenericAttachement implements INBTSerializable<CompoundTag> {
      public ArrayList<Integer> read_book = new ArrayList<>();
     private boolean isEndlessImmortalityConsumed = false;
+    public int immortalityCooldown;
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
@@ -34,7 +36,6 @@ public class GenericAttachement implements INBTSerializable<CompoundTag> {
         if (book.getItem() instanceof WrittenBookItem bookItem && !read_book.contains(hash)){
             read_book.add((hash));
         }
-
         return false;
     }
 
@@ -49,6 +50,7 @@ public class GenericAttachement implements INBTSerializable<CompoundTag> {
     public boolean isEndlessImmortalityConsumed() {
         return isEndlessImmortalityConsumed;
     }
+
 
     public void setEndlessImmortalityConsumed(boolean endlessImmortalityConsumed) {
         isEndlessImmortalityConsumed = endlessImmortalityConsumed;

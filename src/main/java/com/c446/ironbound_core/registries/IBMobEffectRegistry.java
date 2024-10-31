@@ -2,9 +2,11 @@ package com.c446.ironbound_core.registries;
 
 import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.util.IronboundCoreEffect;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -37,19 +39,20 @@ public class IBMobEffectRegistry {
     public static final DeferredHolder<MobEffect, MobEffect> MADNESS = EFFECTS.register("madness", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(120, 90, 0))
                 .withDamage(2, 20, IBDamageSourcesReg.MADNESS)
-                .addAttributeModifier(ELDRITCH_SPELL_POWER, Ironbound.prefix("madness"), 0.3, ADD_MULTIPLIED_BASE)
+                .addAttributeModifier(ELDRITCH_SPELL_POWER, Ironbound.prefix("madness"), 0.1, ADD_MULTIPLIED_BASE)
                 .addAttributeModifier(HOLY_MAGIC_RESIST, Ironbound.prefix("madness"), -0.1, ADD_MULTIPLIED_BASE)
-                .addAttributeModifier(HOLY_SPELL_POWER, Ironbound.prefix("madness"), -0.1, ADD_MULTIPLIED_TOTAL);
+                .addAttributeModifier(FOCUS, Ironbound.prefix("madness"), -0.05, ADD_MULTIPLIED_BASE);
     });
     public static final DeferredHolder<MobEffect, MobEffect> FERVOR = EFFECTS.register("radiant", () -> {
         return new IronboundCoreEffect(MobEffectCategory.BENEFICIAL, rgbToInt(255, 90, 255))
-                .addAttributeModifier(HOLY_SPELL_POWER, Ironbound.prefix("radiant"), 0.2, ADD_MULTIPLIED_BASE);
+                .addAttributeModifier(HOLY_SPELL_POWER, Ironbound.prefix("radiant"), 0.1, ADD_MULTIPLIED_BASE)
+                .addAttributeModifier(ENDER_MAGIC_RESIST, Ironbound.prefix("radiant"), -0.1, ADD_MULTIPLIED_BASE);
 
     });
     public static final DeferredHolder<MobEffect, MobEffect> HOLLOW = EFFECTS.register("hollow", () -> {
         return new IronboundCoreEffect(MobEffectCategory.BENEFICIAL, rgbToInt(255, 90, 255))
-                .addAttributeModifier(ENDER_SPELL_POWER, Ironbound.prefix("hollow"), 0.2, ADD_MULTIPLIED_BASE)
-                .addAttributeModifier(FOCUS, Ironbound.prefix("hollow"), -0.1, ADD_MULTIPLIED_BASE);
+                .addAttributeModifier(ENDER_SPELL_POWER, Ironbound.prefix("hollow"), 0.1, ADD_MULTIPLIED_BASE)
+                .addAttributeModifier(HOLY_MAGIC_RESIST, Ironbound.prefix("hollow"), -0.1, ADD_MULTIPLIED_BASE);
     });
     public static final DeferredHolder<MobEffect, MobEffect> FROSTED_EFFECT = EFFECTS.register("frozen", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 90, 255))
@@ -65,30 +68,27 @@ public class IBMobEffectRegistry {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(10, 70, 20))
                 .withDamage(1, 20, IBDamageSourcesReg.DECAY);
     });
-    public static final DeferredHolder<MobEffect, MobEffect> NIGHT_BLESSING = EFFECTS.register("night_blessing", () -> {
+
+    public static final DeferredHolder<MobEffect, MobEffect> CAST_TIME_REDUCTION_EFFECT = EFFECTS.register("casting_speed_buff", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 90, 255))
-                .addAttributeModifier(ENDER_SPELL_POWER, Ironbound.prefix("night_blessing"), 0.15, ADD_MULTIPLIED_TOTAL)
-                .addAttributeModifier(ELDRITCH_SPELL_POWER, Ironbound.prefix("night_blessing"), 0.15, ADD_MULTIPLIED_TOTAL);
+                .addAttributeModifier(CAST_TIME_REDUCTION, Ironbound.prefix("cast_time_reduc"), 0.1, ADD_MULTIPLIED_TOTAL);
     });
 
-    public static final DeferredHolder<MobEffect, MobEffect> CAST_TIME_REDUC = EFFECTS.register("cast_time_reduc", () -> {
+    public static final DeferredHolder<MobEffect, MobEffect> COOLDOWN_REDUCTION_EFFECT = EFFECTS.register("cooldown_buff", () -> {
         return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 90, 255))
-                .addAttributeModifier(CAST_TIME_REDUCTION, Ironbound.prefix("cast_time_reduc"), 0.15, ADD_MULTIPLIED_TOTAL);
+                .addAttributeModifier(COOLDOWN_REDUCTION, Ironbound.prefix("cooldown_buff"), 0.1, ADD_MULTIPLIED_TOTAL);
+    });
+
+    public static final DeferredHolder<MobEffect, MobEffect> MANA_REGEN_EFFECT = EFFECTS.register("mana_regen", () -> {
+        return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 90, 255))
+                .addAttributeModifier(MANA_REGEN, Ironbound.prefix("mana_regen"), 0.15, ADD_MULTIPLIED_TOTAL);
     });
 
     public static final DeferredHolder<MobEffect, MobEffect> FLAMMABLE = EFFECTS.register("flammable", () -> {
-        return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 125, 0)) {
-
-        };
+        return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(0, 125, 0))
+                .addAttributeModifier(FIRE_MAGIC_RESIST, Ironbound.prefix("flammable"), -0.1, ADD_MULTIPLIED_TOTAL);
     });
 
 
-    //    public static final DeferredHolder<MobEffect, MobEffect> OVERCHARGED = EFFECTS.register("overcharged", () -> {
-//        return new MobEffect(MobEffectCategory.HARMFUL, rgbToInt(30, 100, 255)) {
-//            public void addAttributeModifiers(@NotNull LivingEntity pLivingEntity, @NotNull AttributeMap pAttributeMap, int pAmplifier) {
-//                this.addAttributeModifier(LIGHTNING_SPELL_POWER, Ironbound.prefix("overcharge"), getDamageBoost(pAmplifier), AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-//                this.addAttributeModifier(LIGHTNING_MAGIC_RESIST, Ironbound.prefix("overcharge"), getResReduction(pAmplifier), ADD_MULTIPLIED_BASE);
-//            }
-//        };
-//    });
+
 }
