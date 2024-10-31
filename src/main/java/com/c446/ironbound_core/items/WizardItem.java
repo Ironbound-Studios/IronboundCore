@@ -1,8 +1,11 @@
 package com.c446.ironbound_core.items;
 
 import com.c446.ironbound_core.Ironbound;
+import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
 import com.c446.ironbound_core.ironbound_classes.main_classes.WizardClass;
+import com.c446.ironbound_core.registries.IBMobEffectRegistry;
+import com.c446.ironbound_core.registries.IBSubClassRegistry;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
@@ -10,6 +13,7 @@ import io.redspace.ironsspellbooks.spells.ender.StarfallSpell;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,7 +37,7 @@ public class WizardItem extends ClassItem {
 
 
         wizardSpecific.put(AttributeRegistry.MANA_REGEN, new AttributeModifier(Ironbound.prefix("extra_class_mana_regen"),
-                Math.min(1,1 / (Math.max(1, entity.getAttributeValue(Attributes.ARMOR) + entity.getAttributeValue(Attributes.ARMOR_TOUGHNESS))/4)), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                Math.min(1, 1 / (Math.max(1, entity.getAttributeValue(Attributes.ARMOR) + entity.getAttributeValue(Attributes.ARMOR_TOUGHNESS)) / 4)), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
         defaultAttributes.putAll(wizardSpecific);
         return defaultAttributes;
@@ -41,15 +45,19 @@ public class WizardItem extends ClassItem {
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() != null){
+        if (slotContext.entity() != null) {
             var entity = slotContext.entity();
-            if (entity.level() instanceof ServerLevel server){
-                //TODO : do "Time-Sensitive" subclass ability.
+            if (entity.tickCount % 5 !=0) {
+                if (!entity.level.isClientSide && ClassHelper.isSubClass(entity, IBSubClassRegistry.CHRONURGIST.get())) {
+                    var day = (entity.level.getGameTime() / (20 * 20 * 60) % 4);
+                    switch ((int) day){
+                        case 1 -> entity.addEffect(new MobEffectInstance(IBMobEffectRegistry.COOLDOWN_REDUCTION_EFFECT, 10, 0, true, true, true));
+                        case 2 -> entity.addEffect(new MobEffectInstance(IBMobEffectRegistry.CAST_TIME_REDUCTION_EFFECT, 10, 0, true, true, true));
+                        case 3 -> entity.addEffect(new MobEffectInstance(IBMobEffectRegistry.MANA_REGEN_EFFECT, 10, 0, true, true, true));
+                    }
+                }
             }
         }
-
-
-
         super.curioTick(slotContext, stack);
     }
 }

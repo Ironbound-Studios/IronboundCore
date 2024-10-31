@@ -1,6 +1,6 @@
 package com.c446.ironbound_core.data.attachements;
 
-import com.c446.ironbound_core.registries.IBMobEffectRegistry;
+import com.c446.ironbound_core.registries.IBAttachmentRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -10,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import static com.c446.ironbound_core.registries.IBAttachmentRegistry.STATUS_DATA;
 import static com.c446.ironbound_core.registries.IBAttributeRegistry.*;
-import static com.c446.ironbound_core.registries.IBMobEffectRegistry.HOLLOW;
-import static com.c446.ironbound_core.registries.IBMobEffectRegistry.MADNESS;
+import static com.c446.ironbound_core.registries.IBMobEffectRegistry.*;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH;
 
 public class StatusAttachement implements INBTSerializable<CompoundTag> {
@@ -36,36 +36,50 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
 
     public static void handleEffect(StatusTypes type, LivingEntity livingEntity) {
         System.out.println("handleEffect activated");
+
         switch (type) {
             case MADNESS -> {
                 if (livingEntity.hasEffect(MADNESS)) {
-                    int mult = Objects.requireNonNull(livingEntity.getEffect(MADNESS)).getAmplifier();
+                    int currentLevel = Objects.requireNonNull(livingEntity.getEffect(MADNESS)).getAmplifier();
+                    int newLevel = (currentLevel > 5) ? 5 : currentLevel + 1;
+                    int newDuration = 60 * 20 * newLevel;
+
                     livingEntity.removeEffect(MADNESS);
-                    livingEntity.addEffect(new MobEffectInstance(MADNESS, 60 * 20 * mult, mult + 1), livingEntity);
+                    livingEntity.addEffect(new MobEffectInstance(MADNESS, newDuration, newLevel), livingEntity);
                 } else {
                     livingEntity.addEffect(new MobEffectInstance(MADNESS, 20 * 60, 0));
                 }
             }
             case FERVOR -> {
-                if (livingEntity.hasEffect(IBMobEffectRegistry.FERVOR)) {
-                    int mult = Objects.requireNonNull(livingEntity.getEffect(IBMobEffectRegistry.FERVOR)).getAmplifier();
-                    livingEntity.forceAddEffect(new MobEffectInstance(IBMobEffectRegistry.FERVOR, 60 * 20 * mult, mult + 1), livingEntity);
+                if (livingEntity.hasEffect(FERVOR)) {
+                    int currentLevel = Objects.requireNonNull(livingEntity.getEffect(FERVOR)).getAmplifier();
+                    int newLevel = (currentLevel > 5) ? 5 : currentLevel + 1;
+                    int newDuration = 60 * 20 * newLevel;
+
+                    livingEntity.removeEffect(FERVOR);
+                    livingEntity.addEffect(new MobEffectInstance(FERVOR, newDuration, newLevel), livingEntity);
                 } else {
-                    livingEntity.addEffect(new MobEffectInstance(IBMobEffectRegistry.FERVOR, 20 * 60, 0));
+                    livingEntity.addEffect(new MobEffectInstance(FERVOR, 20 * 60, 0));
                 }
             }
             case HOLLOW -> {
-                if (livingEntity.hasEffect(IBMobEffectRegistry.HOLLOW)) {
-                    livingEntity.forceAddEffect(new MobEffectInstance(IBMobEffectRegistry.HOLLOW, 60 * 20 * Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier(), Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier() + 1), livingEntity);
+                if (livingEntity.hasEffect(HOLLOW)) {
+                    int currentLevel = Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier();
+                    int newLevel = (currentLevel > 5) ? 5 : currentLevel + 1;
+                    int newDuration = 60 * 20 * newLevel;
+
+                    livingEntity.removeEffect(HOLLOW);
+                    livingEntity.addEffect(new MobEffectInstance(HOLLOW, newDuration, newLevel), livingEntity);
                 } else {
-                    livingEntity.addEffect(new MobEffectInstance(IBMobEffectRegistry.HOLLOW, 20 * 60, 0));
+                    livingEntity.addEffect(new MobEffectInstance(HOLLOW, 20 * 60, 0));
                 }
             }
             default -> {
             }
-
-
         }
+        var data = livingEntity.getData(STATUS_DATA);
+        data.setCurrentFromType(type, 0);
+        livingEntity.setData(STATUS_DATA, data);
     }
 
     public void addTo(StatusTypes type, int amount) {
@@ -109,24 +123,11 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("bleed", this.bleedCurrent);
-        tag.putInt("fervor", this.fervorCurrent);
-        tag.putInt("frost", this.frostCurrent);
-        tag.putInt("hollow", this.hollowCurrent);
-        tag.putInt("madness", this.madnessCurrent);
-        tag.putInt("overload", this.overChargedCurrent);
-        return null;
+        return new CompoundTag();
     }
 
     @Override
     public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag tag) {
-        this.bleedCurrent = tag.getInt("bleed");
-        this.fervorCurrent = tag.getInt("fervor");
-        this.frostCurrent = tag.getInt("frost");
-        this.hollowCurrent = tag.getInt("hollow");
-        this.madnessCurrent = tag.getInt("madness");
-        this.overChargedCurrent = tag.getInt("overload");
     }
 
     public int getCurrentFromType(StatusTypes types) {
@@ -142,8 +143,8 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
         };
     }
 
-    public int setCurrentFromType(StatusTypes types, int amount) {
-        return switch (types) {
+    public void setCurrentFromType(StatusTypes types, int amount) {
+        switch (types) {
             case HOLLOW -> this.hollowCurrent = amount;
             case FERVOR -> this.fervorCurrent = amount;
             case MADNESS -> this.madnessCurrent = amount;
@@ -151,21 +152,22 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
             case FROST -> this.frostCurrent = amount;
             case WEAK_MIND -> this.soulShatteredCurrent = amount;
             case OVERCHARGED -> this.overChargedCurrent = amount;
-            default -> -1;
-        };
+            default -> {
+            }
+        }
     }
 
 
     public double getMaxFromType(LivingEntity entity, StatusTypes types) {
         var x = switch (types) {
             case HOLLOW, FERVOR, WEAK_MIND ->
-                    150+ (entity.getAttributeValue(FOCUS) + entity.getAttributeValue(INSIGHT));
+                    300 + (entity.getAttributeValue(FOCUS) + entity.getAttributeValue(INSIGHT));
             case BLEED, FROST, OVERCHARGED ->
-                    20 + (entity.getAttributeValue(MAX_HEALTH) + 20 * entity.getAttributeValue(VITALITY));
+                    300 + (entity.getAttributeValue(MAX_HEALTH) + 20 * entity.getAttributeValue(VITALITY));
             case MADNESS -> 200 + 15 * entity.getAttributeValue(FOCUS) - 5 * entity.getAttributeValue(INSIGHT);
             default -> -1;
         };
-        System.out.println("getMaxFromType : " + types.name().toLowerCase() + " " + "x");
+        System.out.println("getMaxFromType : " + types.name().toLowerCase() + " " + x);
         return x;
     }
 }

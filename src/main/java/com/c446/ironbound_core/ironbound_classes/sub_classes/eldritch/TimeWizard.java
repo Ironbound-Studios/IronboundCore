@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.util.List;
 
+import static com.c446.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
 
 public class TimeWizard extends IBSubClass {
@@ -46,12 +47,20 @@ public class TimeWizard extends IBSubClass {
      * @param entity : the entity to get the total boost for
      * @return
      */
-    public int getLevelBoost(LivingEntity entity){
-        return (int) (Math.floor((ClassHelper.safeGetData(ClassHelper.collectClassItems(entity).getFirst()).level())/10D) + getBookWyrm(entity) + getBookWyrm(entity));
+    public int getLevelBoost(LivingEntity entity) {
+        return (int) (Math.floor(ClassHelper.getLevel(entity) / 10D) + getBookWyrm(entity));
     }
 
-    public double getBookWyrm(LivingEntity entity){
-        return Base2Log.log2(entity.getData(IBAttachmentRegistry.GENERIC_DATA).read_book.size()) /2D;
+    public double getBookWyrm(LivingEntity entity) {
+        if (entity.hasData(GENERIC_DATA)) {
+            var data = entity.getData(GENERIC_DATA).read_book.size();
+            if (data >= 150) {
+                return 2D;
+            } else if (data >= 50) {
+                return 1D;
+            }
+        }
+        return 0D;
     }
 
 
@@ -65,7 +74,6 @@ public class TimeWizard extends IBSubClass {
                 ResourceLocation.fromNamespaceAndPath("ironbounds_artefacts", "time_stop")
         );
     }
-
 
     public TimeWizard(ResourceLocation subClassID, ResourceLocation school, IBClass... parents) {
         super(subClassID, school, parents);

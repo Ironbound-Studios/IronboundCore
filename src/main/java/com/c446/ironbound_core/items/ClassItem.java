@@ -26,6 +26,8 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.*;
 
+import static com.c446.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
+
 public class ClassItem extends Item implements ICurioItem {
     public final IBClass ibClass;
 
@@ -34,6 +36,15 @@ public class ClassItem extends Item implements ICurioItem {
         this.ibClass = ibClass;
     }
 
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        if (slotContext.entity().hasData(GENERIC_DATA)) {
+            slotContext.entity().getData(GENERIC_DATA).immortalityCooldown -= 1;
+
+        }
+
+        ICurioItem.super.curioTick(slotContext, stack);
+    }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
@@ -79,7 +90,7 @@ public class ClassItem extends Item implements ICurioItem {
         var value = ClassHelper.safeGetData(stack);
         tooltipComponents.add(Component.translatable("classes.ironbound_core." + ResourceLocation.parse(value.classID()).getPath(), value.level()).withStyle(ChatFormatting.GOLD));
         if (tooltipFlag.hasShiftDown()) {
-            tooltipComponents.add(Component.translatable("classes.ironbound_core." + ResourceLocation.parse(value.classID()).getPath()+ "_name").withStyle(ChatFormatting.DARK_PURPLE).append(Component.translatable("classes.ironbound_core.class_ability").withStyle(ChatFormatting.DARK_PURPLE)));
+            tooltipComponents.add(Component.translatable("classes.ironbound_core." + ResourceLocation.parse(value.classID()).getPath() + "_name").withStyle(ChatFormatting.DARK_PURPLE).append(Component.translatable("classes.ironbound_core.class_ability").withStyle(ChatFormatting.DARK_PURPLE)));
             tooltipComponents.addAll(IBClassRegistry.getMainFromLoc(value.classID()).getSubClassPerks(value.level()));
             if (ClassHelper.hasSubClass(stack)) {
 

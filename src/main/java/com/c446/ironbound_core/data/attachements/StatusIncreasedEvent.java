@@ -1,5 +1,6 @@
 package com.c446.ironbound_core.data.attachements;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
@@ -14,6 +15,8 @@ public class StatusIncreasedEvent extends Event {
             this.entity = thing;
             this.amount = amount;
         }
+
+
 
         public static class Pre extends StatusIncreasedEvent implements ICancellableEvent {
             public Pre(LivingEntity thing, StatusTypes statuses, int amount) {

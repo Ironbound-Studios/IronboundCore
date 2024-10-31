@@ -4,6 +4,7 @@ import com.c446.ironbound_core.Ironbound;
 import com.c446.ironbound_core.data.attachements.StatusTypes;
 import com.c446.ironbound_core.ironbound_classes.ClassHelper;
 import com.c446.ironbound_core.ironbound_classes.IBClass;
+import com.c446.ironbound_core.ironbound_classes.IBSubClass;
 import com.c446.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
 import com.c446.ironbound_core.registries.*;
 import io.redspace.ironsspellbooks.api.events.ChangeManaEvent;
@@ -18,11 +19,14 @@ import io.redspace.ironsspellbooks.entity.mobs.SummonedZombie;
 import io.redspace.ironsspellbooks.registries.DataAttachmentRegistry;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.EventPriority;
@@ -37,33 +41,32 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import java.util.List;
 import java.util.Objects;
 
+import static com.c446.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
 import static com.c446.ironbound_core.registries.IBAttributeRegistry.INSIGHT;
 import static io.redspace.ironsspellbooks.api.magic.MagicData.*;
 import static io.redspace.ironsspellbooks.registries.DataAttachmentRegistry.MAGIC_DATA;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Ironbound.MODID)
 public class SubClassesEvents {
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent
     public static void onEffectAdded(MobEffectEvent.Added event) {
-        if (event.getEffectSource() instanceof LivingEntity entity && event.getEffectSource() instanceof LivingEntity source) {
-            if (ClassHelper.isClass(entity, IBClassRegistry.ROGUE_CLASS.get()) && ClassHelper.isSubClass(entity, IBSubClassRegistry.PLAGUE_MASTER.get())) {
-                if (Objects.requireNonNull(event.getEffectInstance()).getEffect().equals(MobEffects.POISON)) {
-                    var instance = event.getEffectInstance();
-                    event.getEntity().removeEffect(instance.getEffect());
-                    event.getEntity().addEffect(new MobEffectInstance(instance.getEffect(), instance.getDuration(), instance.getAmplifier() + 1));
+        var instance = event.getEffectInstance();
+        System.out.println("potion thing triggered");
+
+        if (event.getEntity() instanceof LivingEntity entity && instance != null) {
+            if ((instance.getEffect().equals(MobEffects.WITHER) || instance.getEffect().equals(MobEffects.POISON))) {
+                if (ClassHelper.isSubClass(event.getEntity().getLastAttacker(), IBSubClassRegistry.PLAGUE_MASTER.get())) {
+                    instance.amplifier += (int) (ClassHelper.getLevel(event.getEntity().getLastAttacker()) / 10D) + 1;
                 }
+            } else if (ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && ClassHelper.getData(event.getEntity()).level() >= 18 && instance.getEffect().value().isBeneficial()) {
+                instance.duration = (int) (instance.duration * (ClassHelper.getLevel(entity) / 10D + 0.5D));
             }
-            if (ClassHelper.isSubClass(source, IBSubClassRegistry.CHRONURGIST.get())) {
-                if (Objects.requireNonNull(event.getEffectInstance()).getEffect() instanceof MagicMobEffect effect) {
-                    entity.removeEffect(event.getEffectInstance().getEffect());
-                    entity.addEffect(new MobEffectInstance(event.getEffectInstance().getEffect(), event.getEffectInstance().getDuration() * IBClass.getMastery(source) / 2));
-                }
-            }
+
         }
     }
 
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent
     public static void onHit(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof LivingEntity living) {
             var attacked = event.getEntity();
@@ -132,7 +135,8 @@ public class SubClassesEvents {
     @SubscribeEvent
     public static void onGetLevel(ModifySpellLevelEvent event) {
         // increase level of TimeWizard compatible spells by correct amount.
-        if (TimeWizard.instance.canUseSecondPerk(event.getEntity()) && ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && TimeWizard.instance.getLevelBoostedSpells().contains(event.getSpell().getSpellResource())) {
+        System.out.println("level modified");
+        if (ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && ClassHelper.getLevel(event.getEntity()) > 12 && TimeWizard.instance.getLevelBoostedSpells().contains(event.getSpell().getSpellResource())) {
             event.addLevels(TimeWizard.instance.getLevelBoost(event.getEntity()));
         }
     }
@@ -156,20 +160,30 @@ public class SubClassesEvents {
     @SubscribeEvent
     public static void onSummonDeath(LivingDeathEvent event) {
 
-        if (event.getEntity() instanceof SummonedZombie mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.UNDYING.get()) ) {
+        if (event.getEntity() instanceof Player player) {
+            if (ClassHelper.isSubClass(player, IBSubClassRegistry.UNDYING.get()) && !player.getData(GENERIC_DATA).isEndlessImmortalityConsumed()) {
+                event.setCanceled(true);
+                player.getData(GENERIC_DATA).setEndlessImmortalityConsumed(true);
+                player.getData(GENERIC_DATA).immortalityCooldown = 20*20*60;
+            }
+        }
+
+        if (event.getEntity() instanceof SummonedZombie mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.UNDYING.get())) {
             var owner = mob.getSummoner();
-            if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2){
+            if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2) {
                 owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
                 event.setCanceled(true);
                 mob.heal(mob.getMaxHealth() / 2);
             }
         } else if (event.getEntity() instanceof SummonedSkeleton mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.UNDYING.get())) {
             var owner = mob.getSummoner();
-            if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2){
+            if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2) {
                 owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
                 event.setCanceled(true);
                 mob.heal(mob.getMaxHealth() / 2);
             }
         }
     }
+
+
 }
