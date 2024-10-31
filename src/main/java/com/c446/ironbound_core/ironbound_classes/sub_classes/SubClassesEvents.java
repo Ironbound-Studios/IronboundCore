@@ -67,11 +67,20 @@ public class SubClassesEvents {
     public static void onHit(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof LivingEntity living) {
             var attacked = event.getEntity();
+            var attacker = event.getSource().getEntity();
 
             if (IBSubClassRegistry.PLAGUE_MASTER.get().canUseSecondPerk(living) && living.getAttributeValue(INSIGHT) > attacked.level().random.nextIntBetweenInclusive(1, 20)) {
                 attacked.addEffect(new MobEffectInstance(MobEffects.WITHER, 10, 2));
             } else if (IBSubClassRegistry.ELDRITCH_KNIGHT.get().canUseSecondPerk(living) && living.getAttributeValue(INSIGHT) > attacked.level().random.nextIntBetweenInclusive(1, 20)) {
                 attacked.getData(IBAttachmentRegistry.STATUS_DATA).addTo(StatusTypes.MADNESS, (int) (living.getAttributeValue(INSIGHT) / 2));
+            } else if (ClassHelper.isClass((LivingEntity) attacker, IBClassRegistry.HUNTER_CLASS.get())) {
+                // Hunter's Mark
+                attacked.addEffect(new MobEffectInstance(MobEffects.GLOWING, 20, 1, true, true, true));
+                if (attacked.hasEffect(MobEffects.INVISIBILITY) || attacked.hasEffect(MobEffectRegistry.TRUE_INVISIBILITY))
+                {
+                    attacked.removeEffect(MobEffects.INVISIBILITY);
+                    attacked.removeEffect(MobEffectRegistry.TRUE_INVISIBILITY);
+                }
             }
         }
     }
