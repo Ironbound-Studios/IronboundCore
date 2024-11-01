@@ -250,7 +250,7 @@ artifacts {
 }
 
 
-/*publishing {
+publishing {
     tasks.publish.dependsOn 'build'
     publications {
 
@@ -258,20 +258,13 @@ artifacts {
             artifactId project.archivesBaseName
             artifact jar
             artifact sourcesJar
-            artifact apiJar
         }
     }
 
     repositories {
         maven {
-            name = "redspace"
-
-            if (project.version.endsWith('-SNAPSHOT')) {
-                url uri("https://code.redspace.io/snapshots")
-            } else {
-                url uri("https://code.redspace.io/releases")
-            }
-
+            name = "github"
+            url = "https://maven.pkg.github.com/Ironbound-Studios/IronboundCore"
             credentials {
                 username = System.getenv("MAVEN_USER")
                 password = System.getenv("MAVEN_PASS")
@@ -282,7 +275,7 @@ artifacts {
         }
     }
 }
-*/
+
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
