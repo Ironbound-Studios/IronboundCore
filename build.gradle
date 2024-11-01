@@ -266,8 +266,8 @@ publishing {
             name = "github"
             url = "https://maven.pkg.github.com/Ironbound-Studios/IronboundCore"
             credentials {
-                username = System.getenv("MAVEN_USER")
-                password = System.getenv("MAVEN_PASS")
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
             }
             authentication {
                 basic(BasicAuthentication)
