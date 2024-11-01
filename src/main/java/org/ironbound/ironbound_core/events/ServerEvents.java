@@ -6,6 +6,7 @@ import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -16,6 +17,7 @@ import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.ironbound.ironbound_core.data.attachements.StatusAttachement;
 import org.ironbound.ironbound_core.data.attachements.StatusIncreasedEvent;
@@ -30,6 +32,7 @@ import java.util.Objects;
 
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.ENDER;
 import static io.redspace.ironsspellbooks.api.registry.SchoolRegistry.HOLY;
+import static io.redspace.ironsspellbooks.damage.ISSDamageTypes.BLOOD_MAGIC;
 import static org.ironbound.ironbound_core.data.attachements.StatusTypes.*;
 import static org.ironbound.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
 import static org.ironbound.ironbound_core.registries.IBAttachmentRegistry.STATUS_DATA;
@@ -115,7 +118,7 @@ public class ServerEvents {
             event.getEntity().setData(STATUS_DATA, new StatusAttachement());
         }
 
-        if (event.getSource().is(Tags.DamageTypes.IS_PHYSICAL)) {
+        if (event.getSource().is(Tags.DamageTypes.IS_PHYSICAL) || event.getSource().typeHolder() == IBDamageSourcesReg.getFromKey(event.getEntity(), BLOOD_MAGIC)) {
 
             var entity = event.getEntity();
 
@@ -123,9 +126,19 @@ public class ServerEvents {
             NeoForge.EVENT_BUS.post(new StatusIncreasedEvent(entity, BLEED, (int) (newData.getBleedCurrent() + event.getNewDamage())));
 
             entity.setData(STATUS_DATA, newData);
+        } else if (Objects.equals(event.getSource().typeHolder(), IBDamageSourcesReg.getFromKey(event.getEntity(), BLOOD_MAGIC))) {
+            event.getEntity().getActiveEffects().forEach(a -> {
+                if (a.getEffect().equals(MobEffects.POISON)) {
+                    StatusAttachement.increaseEffectAmpAndLength(IBMobEffectRegistry.ROT, event.getEntity());
+                }
+            });
         }
     }
 
+    @SubscribeEvent
+    public static void onServerStart(ServerStartedEvent event) {
+        ServerConfigs.IMBUE_WHITELIST_ITEMS.add(IBItemRegistry.WARLOCK_CURIO.get());
+    }
 
     @SubscribeEvent
     public static void onClone(PlayerEvent.Clone event) {

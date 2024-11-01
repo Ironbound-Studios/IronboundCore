@@ -17,6 +17,16 @@ import java.util.List;
 
 public abstract class IBClass {
     public static IBClass instance;
+    public final ResourceLocation classId;
+    public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
+
+    protected IBClass(ResourceLocation classId) {
+        this.classId = classId;
+    }
+
+    public static int getMastery(LivingEntity player) {
+        return (int) (Math.floor(ClassHelper.safeGetData(ClassHelper.collectClassItems(player).getFirst()).level() / 5.0D) + 2);
+    }
 
     public List<Component> getClassPerks(int level, ItemStack stack) {
         return new ArrayList<>();
@@ -38,19 +48,6 @@ public abstract class IBClass {
             list.add(Component.translatable(IBClassRegistry.getMainFromLoc(getResource()).classId.getPath() + ".ability.3").withStyle(ChatFormatting.GRAY));
         }
         return list;
-    }
-
-
-    public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
-
-    public final ResourceLocation classId;
-
-    public static int getMastery(LivingEntity player) {
-        return (int) (Math.floor(ClassHelper.safeGetData(ClassHelper.collectClassItems(player).getFirst()).level() / 5.0D) + 2);
-    }
-
-    protected IBClass(ResourceLocation classId) {
-        this.classId = classId;
     }
 
     public void addAttribute(Holder<Attribute> attribute, AttributeModifier modifier) {

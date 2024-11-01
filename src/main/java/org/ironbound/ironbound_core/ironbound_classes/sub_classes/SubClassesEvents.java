@@ -1,15 +1,17 @@
 package org.ironbound.ironbound_core.ironbound_classes.sub_classes;
 
-import io.redspace.ironsspellbooks.api.events.ChangeManaEvent;
-import io.redspace.ironsspellbooks.api.events.ModifySpellLevelEvent;
-import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
-import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
+import io.redspace.ironsspellbooks.api.events.*;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.damage.ISSDamageTypes;
+import io.redspace.ironsspellbooks.effect.MagicMobEffect;
 import io.redspace.ironsspellbooks.entity.mobs.SummonedSkeleton;
 import io.redspace.ironsspellbooks.entity.mobs.SummonedZombie;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -28,10 +30,7 @@ import org.ironbound.ironbound_core.Ironbound;
 import org.ironbound.ironbound_core.data.attachements.StatusTypes;
 import org.ironbound.ironbound_core.ironbound_classes.ClassHelper;
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
-import org.ironbound.ironbound_core.registries.IBAttachmentRegistry;
-import org.ironbound.ironbound_core.registries.IBClassRegistry;
-import org.ironbound.ironbound_core.registries.IBMobEffectRegistry;
-import org.ironbound.ironbound_core.registries.IBSubClassRegistry;
+import org.ironbound.ironbound_core.registries.*;
 
 import java.util.List;
 
@@ -45,18 +44,16 @@ public class SubClassesEvents {
     @SubscribeEvent
     public static void onEffectAdded(MobEffectEvent.Added event) {
         var instance = event.getEffectInstance();
-        System.out.println("potion thing triggered");
-
         if (event.getEntity() instanceof LivingEntity entity && instance != null) {
             if ((instance.getEffect().equals(MobEffects.WITHER) || instance.getEffect().equals(MobEffects.POISON))) {
                 if (ClassHelper.isSubClass(event.getEntity().getLastAttacker(), IBSubClassRegistry.PLAGUE_MASTER.get())) {
                     //this will cause the game to crash in some cases! so we pray that never happens!
+                    // Bah ! how could it ever happen !!! It's also clearly a *feature* *v*
                     instance.amplifier += (int) (ClassHelper.getLevel(event.getEntity().getLastAttacker()) / 10D) + 1;
                 }
             } else if (ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && ClassHelper.getData(event.getEntity()).level() >= 18 && instance.getEffect().value().isBeneficial()) {
                 instance.duration = (int) (instance.duration * (ClassHelper.getLevel(entity) / 10D + 0.5D));
             }
-
         }
     }
 
@@ -130,7 +127,7 @@ public class SubClassesEvents {
     public static void onGetLevel(ModifySpellLevelEvent event) {
         // increase level of TimeWizard compatible spells by correct amount.
         System.out.println("level modified");
-        if (ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && ClassHelper.getLevel(event.getEntity()) > 12 && TimeWizard.instance.getLevelBoostedSpells().contains(event.getSpell().getSpellResource())) {
+        if (ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && ClassHelper.getLevel(event.getEntity()) > 12 && TimeWizard.instance.getBoostedSpells().contains(event.getSpell().getSpellResource())) {
             event.addLevels(TimeWizard.instance.getLevelBoost(event.getEntity()));
         }
     }
@@ -148,6 +145,16 @@ public class SubClassesEvents {
         if (spellCost >= 1000) {
             spellCost *= 0.25F;
             event.setNewMana(event.getNewMana() + spellCost);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSpellDamage(SpellDamageEvent event) {
+        if (event.getSpellDamageSource().getEntity() instanceof LivingEntity source) {
+            if (ClassHelper.isSubClass(source, IBSubClassRegistry.FIRE_WARLOCK.get())) {
+                event.getEntity().invulnerableTime = 0;
+                event.getEntity().hurt(new DamageSource(IBDamageSourcesReg.getFromKey(event.getEntity(), ISSDamageTypes.FIRE_MAGIC)),  event.getOriginalAmount() * 0.1F);
+            }
         }
     }
 

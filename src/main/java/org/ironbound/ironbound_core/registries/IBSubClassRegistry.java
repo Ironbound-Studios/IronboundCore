@@ -13,6 +13,7 @@ import org.ironbound.ironbound_core.ironbound_classes.sub_classes.NoneSubClass;
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.blood.UndyingSorcerer;
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.eldritch.EldritchKnight;
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
+import org.ironbound.ironbound_core.ironbound_classes.sub_classes.fire.FireWarlock;
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.nature.PlagueMaster;
 
 public class IBSubClassRegistry {
@@ -32,6 +33,7 @@ public class IBSubClassRegistry {
     public static final DeferredHolder<IBSubClass, PlagueMaster> PLAGUE_MASTER = IRONBOUND_SUBCLASS_REGISTRY.register("plague_master", () -> PlagueMaster.instance);
     public static final DeferredHolder<IBSubClass, UndyingSorcerer> UNDYING = IRONBOUND_SUBCLASS_REGISTRY.register("undying", () -> UndyingSorcerer.instance);
     public static final DeferredHolder<IBSubClass, TimeWizard> CHRONURGIST = IRONBOUND_SUBCLASS_REGISTRY.register("chronomancer", () -> TimeWizard.instance);
+    public static final DeferredHolder<IBSubClass, FireWarlock> FIRE_WARLOCK = IRONBOUND_SUBCLASS_REGISTRY.register("fire_warlock", () -> FireWarlock.instance);
 
 
     public static IBSubClass getSubFromLoc(@NonNull ResourceLocation loc) {

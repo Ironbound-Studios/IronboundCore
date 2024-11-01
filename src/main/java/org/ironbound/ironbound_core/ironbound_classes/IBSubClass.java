@@ -18,9 +18,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class IBSubClass {
     public final ArrayList<IBClass> parents = new ArrayList<>();
-    public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
     public final ResourceLocation subClassID;
     public final ResourceLocation school;
+    public HashMap<Holder<Attribute>, AttributeModifier> attributes = new HashMap<>();
+
+    public IBSubClass(ResourceLocation subClassID, ResourceLocation school, IBClass... parents) {
+        this.subClassID = subClassID;
+        this.school = school;
+        this.parents.addAll(Arrays.asList(parents));
+    }
+
+    public IBSubClass(ResourceLocation subClassID, ResourceLocation school, IBClass parent) {
+        this.subClassID = subClassID;
+        this.school = school;
+        this.parents.add(parent);
+    }
 
     public List<Component> getClassPerks(int level) {
         ArrayList<Component> list = new ArrayList<>();
@@ -34,6 +46,20 @@ public abstract class IBSubClass {
             list.add(Component.translatable(IBSubClassRegistry.getSubFromLoc(getResource()).subClassID.getPath() + ".ability.3").withStyle(ChatFormatting.GRAY));
         }
         return list;
+    }
+
+    /**
+     * @return returns the list of spells that the class will boost. For a blood sorcerer, stuff like Blood Needles, or other would be present.
+     */
+    public List<ResourceLocation> getInnateSpells() {
+        return List.of();
+    }
+
+    /**
+     * @return returns the list of spells that the class will boost. For a Healing Domain Clerc, stuff like Heal, Greater Heal, or Fortification would have been found.
+     */
+    public List<ResourceLocation> getBoostedSpells() {
+        return List.of();
     }
 
     public boolean canUseFirstPerk(LivingEntity entity) {
@@ -67,19 +93,6 @@ public abstract class IBSubClass {
             }
         });
         return ClassHelper.isSubClass(entity, this) && bool.get();
-    }
-
-
-    public IBSubClass(ResourceLocation subClassID, ResourceLocation school, IBClass... parents) {
-        this.subClassID = subClassID;
-        this.school = school;
-        this.parents.addAll(Arrays.asList(parents));
-    }
-
-    public IBSubClass(ResourceLocation subClassID, ResourceLocation school, IBClass parent) {
-        this.subClassID = subClassID;
-        this.school = school;
-        this.parents.add(parent);
     }
 
     public void addAttribute(Holder<Attribute> attribute, AttributeModifier modifier) {

@@ -26,6 +26,14 @@ public class ShadowStalker extends IBSubClass {
         instance.addAttribute(ALObjects.Attributes.DODGE_CHANCE, new AttributeModifier(Ironbound.prefix("ender_rogue_dodge"), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
+    public ShadowStalker(ResourceLocation subClassID, ResourceLocation type, IBClass... parents) {
+        super(subClassID, type, parents);
+    }
+
+    public ShadowStalker(IBClass parent, ResourceLocation type, ResourceLocation subClassID) {
+        super(subClassID, type, parent);
+    }
+
     @Override
     public List<Component> getClassPerks(int level) {
         ArrayList<Component> list = new ArrayList<>();
@@ -39,14 +47,6 @@ public class ShadowStalker extends IBSubClass {
             list.add(Component.translatable(instance.subClassID.getPath() + ".ability.3"));
         }
         return list;
-    }
-
-    public ShadowStalker(ResourceLocation subClassID, ResourceLocation type, IBClass... parents) {
-        super(subClassID, type, parents);
-    }
-
-    public ShadowStalker(IBClass parent, ResourceLocation type, ResourceLocation subClassID) {
-        super(subClassID, type, parent);
     }
 
     @Override

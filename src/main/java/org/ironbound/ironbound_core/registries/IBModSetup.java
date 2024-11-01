@@ -15,6 +15,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import static org.ironbound.ironbound_core.Ironbound.MODID;
 
 public class IBModSetup {
+    public IBModSetup(IEventBus modEventBus, ModContainer modContainer) {
+        IBModSetup.register(modEventBus);
+        //modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
+
+        modEventBus.addListener(this::setup);
+    }
+
     public static void register(IEventBus eventBus) {
         IBItemRegistry.ITEMS.register(eventBus);
         IBAttributeRegistry.ATTRIBUTES.register(eventBus);
@@ -25,13 +32,6 @@ public class IBModSetup {
         ModCreativeTabReg.CREATIVE_MOD_TABS.register(eventBus);
         IBComponentRegistry.register(eventBus);
         //ModIngredientTypeRegistry.INGREDIENT_TYPES.register(eventBus);
-    }
-
-    public IBModSetup(IEventBus modEventBus, ModContainer modContainer) {
-        IBModSetup.register(modEventBus);
-        //modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
-
-        modEventBus.addListener(this::setup);
     }
 
     public static ResourceLocation prefix(String path) {
@@ -52,14 +52,19 @@ public class IBModSetup {
                         .title(Component.translatable("tab.ironbound.main"))
                         .icon(() -> new ItemStack(io.redspace.ironsspellbooks.registries.ItemRegistry.RAW_MITHRIL))
                         .displayItems((enabledFeatures, entries) -> {
-                            entries.accept(new ItemStack(IBItemRegistry.FIGHTER_CURIO));
-                            entries.accept(new ItemStack(IBItemRegistry.HUNTER_CURIO));
-                            entries.accept(new ItemStack(IBItemRegistry.ROGUE_CURIO));
-                            entries.accept(new ItemStack(IBItemRegistry.RANGER_CURIO));
+                            //entries.accept(new ItemStack(IBItemRegistry.FIGHTER_CURIO));
+                            //entries.accept(new ItemStack(IBItemRegistry.HUNTER_CURIO));
+                            //entries.accept(new ItemStack(IBItemRegistry.ROGUE_CURIO));
+                            //entries.accept(new ItemStack(IBItemRegistry.RANGER_CURIO));
                             entries.accept(new ItemStack(IBItemRegistry.SORCERER_CURIO));
                             entries.accept(new ItemStack(IBItemRegistry.PRIEST_CURIO));
                             entries.accept(new ItemStack(IBItemRegistry.WARLOCK_CURIO));
                             entries.accept(new ItemStack(IBItemRegistry.WIZARD_CURIO));
+
+                            entries.accept(new ItemStack(IBItemRegistry.ABYSS_HEART));
+                            entries.accept(new ItemStack(IBItemRegistry.OLD_BLOOD_VIAL));
+                            entries.accept(new ItemStack(IBItemRegistry.FIRE_HEART));
+
                             entries.accept(new ItemStack(IBItemRegistry.UPGRADE_POTION1));
                             entries.accept(new ItemStack(IBItemRegistry.UPGRADE_POTION2));
                             entries.accept(new ItemStack(IBItemRegistry.UPGRADE_POTION3));

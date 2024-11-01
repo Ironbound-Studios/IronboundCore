@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubClassPotion extends Item {
-
-
     private final ArrayList<IBSubClass> subClasses = new ArrayList<>();
 
     public SubClassPotion(Properties properties, IBSubClass... subClasses) {
@@ -33,16 +31,13 @@ public class SubClassPotion extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
         ClassHelper.collectClassItems(player).forEach(a -> {
-
-
             for (IBSubClass subClass : this.subClasses) {
                 if (subClass.parents.contains(IBClassRegistry.getMainFromLoc(ClassHelper.safeGetData(a).classID())) && ClassHelper.safeGetData(a).subClassID().equals(NoneSubClass.instance.subClassID.toString())) {
 
                     ClassHelper.setSubClass(a, subClass);
+                    player.getItemInHand(usedHand).consume(1, player);
                 }
             }
-
-
         });
         return super.use(level, player, usedHand);
     }

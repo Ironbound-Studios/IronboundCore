@@ -1,7 +1,10 @@
 package org.ironbound.ironbound_core.data.attachements;
 
+import dev.shadowsoffire.apothic_attributes.api.ALObjects;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -33,45 +36,35 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
     }
 
 
-    public static void handleEffect(StatusTypes type, LivingEntity livingEntity) {
-        System.out.println("handleEffect activated");
+    public static void increaseEffectAmpAndLength(Holder<MobEffect> effect, LivingEntity livingEntity) {
+        if (livingEntity.hasEffect(effect)) {
+            int currentLevel = Objects.requireNonNull(livingEntity.getEffect(effect)).getAmplifier();
+            int newLevel = (currentLevel > 5) ? 5 : currentLevel + 1;
+            int newDuration = 60 * 20 * newLevel;
 
+            livingEntity.removeEffect(effect);
+            livingEntity.addEffect(new MobEffectInstance(effect, newDuration, newLevel), livingEntity);
+        } else {
+            livingEntity.addEffect(new MobEffectInstance(effect, 20 * 60, 0));
+        }
+    }
+
+    public static void handleEffect(StatusTypes type, LivingEntity livingEntity) {
         switch (type) {
             case MADNESS -> {
-                if (livingEntity.hasEffect(MADNESS)) {
-                    int currentLevel = Objects.requireNonNull(livingEntity.getEffect(MADNESS)).getAmplifier();
-                    int newLevel = (currentLevel > 5) ? 5 : currentLevel + 1;
-                    int newDuration = 60 * 20 * newLevel;
-
-                    livingEntity.removeEffect(MADNESS);
-                    livingEntity.addEffect(new MobEffectInstance(MADNESS, newDuration, newLevel), livingEntity);
-                } else {
-                    livingEntity.addEffect(new MobEffectInstance(MADNESS, 20 * 60, 0));
-                }
+                increaseEffectAmpAndLength(MADNESS, livingEntity);
             }
             case FERVOR -> {
-                if (livingEntity.hasEffect(FERVOR)) {
-                    int currentLevel = Objects.requireNonNull(livingEntity.getEffect(FERVOR)).getAmplifier();
-                    int newLevel = (currentLevel > 5) ? 5 : currentLevel + 1;
-                    int newDuration = 60 * 20 * newLevel;
-
-                    livingEntity.removeEffect(FERVOR);
-                    livingEntity.addEffect(new MobEffectInstance(FERVOR, newDuration, newLevel), livingEntity);
-                } else {
-                    livingEntity.addEffect(new MobEffectInstance(FERVOR, 20 * 60, 0));
-                }
+                increaseEffectAmpAndLength(FERVOR, livingEntity);
             }
             case HOLLOW -> {
-                if (livingEntity.hasEffect(HOLLOW)) {
-                    int currentLevel = Objects.requireNonNull(livingEntity.getEffect(HOLLOW)).getAmplifier();
-                    int newLevel = (currentLevel > 5) ? 5 : currentLevel + 1;
-                    int newDuration = 60 * 20 * newLevel;
-
-                    livingEntity.removeEffect(HOLLOW);
-                    livingEntity.addEffect(new MobEffectInstance(HOLLOW, newDuration, newLevel), livingEntity);
-                } else {
-                    livingEntity.addEffect(new MobEffectInstance(HOLLOW, 20 * 60, 0));
-                }
+                increaseEffectAmpAndLength(HOLLOW, livingEntity);
+            }
+            case FROST -> {
+                increaseEffectAmpAndLength(FROSTED_EFFECT, livingEntity);
+            }
+            case BLEED -> {
+                increaseEffectAmpAndLength(ALObjects.MobEffects.BLEEDING, livingEntity);
             }
             default -> {
             }
@@ -79,6 +72,22 @@ public class StatusAttachement implements INBTSerializable<CompoundTag> {
         var data = livingEntity.getData(STATUS_DATA);
         data.setCurrentFromType(type, 0);
         livingEntity.setData(STATUS_DATA, data);
+    }
+
+    public static void tick(LivingEntity entity) {
+        if (entity.hasData(STATUS_DATA)) {
+            var data = entity.getData(STATUS_DATA);
+            data.hollowCurrent -= (int) (data.hollowCurrent / 100D);
+            data.madnessCurrent -= (int) (data.madnessCurrent / 100D);
+            data.fervorCurrent -= (int) (data.fervorCurrent / 100D);
+            data.bleedCurrent -= (int) (data.bleedCurrent / 100D);
+            data.frostCurrent -= (int) (data.frostCurrent / 100D);
+            entity.setData(STATUS_DATA, data);
+        }
+        if (entity.hasData(GENERIC_DATA)) {
+            var data = entity.getData(GENERIC_DATA);
+
+        }
     }
 
     public void addTo(StatusTypes type, int amount) {

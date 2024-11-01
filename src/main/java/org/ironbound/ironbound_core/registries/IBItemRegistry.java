@@ -30,7 +30,7 @@ public class IBItemRegistry {
     public static final DeferredHolder<Item, GenericPotion> UPGRADE_POTION8 = ITEMS.register("upgrade_potion8", () -> new GenericPotion(new Item.Properties(), 20, 8));
 
     public static final DeferredHolder<Item, ClassItem> WIZARD_CURIO = ITEMS.register("wizard_item", () -> new WizardItem(new Item.Properties().stacksTo(1).fireResistant(), WizardClass.instance));
-    public static final DeferredHolder<Item, ClassItem> WARLOCK_CURIO = ITEMS.register("warlock_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), WarlockClass.instance));
+    public static final DeferredHolder<Item, ClassItem> WARLOCK_CURIO = ITEMS.register("warlock_item", () -> new WarlockItem(new Item.Properties().stacksTo(1).fireResistant(), WarlockClass.instance));
     public static final DeferredHolder<Item, ClassItem> PRIEST_CURIO = ITEMS.register("priest_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), PriestClass.instance));
     public static final DeferredHolder<Item, ClassItem> SORCERER_CURIO = ITEMS.register("sorcerer_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), SorcererClass.instance));
     public static final DeferredHolder<Item, ClassItem> FIGHTER_CURIO = ITEMS.register("fighter_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), FighterClass.instance));

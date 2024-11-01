@@ -14,16 +14,6 @@ import static org.ironbound.ironbound_core.registries.IBAttributeRegistry.VITALI
 public class RogueClass extends IBClass {
     public static final RogueClass instance = new RogueClass(Ironbound.prefix("rogue_class"));
 
-    protected RogueClass(ResourceLocation classId) {
-        super(classId);
-    }
-
-    @Override
-    public ResourceLocation getResource() {
-        return this.classId;
-
-    }
-
     static {
         instance.addAttribute(MAX_HEALTH, new AttributeModifier(Ironbound.prefix("class_hp"), 5, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("class_mana"), 10, AttributeModifier.Operation.ADD_VALUE));
@@ -41,5 +31,15 @@ public class RogueClass extends IBClass {
         instance.addAttribute(ARROW_VELOCITY, new AttributeModifier(Ironbound.prefix("class_arrow_velocity"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(ARMOR_SHRED, new AttributeModifier(Ironbound.prefix("class_armor_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         instance.addAttribute(PROT_SHRED, new AttributeModifier(Ironbound.prefix("class_protection_shred"), 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+    }
+
+    protected RogueClass(ResourceLocation classId) {
+        super(classId);
+    }
+
+    @Override
+    public ResourceLocation getResource() {
+        return this.classId;
+
     }
 }

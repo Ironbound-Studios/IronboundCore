@@ -13,7 +13,8 @@ import org.ironbound.ironbound_core.ironbound_classes.main_classes.WizardClass;
 
 import java.util.List;
 
-import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.*;
+import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.COOLDOWN_REDUCTION;
+import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.ELDRITCH_SPELL_POWER;
 import static org.ironbound.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
 
 public class TimeWizard extends IBSubClass {
@@ -21,16 +22,22 @@ public class TimeWizard extends IBSubClass {
 
 
     static {
-        instance.addAttribute(MAX_MANA, new AttributeModifier(Ironbound.prefix("astrologer_mana"), 15, AttributeModifier.Operation.ADD_VALUE));
         instance.addAttribute(ELDRITCH_SPELL_POWER, new AttributeModifier(Ironbound.prefix("astrologer_eldritch_power"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        instance.addAttribute(ENDER_SPELL_POWER, new AttributeModifier(Ironbound.prefix("astrologer_ender_power"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        instance.addAttribute(COOLDOWN_REDUCTION, new AttributeModifier(Ironbound.prefix("astrologer_ender_power"), 0.0125, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
 
-    /**
-     * @return returns the list of spells that the class will boost. For a Healing Domain Clerc, stuff like Heal, Greater Heal, or Fortification would have been found.
-     */
-    public List<ResourceLocation> getLevelBoostedSpells() {
+    public TimeWizard(ResourceLocation subClassID, ResourceLocation school, IBClass... parents) {
+        super(subClassID, school, parents);
+    }
+
+
+    public TimeWizard(ResourceLocation subClassID, ResourceLocation school, IBClass parent) {
+        super(subClassID, school, parent);
+    }
+
+    @Override
+    public List<ResourceLocation> getBoostedSpells() {
         return List.of(
                 SpellRegistry.SLOW_SPELL.get().getSpellResource(),
                 SpellRegistry.HASTE_SPELL.get().getSpellResource(),
@@ -39,7 +46,6 @@ public class TimeWizard extends IBSubClass {
                 ResourceLocation.fromNamespaceAndPath("ironbounds_artefacts", "time_stop")
         );
     }
-
 
     /**
      * @param entity : the entity to get the total boost for
@@ -61,7 +67,6 @@ public class TimeWizard extends IBSubClass {
         return 0D;
     }
 
-
     public List<ResourceLocation> getReducedCastTimeSpells() {
         return List.of(
                 SpellRegistry.SLOW_SPELL.get().getSpellResource(),
@@ -72,15 +77,6 @@ public class TimeWizard extends IBSubClass {
                 ResourceLocation.fromNamespaceAndPath("ironbounds_artefacts", "time_stop")
         );
     }
-
-    public TimeWizard(ResourceLocation subClassID, ResourceLocation school, IBClass... parents) {
-        super(subClassID, school, parents);
-    }
-
-    public TimeWizard(ResourceLocation subClassID, ResourceLocation school, IBClass parent) {
-        super(subClassID, school, parent);
-    }
-
 
     @Override
     public ResourceLocation getResource() {

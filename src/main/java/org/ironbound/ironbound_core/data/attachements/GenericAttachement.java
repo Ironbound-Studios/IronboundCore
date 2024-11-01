@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class GenericAttachement implements INBTSerializable<CompoundTag> {
     public ArrayList<Integer> read_book = new ArrayList<>();
-    private boolean isEndlessImmortalityConsumed = false;
     public int immortalityCooldown;
+    private boolean isEndlessImmortalityConsumed = false;
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {

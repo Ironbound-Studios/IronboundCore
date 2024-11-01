@@ -18,15 +18,15 @@ public class Ironbound {
     private static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "ironbound_core" namespace
 
-    public static ResourceLocation prefix(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
-    }
-
     public Ironbound(IEventBus modEventBus, ModContainer modContainer) {
         IBModSetup.register(modEventBus);
 //        modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
 
         modEventBus.addListener(this::setup);
+    }
+
+    public static ResourceLocation prefix(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
     public void setup(final FMLCommonSetupEvent event) {

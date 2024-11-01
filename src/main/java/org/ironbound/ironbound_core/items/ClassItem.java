@@ -37,6 +37,14 @@ public class ClassItem extends Item implements ICurioItem {
         this.ibClass = ibClass;
     }
 
+    public static ClassInstance getClassComponent(ItemStack stack) {
+        if (stack.has(IBComponentRegistry.CLASS_COMPONENT)) {
+            return stack.get(IBComponentRegistry.CLASS_COMPONENT);
+        } else {
+            return new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0);
+        }
+    }
+
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         if (slotContext.entity().hasData(GENERIC_DATA)) {
@@ -57,14 +65,6 @@ public class ClassItem extends Item implements ICurioItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
 
-    public static ClassInstance getClassComponent(ItemStack stack) {
-        if (stack.has(IBComponentRegistry.CLASS_COMPONENT)) {
-            return stack.get(IBComponentRegistry.CLASS_COMPONENT);
-        } else {
-            return new ClassInstance(NoneClass.instance.classId.toString(), NoneSubClass.instance.subClassID.toString(), 0);
-        }
-    }
-
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
         var map = ICurioItem.defaultInstance.getAttributeModifiers(slotContext, id);
@@ -77,7 +77,6 @@ public class ClassItem extends Item implements ICurioItem {
         }
         if (!(subClass instanceof NoneSubClass)) {
             map.putAll(subClass.getAttributesForLevel(level));
-            ;
         }
         return map;
     }

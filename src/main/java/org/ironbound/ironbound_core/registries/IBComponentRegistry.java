@@ -14,6 +14,7 @@ import static org.ironbound.ironbound_core.data.components.ClassDataCodec.CLASS_
 
 public class IBComponentRegistry {
     private static final DeferredRegister.DataComponents COMPONENTS = DeferredRegister.createDataComponents(IronsSpellbooks.MODID);
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ClassInstance>> CLASS_COMPONENT = register("class_instance_component", (builder) -> builder.persistent(BASIC_CLASS_CODEC).networkSynchronized(CLASS_CODEC).cacheEncoding());
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String pName, UnaryOperator<DataComponentType.Builder<T>> pBuilder) {
         return COMPONENTS.register(pName, () -> pBuilder.apply(DataComponentType.builder()).build());
@@ -22,8 +23,5 @@ public class IBComponentRegistry {
     public static void register(IEventBus eventBus) {
         COMPONENTS.register(eventBus);
     }
-
-
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ClassInstance>> CLASS_COMPONENT = register("class_instance_component", (builder) -> builder.persistent(BASIC_CLASS_CODEC).networkSynchronized(CLASS_CODEC).cacheEncoding());
     //(builder) -> builder.persistent(AffinityData.CODEC).networkSynchronized(AffinityData.STREAM_CODEC).cacheEncoding()
 }

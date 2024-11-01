@@ -24,6 +24,15 @@ public class IronboundCoreEffect extends MobEffect {
     protected int interval = 0;
     protected ResourceKey<DamageType> type = null;
 
+    public IronboundCoreEffect(MobEffectCategory effectCategory, int color) {
+        this(effectCategory, color, List.of());
+    }
+
+    public IronboundCoreEffect(MobEffectCategory type, int color, List<ItemStack> curativeItems) {
+        super(type, color);
+        this.curativeItems = curativeItems;
+    }
+
     /**
      * @param damagePerLevel : the amount of damage dealt per tick interval.
      * @param tickInterval   : the cooldown between each interval. minimum is one, ZERO is forbidden !
@@ -38,10 +47,6 @@ public class IronboundCoreEffect extends MobEffect {
         return newEffect;
     }
 
-    public IronboundCoreEffect(MobEffectCategory effectCategory, int color) {
-        this(effectCategory, color, List.of());
-    }
-
     @Override
     public boolean applyEffectTick(@NotNull LivingEntity livingEntity, int amplifier) {
         if (this.tickDamage != 0 && livingEntity.tickCount % 20 == 0) {
@@ -49,11 +54,6 @@ public class IronboundCoreEffect extends MobEffect {
             ;
         }
         return super.applyEffectTick(livingEntity, amplifier);
-    }
-
-    public IronboundCoreEffect(MobEffectCategory type, int color, List<ItemStack> curativeItems) {
-        super(type, color);
-        this.curativeItems = curativeItems;
     }
 
 }
