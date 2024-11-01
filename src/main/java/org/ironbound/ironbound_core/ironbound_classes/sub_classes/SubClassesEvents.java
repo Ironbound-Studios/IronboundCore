@@ -1,26 +1,15 @@
-package com.c446.ironbound_core.ironbound_classes.sub_classes;
+package org.ironbound.ironbound_core.ironbound_classes.sub_classes;
 
-import com.c446.ironbound_core.Ironbound;
-import com.c446.ironbound_core.data.attachements.StatusTypes;
-import com.c446.ironbound_core.ironbound_classes.ClassHelper;
-import com.c446.ironbound_core.ironbound_classes.IBClass;
-import com.c446.ironbound_core.ironbound_classes.IBSubClass;
-import com.c446.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
-import com.c446.ironbound_core.registries.*;
 import io.redspace.ironsspellbooks.api.events.ChangeManaEvent;
 import io.redspace.ironsspellbooks.api.events.ModifySpellLevelEvent;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
-import io.redspace.ironsspellbooks.effect.MagicMobEffect;
 import io.redspace.ironsspellbooks.entity.mobs.SummonedSkeleton;
 import io.redspace.ironsspellbooks.entity.mobs.SummonedZombie;
-import io.redspace.ironsspellbooks.registries.DataAttachmentRegistry;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -29,24 +18,27 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.ironbound.ironbound_core.Ironbound;
+import org.ironbound.ironbound_core.data.attachements.StatusTypes;
+import org.ironbound.ironbound_core.ironbound_classes.ClassHelper;
+import org.ironbound.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
+import org.ironbound.ironbound_core.registries.IBAttachmentRegistry;
+import org.ironbound.ironbound_core.registries.IBClassRegistry;
+import org.ironbound.ironbound_core.registries.IBMobEffectRegistry;
+import org.ironbound.ironbound_core.registries.IBSubClassRegistry;
 
 import java.util.List;
-import java.util.Objects;
 
-import static com.c446.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
-import static com.c446.ironbound_core.registries.IBAttributeRegistry.INSIGHT;
-import static io.redspace.ironsspellbooks.api.magic.MagicData.*;
+import static io.redspace.ironsspellbooks.api.magic.MagicData.getPlayerMagicData;
 import static io.redspace.ironsspellbooks.registries.DataAttachmentRegistry.MAGIC_DATA;
+import static org.ironbound.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
+import static org.ironbound.ironbound_core.registries.IBAttributeRegistry.INSIGHT;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Ironbound.MODID)
 public class SubClassesEvents {
@@ -58,6 +50,7 @@ public class SubClassesEvents {
         if (event.getEntity() instanceof LivingEntity entity && instance != null) {
             if ((instance.getEffect().equals(MobEffects.WITHER) || instance.getEffect().equals(MobEffects.POISON))) {
                 if (ClassHelper.isSubClass(event.getEntity().getLastAttacker(), IBSubClassRegistry.PLAGUE_MASTER.get())) {
+                    //this will cause the game to crash in some cases! so we pray that never happens!
                     instance.amplifier += (int) (ClassHelper.getLevel(event.getEntity().getLastAttacker()) / 10D) + 1;
                 }
             } else if (ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && ClassHelper.getData(event.getEntity()).level() >= 18 && instance.getEffect().value().isBeneficial()) {
@@ -81,11 +74,9 @@ public class SubClassesEvents {
             } else if (ClassHelper.isClass((LivingEntity) attacker, IBClassRegistry.HUNTER_CLASS.get())) {
                 // Hunter's Mark
                 attacked.addEffect(new MobEffectInstance(MobEffects.GLOWING, 20, 1, true, true, true));
-                if (attacked.hasEffect(MobEffects.INVISIBILITY) || attacked.hasEffect(MobEffectRegistry.TRUE_INVISIBILITY))
-                {
+                if (attacked.hasEffect(MobEffects.INVISIBILITY) || attacked.hasEffect(MobEffectRegistry.TRUE_INVISIBILITY)) {
                     attacked.removeEffect(MobEffects.INVISIBILITY);
                     attacked.removeEffect(MobEffectRegistry.TRUE_INVISIBILITY);
-                    attacked.addEffect(new MobEffectInstance(IBMobEffectRegistry.REVEALING, 20));
                 }
             }
         }
@@ -117,9 +108,8 @@ public class SubClassesEvents {
 
             for (Entity target : targets) {
                 if (target instanceof LivingEntity livingTarget && livingTarget.hasEffect(IBMobEffectRegistry.MADNESS)) {
-                    //player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).addOrUpdateTransientModifier(new AttributeModifier(Ironbound.prefix("eldritch_knight_eldr_power"), 0.2, AttributeModifier.Operation.ADD_VALUE));
-                    //System.out.println("Attributes: " + player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).getAttribute());
-                    player.addEffect(new MobEffectInstance(IBMobEffectRegistry.REVEL, ((LivingEntity) target).getEffect(MobEffects.DARKNESS).duration, 0));
+                    player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).addOrUpdateTransientModifier(new AttributeModifier(Ironbound.prefix("eldritch_knight_eldr_power"), 0.2, AttributeModifier.Operation.ADD_VALUE));
+                    System.out.println("Attributes: " + player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).getAttribute());
                 }
             }
         }
@@ -168,7 +158,7 @@ public class SubClassesEvents {
             if (ClassHelper.isSubClass(player, IBSubClassRegistry.UNDYING.get()) && !player.getData(GENERIC_DATA).isEndlessImmortalityConsumed()) {
                 event.setCanceled(true);
                 player.getData(GENERIC_DATA).setEndlessImmortalityConsumed(true);
-                player.getData(GENERIC_DATA).immortalityCooldown = 20*20*60;
+                player.getData(GENERIC_DATA).immortalityCooldown = 20 * 20 * 60;
             }
         }
 
@@ -185,22 +175,6 @@ public class SubClassesEvents {
                 owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
                 event.setCanceled(true);
                 mob.heal(mob.getMaxHealth() / 2);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onEntityTickEvent(EntityTickEvent.Pre event)
-    {
-        Entity entity = event.getEntity();
-
-        // Hunter ability
-        if (entity instanceof LivingEntity livingEntity)
-        {
-            if (livingEntity.hasEffect(IBMobEffectRegistry.REVEALING))
-            {
-                livingEntity.removeEffect(MobEffects.INVISIBILITY);
-                livingEntity.removeEffect(MobEffectRegistry.TRUE_INVISIBILITY);
             }
         }
     }
