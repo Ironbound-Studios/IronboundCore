@@ -128,7 +128,7 @@ public class SubClassesEvents {
         var data = getPlayerMagicData(event.getEntity());
         var caster = event.getEntity();
         if (TimeWizard.instance.canUseThirdPerk(event.getEntity()) && ClassHelper.isSubClass(caster, IBSubClassRegistry.CHRONURGIST.get()) && TimeWizard.instance.getReducedCastTimeSpells().contains(SpellRegistry.getSpell(event.getSpellId()).getSpellResource())) {
-            caster.addEffect(new MobEffectInstance(IBMobEffectRegistry.CAST_TIME_REDUC, 5, 0));
+            caster.addEffect(new MobEffectInstance(IBMobEffectRegistry.CAST_TIME_REDUCTION_EFFECT, 5, 0));
         }
     }
 
@@ -143,7 +143,7 @@ public class SubClassesEvents {
 
     @SubscribeEvent
     public static void endCast(SpellOnCastEvent event) {
-        event.getEntity().removeEffect(IBMobEffectRegistry.CAST_TIME_REDUC);
+        event.getEntity().removeEffect(IBMobEffectRegistry.CAST_TIME_REDUCTION_EFFECT);
     }
 
 
