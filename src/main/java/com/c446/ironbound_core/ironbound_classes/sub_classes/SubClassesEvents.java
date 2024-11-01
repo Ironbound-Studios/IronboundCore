@@ -34,8 +34,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;
@@ -83,6 +85,7 @@ public class SubClassesEvents {
                 {
                     attacked.removeEffect(MobEffects.INVISIBILITY);
                     attacked.removeEffect(MobEffectRegistry.TRUE_INVISIBILITY);
+                    attacked.addEffect(new MobEffectInstance(IBMobEffectRegistry.REVEALING, 20));
                 }
             }
         }
@@ -114,8 +117,9 @@ public class SubClassesEvents {
 
             for (Entity target : targets) {
                 if (target instanceof LivingEntity livingTarget && livingTarget.hasEffect(IBMobEffectRegistry.MADNESS)) {
-                    player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).addOrUpdateTransientModifier(new AttributeModifier(Ironbound.prefix("eldritch_knight_eldr_power"), 0.2, AttributeModifier.Operation.ADD_VALUE));
-                    System.out.println("Attributes: " + player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).getAttribute());
+                    //player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).addOrUpdateTransientModifier(new AttributeModifier(Ironbound.prefix("eldritch_knight_eldr_power"), 0.2, AttributeModifier.Operation.ADD_VALUE));
+                    //System.out.println("Attributes: " + player.getAttribute(AttributeRegistry.ELDRITCH_SPELL_POWER).getAttribute());
+                    player.addEffect(new MobEffectInstance(IBMobEffectRegistry.REVEL, ((LivingEntity) target).getEffect(MobEffects.DARKNESS).duration, 0));
                 }
             }
         }
@@ -181,6 +185,22 @@ public class SubClassesEvents {
                 owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
                 event.setCanceled(true);
                 mob.heal(mob.getMaxHealth() / 2);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityTickEvent(EntityTickEvent.Pre event)
+    {
+        Entity entity = event.getEntity();
+
+        // Hunter ability
+        if (entity instanceof LivingEntity livingEntity)
+        {
+            if (livingEntity.hasEffect(IBMobEffectRegistry.REVEALING))
+            {
+                livingEntity.removeEffect(MobEffects.INVISIBILITY);
+                livingEntity.removeEffect(MobEffectRegistry.TRUE_INVISIBILITY);
             }
         }
     }

@@ -89,6 +89,12 @@ public class IBMobEffectRegistry {
                 .addAttributeModifier(FIRE_MAGIC_RESIST, Ironbound.prefix("flammable"), -0.1, ADD_MULTIPLIED_TOTAL);
     });
 
+    // Effect just for making sure entities can't receive invis if applied
+    public static final DeferredHolder<MobEffect, MobEffect> REVEALING = EFFECTS.register("revealing", () ->
+    {
+        return new IronboundCoreEffect(MobEffectCategory.HARMFUL, rgbToInt(227, 208, 70));
+    });
+
 
 
 }
