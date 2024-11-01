@@ -4,7 +4,8 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version '7.0.145'
 }
-
+group = mod_group_id
+version = mod_version
 base {
     archivesName = modId
 }
@@ -178,7 +179,7 @@ tasks.withType(ProcessResources).configureEach {
             player_animator_version: player_animator_version,
             mod_id                 : modId,
             mod_name               : modName,
-            mod_version            : modVersion,
+            mod_version            : version,
             mod_license            : modLicense,
             mod_authors            : modAuthors,
             mod_credits            : modCredits,
@@ -199,8 +200,8 @@ jar {
                 "Specification-Title"     : modName,
                 "Specification-Vendor"    : modAuthors,
                 "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Version"  : project.version,
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : archiveVersion,
                 "Implementation-Vendor"   : modAuthors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
         ])
