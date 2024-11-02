@@ -3,6 +3,7 @@ package org.ironbound.ironbound_core.events;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.config.ServerConfigs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,6 +26,8 @@ import org.ironbound.ironbound_core.ironbound_classes.ClassHelper;
 import org.ironbound.ironbound_core.ironbound_classes.ClassInstance;
 import org.ironbound.ironbound_core.items.GenericPotion;
 import org.ironbound.ironbound_core.registries.IBClassRegistry;
+import org.ironbound.ironbound_core.registries.IBDamageSourcesReg;
+import org.ironbound.ironbound_core.registries.IBItemRegistry;
 import org.ironbound.ironbound_core.registries.IBMobEffectRegistry;
 import top.theillusivec4.curios.api.CuriosApi;
 

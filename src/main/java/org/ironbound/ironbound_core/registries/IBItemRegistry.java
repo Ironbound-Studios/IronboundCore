@@ -1,6 +1,7 @@
 package org.ironbound.ironbound_core.registries;
 
 
+import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -10,10 +11,7 @@ import org.ironbound.ironbound_core.ironbound_classes.sub_classes.blood.UndyingS
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.eldritch.EldritchKnight;
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.eldritch.TimeWizard;
 import org.ironbound.ironbound_core.ironbound_classes.sub_classes.nature.PlagueMaster;
-import org.ironbound.ironbound_core.items.ClassItem;
-import org.ironbound.ironbound_core.items.GenericPotion;
-import org.ironbound.ironbound_core.items.SubClassPotion;
-import org.ironbound.ironbound_core.items.WizardItem;
+import org.ironbound.ironbound_core.items.*;
 
 import static org.ironbound.ironbound_core.Ironbound.MODID;
 
@@ -33,11 +31,10 @@ public class IBItemRegistry {
     public static final DeferredHolder<Item, ClassItem> WARLOCK_CURIO = ITEMS.register("warlock_item", () -> new WarlockItem(new Item.Properties().stacksTo(1).fireResistant(), WarlockClass.instance));
     public static final DeferredHolder<Item, ClassItem> PRIEST_CURIO = ITEMS.register("priest_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), PriestClass.instance));
     public static final DeferredHolder<Item, ClassItem> SORCERER_CURIO = ITEMS.register("sorcerer_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), SorcererClass.instance));
-    public static final DeferredHolder<Item, ClassItem> FIGHTER_CURIO = ITEMS.register("fighter_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), FighterClass.instance));
-    public static final DeferredHolder<Item, ClassItem> ROGUE_CURIO = ITEMS.register("rogue_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), RogueClass.instance));
-    public static final DeferredHolder<Item, ClassItem> RANGER_CURIO = ITEMS.register("ranger_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), RangerClass.instance));
-    public static final DeferredHolder<Item, ClassItem> HUNTER_CURIO = ITEMS.register("hunter_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), HunterClass.instance));
-
+    //public static final DeferredHolder<Item, ClassItem> FIGHTER_CURIO = ITEMS.register("fighter_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), FighterClass.instance));
+    //public static final DeferredHolder<Item, ClassItem> ROGUE_CURIO = ITEMS.register("rogue_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), RogueClass.instance));
+    //public static final DeferredHolder<Item, ClassItem> RANGER_CURIO = ITEMS.register("ranger_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), RangerClass.instance));
+    //public static final DeferredHolder<Item, ClassItem> HUNTER_CURIO = ITEMS.register("hunter_item", () -> new ClassItem(new Item.Properties().stacksTo(1).fireResistant(), HunterClass.instance));
 
     public static final DeferredHolder<Item, SubClassPotion> ABYSS_HEART = ITEMS.register("eldritch_subclass_potion", () -> new SubClassPotion(new Item.Properties().stacksTo(1).fireResistant(), EldritchKnight.instance));
     public static final DeferredHolder<Item, SubClassPotion> OLD_BLOOD_VIAL = ITEMS.register("blood_subclass_potion", () -> new SubClassPotion(new Item.Properties().stacksTo(1).fireResistant(), UndyingSorcerer.instance));

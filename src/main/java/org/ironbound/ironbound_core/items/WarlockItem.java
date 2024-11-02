@@ -7,6 +7,7 @@ import io.redspace.ironsspellbooks.api.spells.SpellData;
 import io.redspace.ironsspellbooks.api.spells.SpellSlot;
 import io.redspace.ironsspellbooks.capabilities.magic.SpellContainer;
 import io.redspace.ironsspellbooks.registries.ComponentRegistry;
+import io.redspace.ironsspellbooks.spells.ender.EchoingStrikesSpell;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -42,7 +43,7 @@ public class WarlockItem extends ClassItem {
         }
         for (int i = 0; i < spellList.size(); i++) {
             var spellI = SpellRegistry.getSpell(spellList.get(i));
-            slots[i] = new SpellSlot(new SpellData(spellI, (int) ((ClassHelper.getLevel(slotContext.entity()) / 20F) * spellI.getMaxLevel()), true), i);
+            slots[i] = new SpellSlot(new SpellData(spellI, Math.max(1,(int) ((ClassHelper.getLevel(slotContext.entity()) / 20F) * spellI.getMaxLevel())), true), i);
         }
 
 
@@ -53,7 +54,7 @@ public class WarlockItem extends ClassItem {
         }
         copy.set(ComponentRegistry.SPELL_CONTAINER, new SpellContainer(spellList.size() + 1, true, false, false, slots));
 
-
+        EchoingStrikesSpell
         CuriosApi.getCuriosInventory(slotContext.entity()).ifPresent(a -> a.setEquippedCurio(slotContext.identifier(), slotContext.index(), copy));
     }
 

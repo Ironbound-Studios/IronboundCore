@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH;
+import static org.ironbound.ironbound_core.registries.IBAttachmentRegistry.GENERIC_DATA;
 import static org.ironbound.ironbound_core.registries.IBAttachmentRegistry.STATUS_DATA;
 import static org.ironbound.ironbound_core.registries.IBAttributeRegistry.*;
 import static org.ironbound.ironbound_core.registries.IBMobEffectRegistry.*;
