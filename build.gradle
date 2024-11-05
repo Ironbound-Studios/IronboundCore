@@ -136,7 +136,8 @@ dependencies {
     implementation("io.redspace:irons_spellbooks:${irons_spells_version}")
 
     // IB CORE DEPS
-    implementation("com.github.IGN-Styly:Arcanus:1.21.1-0.3.6.1a")
+    //implementation("com.github.IGN-Styly:Arcanus:1.21.1-0.3.6.1a")
+
 
     testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
