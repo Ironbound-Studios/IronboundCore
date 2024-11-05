@@ -70,7 +70,7 @@ public class SubClassesEvents {
                 attacked.getData(IBAttachmentRegistry.STATUS_DATA).addTo(StatusTypes.MADNESS, (int) (living.getAttributeValue(INSIGHT) / 2));
             } else if (ClassHelper.isClass((LivingEntity) attacker, IBClassRegistry.HUNTER_CLASS.get())) {
                 // Hunter's Mark
-                attacked.addEffect(new MobEffectInstance(MobEffects.GLOWING, 20, 1, true, true, true));
+                attacked.addEffect(new MobEffectInstance(IBMobEffectRegistry.REVEALING, 20, 1, true, true, true));
                 if (attacked.hasEffect(MobEffects.INVISIBILITY) || attacked.hasEffect(MobEffectRegistry.TRUE_INVISIBILITY)) {
                     attacked.removeEffect(MobEffects.INVISIBILITY);
                     attacked.removeEffect(MobEffectRegistry.TRUE_INVISIBILITY);
@@ -78,7 +78,6 @@ public class SubClassesEvents {
             }
         }
     }
-
 
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Pre event) {
@@ -112,8 +111,6 @@ public class SubClassesEvents {
         }
     }
 
-
-    // Chronomancy mage stuff
     @SubscribeEvent
     public static void beginCast(SpellPreCastEvent event) {
         var data = getPlayerMagicData(event.getEntity());
@@ -126,7 +123,6 @@ public class SubClassesEvents {
     @SubscribeEvent
     public static void onGetLevel(ModifySpellLevelEvent event) {
         // increase level of TimeWizard compatible spells by correct amount.
-        System.out.println("level modified");
         if (ClassHelper.isSubClass(event.getEntity(), IBSubClassRegistry.CHRONURGIST.get()) && ClassHelper.getLevel(event.getEntity()) > 12 && TimeWizard.instance.getBoostedSpells().contains(event.getSpell().getSpellResource())) {
             event.addLevels(TimeWizard.instance.getLevelBoost(event.getEntity()));
         }
@@ -136,7 +132,6 @@ public class SubClassesEvents {
     public static void endCast(SpellOnCastEvent event) {
         event.getEntity().removeEffect(IBMobEffectRegistry.CAST_TIME_REDUCTION_EFFECT);
     }
-
 
     // ARCANE EFFICIENCY PERK
     @SubscribeEvent

@@ -98,9 +98,6 @@ repositories {
     }
 }
 
-jarJar.enable()
-
-
 dependencies {
     // FORGE ******************************************************************************************************
     implementation "net.neoforged:neoforge:${neoVersion}"
@@ -113,26 +110,12 @@ dependencies {
     localRuntime "com.illusivesoulworks.caelus:caelus-neoforge:${caelus_version}"
 
     // PLAYER ANIMATOR ********************************************************************************************
-    //compileOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     implementation "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
-    //jarJar(group: "dev.kosmx.player-anim", name: "player-animation-lib-forge", version: "[${player_animator_version},${player_animator_version}]")
-
-    // TETRA ******************************************************************************************************
-    //compileOnly "se.mickelus.mutil:mutil:${mutil_version}"
-//    compileOnly "curse.maven:tetra-${tetra_version}"
-//    compileOnly "se.mickelus.mutil:mutil:${mutil_version}"
-
-    // If you want to run with tetra in dev comment the above line and uncomment the following 2 lines
-//    localRuntime "curse.maven:tetra-${tetra_version}"
-//    localRuntime "se.mickelus.mutil:mutil:${mutil_version}"
-//    localRuntime "curse.maven:better-combat-by-daedelus-639842:5723092"
-//    localRuntime "curse.maven:cloth-config-348521:5623420"
 
     // JEI ********************************************************************************************************
     compileOnly "mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${jei_mc_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${jei_mc_version}-neoforge:${jei_version}"
-
 
     //localRuntime "curse.maven:just-enough-effect-descriptions-jeed-532286:4599099")
     // CURIOS *****************************************************************************************************
@@ -146,10 +129,6 @@ dependencies {
     implementation "curse.maven:apothic-attributes-898963:5597608"
     implementation "curse.maven:placebo-283644:5597604"
 
-    //QOL
-    //todo: 1.21: update these mods
-
-
     // JSON ******************************************************************************************************
     implementation "com.google.code.gson:gson:${gson_version}"
 
@@ -162,37 +141,9 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
     testImplementation "net.neoforged:testframework:${neoVersion}"
-
-
 }
 
-
-tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            minecraft_version      : minecraftVersion,
-            minecraft_version_range: minecraftVersionRange,
-            neo_version            : neoVersion,
-            neo_version_range      : neoVersionRange,
-            loader_version_range   : loaderVersionRange,
-            caelus_version         : caelus_version,
-            geckolib_version       : geckolib_version,
-            player_animator_version: player_animator_version,
-            mod_id                 : modId,
-            mod_name               : modName,
-            mod_version            : version,
-            mod_license            : modLicense,
-            mod_authors            : modAuthors,
-            mod_credits            : modCredits,
-            mod_description        : modDescription,
-            mod_display_url        : "https://discord.gg/BgepPadNRZ",
-            mod_issue_tracker      : "https://discord.gg/BgepPadNRZ",
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
-}
+jarJar.enable()
 
 
 jar {
@@ -269,7 +220,32 @@ publishing {
     }
 }
 
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraftVersion,
+            minecraft_version_range: minecraftVersionRange,
+            neo_version            : neoVersion,
+            neo_version_range      : neoVersionRange,
+            loader_version_range   : loaderVersionRange,
+            caelus_version         : caelus_version,
+            geckolib_version       : geckolib_version,
+            player_animator_version: player_animator_version,
+            mod_id                 : modId,
+            mod_name               : modName,
+            mod_version            : version,
+            mod_license            : modLicense,
+            mod_authors            : modAuthors,
+            mod_credits            : modCredits,
+            mod_description        : modDescription,
+            mod_display_url        : "https://discord.gg/BgepPadNRZ",
+            mod_issue_tracker      : "https://discord.gg/BgepPadNRZ",
+    ]
+    inputs.properties replaceProperties
 
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }

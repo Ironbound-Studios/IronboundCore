@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "ironbound_core:madness_damage"
+    "ironbound_core:madness_damage",
+    "ironbound_core:decay_damage"
   ]
 }

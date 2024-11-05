@@ -54,7 +54,6 @@ public class WarlockItem extends ClassItem {
         }
         copy.set(ComponentRegistry.SPELL_CONTAINER, new SpellContainer(spellList.size() + 1, true, false, false, slots));
 
-        EchoingStrikesSpell
         CuriosApi.getCuriosInventory(slotContext.entity()).ifPresent(a -> a.setEquippedCurio(slotContext.identifier(), slotContext.index(), copy));
     }
 
