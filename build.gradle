@@ -198,9 +198,8 @@ artifacts {
 publishing {
     tasks.publish.dependsOn 'build'
     publications {
-
         mavenJava(MavenPublication) {
-            artifactId project.archivesBaseName
+            artifactId jar.name
             artifact jar
             artifact sourcesJar
         }
@@ -211,11 +210,8 @@ publishing {
             name = "github"
             url = "https://maven.pkg.github.com/Ironbound-Studios/IronboundCore"
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-            }
-            authentication {
-                basic(BasicAuthentication)
+                username = "" // github name
+                password = System.getenv("PASSWORD") // token
             }
         }
     }
