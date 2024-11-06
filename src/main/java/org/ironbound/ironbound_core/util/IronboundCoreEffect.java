@@ -1,6 +1,7 @@
 package org.ironbound.ironbound_core.util;
 
 
+import com.electronwill.nightconfig.core.ConfigSpec;
 import io.redspace.ironsspellbooks.entity.mobs.dead_king_boss.DeadKingBoss;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -56,6 +57,7 @@ public class    IronboundCoreEffect extends MobEffect {
         newEffect.interval = tickInterval;
         newEffect.type = type;
         return newEffect;
+
     }
 
     @Override

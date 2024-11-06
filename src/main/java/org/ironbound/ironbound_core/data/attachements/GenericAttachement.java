@@ -9,18 +9,20 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class GenericAttachement implements INBTSerializable<CompoundTag> {
     public ArrayList<Integer> read_book = new ArrayList<>();
     public int immortalityCooldown;
     private boolean isEndlessImmortalityConsumed = false;
+    public UUID simulacrum = null;
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
         var tag = new CompoundTag();
-        tag.putIntArray("books", read_book);
-
-
+        tag.putIntArray("books", this.read_book);
+        tag.putInt("immortality_cooldown", this.immortalityCooldown);
+        tag.putUUID("simulacrum_uuid", this.simulacrum);
         return null;
     }
 
@@ -42,6 +44,8 @@ public class GenericAttachement implements INBTSerializable<CompoundTag> {
         for (int tagBook : tagBooks) {
             this.read_book.add(tagBook);
         }
+        this.immortalityCooldown = tag.getInt("immortality_cooldown");
+        this.simulacrum = tag.getUUID("simulacrum_uuid");
     }
 
     public boolean isEndlessImmortalityConsumed() {

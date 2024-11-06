@@ -196,7 +196,7 @@ artifacts {
 
 
 publishing {
-    tasks.publish.dependsOn 'build'
+    tasks.publish.dependsOn 'build  '
     publications {
         mavenJava(MavenPublication) {
             artifactId jar.name

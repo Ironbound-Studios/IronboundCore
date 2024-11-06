@@ -45,5 +45,4 @@ public class IBItemRegistry {
     public static final DeferredHolder<Item, SubClassPotion> ENIGMATIC_POTION = ITEMS.register("evocation_subclass_potion", () -> new SubClassPotion(new Item.Properties().stacksTo(1).fireResistant()));
     public static final DeferredHolder<Item, SubClassPotion> TREE_BARK = ITEMS.register("nature_subclass_potion", () -> new SubClassPotion(new Item.Properties().stacksTo(1).fireResistant(), PlagueMaster.instance));
 
-
 }
