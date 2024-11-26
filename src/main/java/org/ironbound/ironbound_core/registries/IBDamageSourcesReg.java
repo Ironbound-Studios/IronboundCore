@@ -22,11 +22,10 @@ public class IBDamageSourcesReg {
     /**
      * @param entity : the target entity. Cannot be null.
      * @param key    : the damage key to be used. an example include the "VOID_DAMAGE" field present in this class.
-     * @return : returns a DamageType holder that can be used to apply damage.
+     * @return       : returns a DamageType holder that can be used to apply damage.
      * Code taken from @link io.redspace.ironsspellbooks.damage.SpellDamageSource.getHolderFromResource()
      */
     public static Holder<DamageType> getFromKey(Entity entity, ResourceKey<DamageType> key) {
-
         Optional<Holder.Reference<DamageType>> option = entity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolder(key);
         if (option.isPresent()) {
             return option.get();
@@ -34,5 +33,4 @@ public class IBDamageSourcesReg {
             return entity.level().damageSources().genericKill().typeHolder();
         }
     }
-
 }
