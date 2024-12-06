@@ -1,6 +1,8 @@
 package org.ironbound.ironbound_core.items;
 
 import com.google.common.collect.Multimap;
+import io.redspace.ironsspellbooks.entity.spells.ChainLightning;
+import io.redspace.ironsspellbooks.spells.lightning.ChainLightningSpell;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -58,10 +60,9 @@ public class ClassItem extends Item implements ICurioItem {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (!(stack.has(IBComponentRegistry.CLASS_COMPONENT.get()))) {
-
             stack.set(IBComponentRegistry.CLASS_COMPONENT.value(), new ClassInstance(this.ibClass.classId.toString(), NoneSubClass.instance.subClassID.toString(), 1));
-
         }
+
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
 
@@ -99,7 +100,7 @@ public class ClassItem extends Item implements ICurioItem {
 
             }
         } else {
-            tooltipComponents.add(Component.translatable("tooltip.ironbound.hold_shift").withStyle(ChatFormatting.ITALIC));
+            tooltipComponents.add(Component.translatable("tooltip.ironbound.hold_shift").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY));
         }
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);

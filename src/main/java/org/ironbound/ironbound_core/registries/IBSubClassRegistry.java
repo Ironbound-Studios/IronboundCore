@@ -29,10 +29,11 @@ public class IBSubClassRegistry {
 
     public static final DeferredRegister<IBSubClass> IRONBOUND_SUBCLASS_REGISTRY = DeferredRegister.create(SUBCLASS_REGISTRY, "sub_class_registry");
 
-    public static final DeferredHolder<IBSubClass, EldritchKnight> ELDRITCH_KNIGHT = IRONBOUND_SUBCLASS_REGISTRY.register("eldritch_knight", () -> EldritchKnight.instance);
-    public static final DeferredHolder<IBSubClass, PlagueMaster> PLAGUE_MASTER = IRONBOUND_SUBCLASS_REGISTRY.register("plague_master", () -> PlagueMaster.instance);
-    public static final DeferredHolder<IBSubClass, UndyingSorcerer> UNDYING = IRONBOUND_SUBCLASS_REGISTRY.register("undying", () -> UndyingSorcerer.instance);
+    public static final DeferredHolder<IBSubClass, EldritchKnight> ELDRITCH_FIGHTER = IRONBOUND_SUBCLASS_REGISTRY.register("eldritch_knight", () -> EldritchKnight.instance);
+    public static final DeferredHolder<IBSubClass, PlagueMaster> NATURE_FIGHTER = IRONBOUND_SUBCLASS_REGISTRY.register("plague_master", () -> PlagueMaster.instance);
+    public static final DeferredHolder<IBSubClass, UndyingSorcerer> BLOOD_SORCERER = IRONBOUND_SUBCLASS_REGISTRY.register("undying", () -> UndyingSorcerer.instance);
     public static final DeferredHolder<IBSubClass, TimeWizard> CHRONURGIST = IRONBOUND_SUBCLASS_REGISTRY.register("chronomancer", () -> TimeWizard.instance);
+    public static final DeferredHolder<IBSubClass, FireWarlock> FIRE_WARLOCK = IRONBOUND_SUBCLASS_REGISTRY.register("fire_warlock", () -> FireWarlock.instance);
     public static final DeferredHolder<IBSubClass, FireWarlock> FIRE_WARLOCK = IRONBOUND_SUBCLASS_REGISTRY.register("fire_warlock", () -> FireWarlock.instance);
 
 

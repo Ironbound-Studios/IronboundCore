@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,6 +18,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -24,6 +26,7 @@ import org.ironbound.ironbound_core.data.attachements.StatusAttachement;
 import org.ironbound.ironbound_core.data.attachements.StatusIncreasedEvent;
 import org.ironbound.ironbound_core.ironbound_classes.ClassHelper;
 import org.ironbound.ironbound_core.ironbound_classes.ClassInstance;
+import org.ironbound.ironbound_core.ironbound_classes.main_classes.PriestClass;
 import org.ironbound.ironbound_core.items.GenericPotion;
 import org.ironbound.ironbound_core.registries.IBClassRegistry;
 import org.ironbound.ironbound_core.registries.IBDamageSourcesReg;
@@ -114,11 +117,21 @@ public class ServerEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void healEvent(LivingHealEvent event){
+        if (event.getEntity() instanceof Player player && ClassHelper.isClass(player, PriestClass.instance)){
+            event.setAmount(event.getAmount()*1.5F);
+        }
+    }
 
     @SubscribeEvent
-    public static void genDataAttachments(LivingDamageEvent.Pre event) {
+    public static void damageEvent(LivingDamageEvent.Pre event) {
         if (!event.getEntity().hasData(STATUS_DATA)) {
             event.getEntity().setData(STATUS_DATA, new StatusAttachement());
+        }
+
+        if (event.getSource().getEntity() instanceof Player player && ClassHelper.isClass((player), PriestClass.instance) && event.getEntity().getType().equals(EntityType.ZOMBIE)){
+            event.setNewDamage(event.getOriginalDamage() * (1+ClassHelper.getLevel(player)/20F));
         }
 
         if (event.getSource().is(Tags.DamageTypes.IS_PHYSICAL) || event.getSource().typeHolder() == IBDamageSourcesReg.getFromKey(event.getEntity(), BLOOD_MAGIC)) {
@@ -156,5 +169,7 @@ public class ServerEvents {
             player.getData(GENERIC_DATA).addBook(event.getItem());
         }
     }
+
+
 
 }

@@ -32,7 +32,7 @@
 
 
   "classes.ironbound_core.astrologer_class_name": "Astrologer",
-  "astrologer_class.ability.1": "NOT YET IMPLEMENTED\n",
+  "astrologer_class.ability.1": "Time-Sensitive : \nDepending on the current day, you gain different boons : \n1st day: Cooldown Reduction\n2nd day: Cast Time Reduction \n3rd day: Mana Regeneration\n4th day: No Additional Effects\n",
   "astrologer_class.ability.2": "Chronomancy Savant: \nThe Slow, Haste, Teleport and Time Stop spells gain extra levels based on your level.\n",
   "astrologer_class.ability.3": "Ever-lasting:\nThe duration of all outgoing magical potion effect is greatly extended, based on your level.\n",
 

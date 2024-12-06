@@ -1,5 +1,6 @@
 package org.ironbound.ironbound_core.registries;
 
+import io.redspace.ironsspellbooks.mixin.EntityRendererMixin;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
@@ -24,7 +25,6 @@ public class IBAttributeRegistry {
     public static final DeferredHolder<Attribute, Attribute> INSIGHT = registerAttribute("ironbounds_artefacts.attribute.insight", (id) -> new RangedAttribute(id, 1.0D, 1.0D, 20D).setSyncable(true), UUID.fromString("6be02cbc-852c-4faa-bf33-906be7f97374"));
     public static final DeferredHolder<Attribute, Attribute> VITALITY = registerAttribute("ironbounds_artefacts.attribute.vitality", (id) -> new RangedAttribute(id, 1.0D, 1.0D, 40D).setSyncable(true), UUID.fromString("6be02cbc-852c-49ea-bf33-906be7f97374"));
     public static final DeferredHolder<Attribute, Attribute> FOCUS = registerAttribute("ironbounds_artefacts.attribute.mind", (id) -> new RangedAttribute(id, 1.0D, 1.0D, 40D).setSyncable(true), UUID.fromString("6be02cbc-852c-49ea-bf83-906be7f97374"));
-
 
     public static DeferredHolder<Attribute, Attribute> registerAttribute(String name, Function<String, Attribute> attribute, UUID uuid) {
         DeferredHolder<Attribute, Attribute> registryObject = ATTRIBUTES.register(name, () -> attribute.apply(name));

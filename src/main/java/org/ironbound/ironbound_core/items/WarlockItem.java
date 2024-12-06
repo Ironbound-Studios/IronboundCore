@@ -43,7 +43,7 @@ public class WarlockItem extends ClassItem {
         }
         for (int i = 0; i < spellList.size(); i++) {
             var spellI = SpellRegistry.getSpell(spellList.get(i));
-            slots[i] = new SpellSlot(new SpellData(spellI, Math.max(1,(int) ((ClassHelper.getLevel(slotContext.entity()) / 20F) * spellI.getMaxLevel())), true), i);
+            slots[i] = new SpellSlot(new SpellData(spellI, Math.max(1, (int) ((ClassHelper.getLevel(slotContext.entity()) / 20F) * spellI.getMaxLevel())), true), i);
         }
 
 
@@ -61,12 +61,25 @@ public class WarlockItem extends ClassItem {
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
         var attributes = super.getAttributeModifiers(slotContext, id, stack);
-        if (slotContext.entity().isOnFire()) {
-            attributes.put(AttributeRegistry.FIRE_SPELL_POWER, new AttributeModifier(Ironbound.prefix("on_fire_fire_spell_power_bonus"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        if (slotContext.entity() != null) {
+            if (ClassHelper.isSubClass(slotContext.entity(), IBSubClassRegistry.FIRE_WARLOCK.get())) {
+                if (slotContext.entity().isOnFire()) {
+                    attributes.put(AttributeRegistry.FIRE_SPELL_POWER, new AttributeModifier(Ironbound.prefix("on_fire_fire_spell_power_bonus"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                }
+                if (slotContext.entity().level.dimension() == ServerLevel.NETHER) {
+                    attributes.put(AttributeRegistry.SPELL_POWER, new AttributeModifier(Ironbound.prefix("fire_warlock_home"), 0.25, AttributeModifier.Operation.ADD_VALUE));
+                }
+            }
+/*            if (ClassHelper.isSubClass(slotContext.entity(), IBSubClassRegistry.FIRE_WARLOCK.get())) {
+                if (slotContext.entity().isOnFire()) {
+                    attributes.put(AttributeRegistry.FIRE_SPELL_POWER, new AttributeModifier(Ironbound.prefix("on_fire_fire_spell_power_bonus"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                }
+                if (slotContext.entity().level.dimension() == ServerLevel.NETHER) {
+                    attributes.put(AttributeRegistry.SPELL_POWER, new AttributeModifier(Ironbound.prefix("fire_warlock_home"), 0.25, AttributeModifier.Operation.ADD_VALUE));
+                }
+            }*/
         }
-        if (slotContext.entity().level.dimension() == ServerLevel.NETHER) {
-            attributes.put(AttributeRegistry.FIRE_SPELL_POWER, new AttributeModifier(Ironbound.prefix("fire_warlock_home"), 0.2, AttributeModifier.Operation.ADD_VALUE));
-        }
+
         return attributes;
     }
 }

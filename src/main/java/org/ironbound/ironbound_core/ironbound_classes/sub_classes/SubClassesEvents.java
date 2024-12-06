@@ -4,14 +4,12 @@ import io.redspace.ironsspellbooks.api.events.*;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.damage.ISSDamageTypes;
-import io.redspace.ironsspellbooks.effect.MagicMobEffect;
 import io.redspace.ironsspellbooks.entity.mobs.SummonedSkeleton;
 import io.redspace.ironsspellbooks.entity.mobs.SummonedZombie;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
+import io.redspace.ironsspellbooks.spells.holy.SunbeamSpell;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +44,7 @@ public class SubClassesEvents {
         var instance = event.getEffectInstance();
         if (event.getEntity() instanceof LivingEntity entity && instance != null) {
             if ((instance.getEffect().equals(MobEffects.WITHER) || instance.getEffect().equals(MobEffects.POISON))) {
-                if (ClassHelper.isSubClass(event.getEntity().getLastAttacker(), IBSubClassRegistry.PLAGUE_MASTER.get())) {
+                if (ClassHelper.isSubClass(event.getEntity().getLastAttacker(), IBSubClassRegistry.NATURE_FIGHTER.get())) {
                     //this will cause the game to crash in some cases! so we pray that never happens!
                     // Bah ! how could it ever happen !!! It's also clearly a *feature* *v*
                     instance.amplifier += (int) (ClassHelper.getLevel(event.getEntity().getLastAttacker()) / 10D) + 1;
@@ -64,9 +62,9 @@ public class SubClassesEvents {
             var attacked = event.getEntity();
             var attacker = event.getSource().getEntity();
 
-            if (IBSubClassRegistry.PLAGUE_MASTER.get().canUseSecondPerk(living) && living.getAttributeValue(INSIGHT) > attacked.level().random.nextIntBetweenInclusive(1, 20)) {
+            if (IBSubClassRegistry.NATURE_FIGHTER.get().canUseSecondPerk(living) && living.getAttributeValue(INSIGHT) > attacked.level().random.nextIntBetweenInclusive(1, 20)) {
                 attacked.addEffect(new MobEffectInstance(MobEffects.WITHER, 10, 2));
-            } else if (IBSubClassRegistry.ELDRITCH_KNIGHT.get().canUseSecondPerk(living) && living.getAttributeValue(INSIGHT) > attacked.level().random.nextIntBetweenInclusive(1, 20)) {
+            } else if (IBSubClassRegistry.ELDRITCH_FIGHTER.get().canUseSecondPerk(living) && living.getAttributeValue(INSIGHT) > attacked.level().random.nextIntBetweenInclusive(1, 20)) {
                 attacked.getData(IBAttachmentRegistry.STATUS_DATA).addTo(StatusTypes.MADNESS, (int) (living.getAttributeValue(INSIGHT) / 2));
             } else if (ClassHelper.isClass((LivingEntity) attacker, IBClassRegistry.HUNTER_CLASS.get())) {
                 // Hunter's Mark
@@ -98,7 +96,7 @@ public class SubClassesEvents {
 
         // Eldritch Knight stuff
         // Revel in Madness
-        else if (ClassHelper.isSubClass(player, IBSubClassRegistry.ELDRITCH_KNIGHT.get())) {
+        else if (ClassHelper.isSubClass(player, IBSubClassRegistry.ELDRITCH_FIGHTER.get())) {
             AABB radius = player.getBoundingBox().inflate(10, 10, 10);
             List<Entity> targets = world.getEntities(player, radius);
 
@@ -157,21 +155,21 @@ public class SubClassesEvents {
     public static void onSummonDeath(LivingDeathEvent event) {
 
         if (event.getEntity() instanceof Player player) {
-            if (ClassHelper.isSubClass(player, IBSubClassRegistry.UNDYING.get()) && !player.getData(GENERIC_DATA).isEndlessImmortalityConsumed()) {
+            if (ClassHelper.isSubClass(player, IBSubClassRegistry.BLOOD_SORCERER.get()) && !player.getData(GENERIC_DATA).isEndlessImmortalityConsumed()) {
                 event.setCanceled(true);
                 player.getData(GENERIC_DATA).setEndlessImmortalityConsumed(true);
                 player.getData(GENERIC_DATA).immortalityCooldown = 20 * 20 * 60;
             }
         }
 
-        if (event.getEntity() instanceof SummonedZombie mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.UNDYING.get())) {
+        if (event.getEntity() instanceof SummonedZombie mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.BLOOD_SORCERER.get())) {
             var owner = mob.getSummoner();
             if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2) {
                 owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
                 event.setCanceled(true);
                 mob.heal(mob.getMaxHealth() / 2);
             }
-        } else if (event.getEntity() instanceof SummonedSkeleton mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.UNDYING.get())) {
+        } else if (event.getEntity() instanceof SummonedSkeleton mob && ClassHelper.isSubClass(mob.getSummoner(), IBSubClassRegistry.BLOOD_SORCERER.get())) {
             var owner = mob.getSummoner();
             if (owner.hasData(MAGIC_DATA) && owner.getData(MAGIC_DATA).getMana() >= mob.getMaxHealth() / 2) {
                 owner.getData(MAGIC_DATA).setMana(owner.getData(MAGIC_DATA).getMana() - mob.getMaxHealth() / 2);
